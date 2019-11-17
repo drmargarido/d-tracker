@@ -1,6 +1,6 @@
 # Timetracker
 
-Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses less than 10MB of RAM and has 4 small dependencies instead of asking you to use DOCKER.
+Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses less than 10MB of RAM, and has 4 small dependencies.
 
 ## Milestones
 
