@@ -1,15 +1,3 @@
-local date = require "date.date"
-test_time = date(1999, 12, 27)
-print(test_time)
-
-local sqlite3 = require "lsqlite3"
-local db = sqlite3.open()
-
-for row in db:nrows("SELECT * FROM test") do
-  print(row.id, row.content)
-end
-
-
 return {
     autocomplete_task = function(description)
         return {}
@@ -22,6 +10,35 @@ return {
     delete_task = function(task_id)
     end,
     list_tasks = function(start_date, end_date)
-        return {}
+        return {
+            {
+                id=1,
+                project="D-Tracker",
+                start_time="2019-11-17T11:09:25",
+                end_time="2019-11-17T12:09:25",
+                description="Creating build setup"
+            },
+            {
+                id=2,
+                project="D-Tracker",
+                start_time="2019-11-17T13:09:25",
+                end_time="2019-11-17T14:29:25",
+                description="Requirements"
+            },
+            {
+                id=3,
+                project="D-Tracker",
+                start_time="2019-11-17T15:29:25",
+                end_time="2019-11-17T16:09:25",
+                description="Development"
+            },
+            {
+                id=4,
+                project="D-Tracker",
+                start_time="2019-11-17T17:09:25",
+                end_time="2019-11-17T17:32:25",
+                description="Testing"
+            }
+        }
     end
 }

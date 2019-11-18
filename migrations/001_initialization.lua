@@ -5,15 +5,16 @@ return function(dbname)
     db:exec[[
         CREATE TABLE project (
             id INTEGER PRIMARY KEY,
-            name VARCHAR(255)
+            name VARCHAR(255) NOT NULL,
+            CONSTRAINT u_name UNIQUE (name)
         );
 
         CREATE TABLE task (
             id INTEGER PRIMARY KEY,
             project_id INTEGER,
-            start_time TEXT,
-            end_time TEXT,
-            description TEXT,
+            start_time TEXT NOT NULL,
+            end_time TEXT NULL,
+            description TEXT NOT NULL,
             FOREIGN KEY(project_id) REFERENCES project(id)
         );
     ]]
