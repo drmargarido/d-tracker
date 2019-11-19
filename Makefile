@@ -23,7 +23,7 @@ tekui:
 	cp -R external/tek $(DEPLOY_FOLDER)/
 
 lsqlite: sqlite.o
-	$(CC) -shared -fPIC $(LSQLITE_CFLAGS) -o $(DEPLOY_FOLDER)/lsqlite3.so $(LSQLITE_FOLDER)/lsqlite3.c $(LSQLITE_FOLDER)/sqlite3.o -Iexternal/LuaJIT/src -L$(DEPLOY_FOLDER) -lluajit -ldl -lpthread
+	$(CC) -shared -fPIC $(LSQLITE_CFLAGS) -o $(DEPLOY_FOLDER)/lsqlite3.so $(LSQLITE_FOLDER)/lsqlite3.c $(LSQLITE_FOLDER)/sqlite3.o -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -ldl -lpthread
 
 sqlite.o:
 	$(CC) -fPIC $(LSQLITE_CFLAGS) -o $(LSQLITE_FOLDER)/sqlite3.o -c $(LSQLITE_FOLDER)/sqlite3.c
@@ -33,7 +33,7 @@ date:
 	cp -R external/date/src/date.lua $(DEPLOY_FOLDER)/date/
 
 timetracker:
-	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -Iexternal/LuaJIT/src -L$(DEPLOY_FOLDER) -lluajit
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
 clean:
 	rm -f $(EXECUTABLE)

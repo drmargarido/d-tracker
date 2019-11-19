@@ -32,7 +32,9 @@ return function()
                 Orientation = "horizontal",
                 Children = {
                     ui.Text:new{
+                        Class = "caption",
                         Text = "No activity",
+                        HAlign = "left"
                     },
                     ui.Area:new{
                         Width = "fill",
@@ -49,13 +51,14 @@ return function()
             },
             ui.Text:new{
                 Width = 160,
+                Class = "caption",
                 Text = "Start new activity",
             },
             ui.Group:new{
                 Orientation = "horizontal",
                 Children = {
                     ui.Input:new{
-
+                        Placeholder = "Activity"
                     },
                     ui.Button:new{
                         Width = 140,
@@ -68,13 +71,14 @@ return function()
             },
             ui.Text:new{
                 Width = 80,
+                Class = "caption",
                 Text = "Today",
             },
             ui.ListView:new{
                 HSliderMode = "auto",
                 Child = ui.Lister:new{
                     Id = "the-list",
-                    SelectMode = "multi",
+                    SelectMode = "single",
                     ListObject = List:new{
                         Items = tasks_list
                     },
