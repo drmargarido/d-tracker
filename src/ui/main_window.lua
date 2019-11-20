@@ -11,7 +11,7 @@ return function()
     for _, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
-        local duration = "1h 20min"
+        local duration = date.diff(end_time, start_time)
 
         table.insert(tasks_list, {{
             string.format("%02d:%02d", start_time:gethours(), start_time:getminutes()),
@@ -19,7 +19,7 @@ return function()
             string.format("%02d:%02d", end_time:gethours(), end_time:getminutes()),
             task.description,
             task.project,
-            duration
+            string.format("%dh %02dmin", duration:gethours(), duration:getminutes())
         }})
     end
 
