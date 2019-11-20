@@ -1,5 +1,5 @@
 DEPLOY_FOLDER=.
-EXECUTABLE=timetracker
+EXECUTABLE=d-tracker
 
 LUA_FOLDER=external/LuaJIT
 LSQLITE_FOLDER=external/lsqlite

@@ -34,7 +34,7 @@ return function()
                     ui.Text:new{
                         Class = "caption",
                         Text = "No activity",
-                        HAlign = "left"
+                        Style = "text-align: left; margin-left: 10; font: 24/b;"
                     },
                     ui.Area:new{
                         Width = "fill",
@@ -58,7 +58,7 @@ return function()
                 Orientation = "horizontal",
                 Children = {
                     ui.Input:new{
-                        Placeholder = "Activity"
+                        Width = "free",
                     },
                     ui.Button:new{
                         Width = 140,
