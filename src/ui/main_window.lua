@@ -8,6 +8,8 @@ return function()
     local today_tasks = controller.list_tasks(date(), date())
 
     local tasks_list = {}
+    local total_time = nil
+
     for _, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
@@ -21,20 +23,28 @@ return function()
             task.project,
             string.format("%dh %02dmin", duration:gethours(), duration:getminutes())
         }})
+
+        if not total_time then
+            total_time = duration
+        else
+            total_time = total_time + duration
+        end
     end
 
     return ui.Window:new {
         Title = "D-Tracker",
         Orientation = "vertical",
+        Style = "margin: 15;",
         Children = {
             ui.Group:new{
                 Width = "free",
                 Orientation = "horizontal",
+                Style = "margin-bottom: 10;",
                 Children = {
                     ui.Text:new{
                         Class = "caption",
                         Text = "No activity",
-                        Style = "text-align: left; margin-left: 10; font: 24/b;"
+                        Style = "text-align: left; font: ui-menu:24;/b;"
                     },
                     ui.Area:new{
                         Width = "fill",
@@ -50,18 +60,21 @@ return function()
                 }
             },
             ui.Text:new{
-                Width = 160,
+                Width = 120,
                 Class = "caption",
                 Text = "Start new activity",
+                Style = "font: 24/b;"
             },
             ui.Group:new{
                 Orientation = "horizontal",
+                Style = "margin-bottom: 10;",
                 Children = {
                     ui.Input:new{
-                        Width = "free",
+                        Width = "free"
                     },
                     ui.Button:new{
                         Width = 140,
+                        Style = "margin-left: 5;",
                         Text = "Start Tracking",
                         onPress = function(self)
                             print("Yo")
@@ -70,12 +83,14 @@ return function()
                 }
             },
             ui.Text:new{
-                Width = 80,
+                Width = 60,
                 Class = "caption",
                 Text = "Today",
+                Style = "font: 24/b;"
             },
             ui.ListView:new{
                 HSliderMode = "auto",
+                Style = "margin-bottom: 20;",
                 Child = ui.Lister:new{
                     Id = "the-list",
                     SelectMode = "single",
@@ -86,6 +101,31 @@ return function()
                         ui.Lister.onSelectLine(self)
                         local line = self:getItem(self.SelectedLine)
                     end,
+                }
+            },
+            ui.Group:new{
+                Orientation = "horizontal",
+                Width = "free",
+                Children = {
+                    ui.Text:new{
+                        Width = 100,
+                        Class = "caption",
+                        Text = string.format(
+                            "Total Time: %02dh %02dmin",
+                            total_time:gethours(),
+                            total_time:getminutes()
+                        )
+                    },
+                    ui.Area:new{
+                        Width = "fill",
+                        Height = "auto"
+                    },
+                    ui.Button:new{
+                        Width = 180,
+                        Text = "Show Overview",
+                        onPress = function(self)
+                        end
+                    }
                 }
             }
         }
