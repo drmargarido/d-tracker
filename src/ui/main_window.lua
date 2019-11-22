@@ -92,7 +92,6 @@ return function()
                 HSliderMode = "auto",
                 Style = "margin-bottom: 20;",
                 Child = ui.Lister:new{
-                    Id = "the-list",
                     SelectMode = "single",
                     ListObject = List:new{
                         Items = tasks_list

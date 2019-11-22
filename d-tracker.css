@@ -7,15 +7,38 @@
 tek.ui.class.display {
 	rgb-background: #fff;
 	rgb-active: #bbb;
-	rgb-focus: #ddd;
-	rgb-hover: #ddd;
+	rgb-focus: #fff;
+	rgb-hover: #bbb;
 	rgb-disabled: #d1d1d1;
 	rgb-disabled-detail: #666;
 	rgb-disabled-detail-shine: #fff;
-	rgb-border-shine: #f8f8f8;
-	rgb-border-shadow: #555;
-	rgb-border-focus: #fff;
+	rgb-border-shine: #aaa;
+	rgb-border-shadow: #999;
+	rgb-border-focus: #55a;
 	rgb-list: #fff;
 	rgb-list-alt: #fff;
-	rgb-group: #d6d6d6;
+	rgb-group: #d9d9d9;
+
+	rgb-border-rim: #999;
+	rgb-border-legend: #888;
+}
+
+.button{
+	border-width: 2;
+}
+
+tek.ui.class.input { 
+	border-width: 1;
+}
+
+tek.ui.class.canvas.inputfield {
+	border-width: 0;
+}
+
+tek.ui.class.frame {
+	border-width: 1;
+}
+
+tek.ui.class.slider {
+	border-width: 0;
 }
