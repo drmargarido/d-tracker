@@ -21,6 +21,7 @@ luajit:
 
 tekui:
 	cp -R external/tek $(DEPLOY_FOLDER)/
+	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
 
 lsqlite: sqlite.o
 	$(CC) -shared -fPIC $(LSQLITE_CFLAGS) -o $(DEPLOY_FOLDER)/lsqlite3.so $(LSQLITE_FOLDER)/lsqlite3.c $(LSQLITE_FOLDER)/sqlite3.o -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -ldl -lpthread
