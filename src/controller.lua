@@ -9,6 +9,9 @@ return {
     end,
     delete_task = function(task_id)
     end,
+    get_task_in_progress = function()
+        return nil
+    end,
     list_tasks = function(start_date, end_date)
         return {
             {

@@ -27,6 +27,10 @@ tek.ui.class.display {
 	border-width: 2;
 }
 
+.project{
+	color: #666;
+}
+
 tek.ui.class.input { 
 	border-width: 1;
 }

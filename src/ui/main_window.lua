@@ -15,20 +15,55 @@ return function()
         local end_time = date(task.end_time)
         local duration = date.diff(end_time, start_time)
 
-        table.insert(tasks_list, {{
-            string.format("%02d:%02d", start_time:gethours(), start_time:getminutes()),
-            "-",
-            string.format("%02d:%02d", end_time:gethours(), end_time:getminutes()),
-            task.description,
-            task.project,
-            string.format("%dh %02dmin", duration:gethours(), duration:getminutes())
-        }})
+        table.insert(tasks_list, ui.Text:new{
+            Width = "free",
+            Style = "text-align: left;",
+            Text = string.format(
+                "%02d:%02d - %02d:%02d %s",
+                start_time:gethours(), start_time:getminutes(),
+                end_time:gethours(), end_time:getminutes(),
+                task.description
+            )
+        })
+        table.insert(tasks_list, ui.Text:new{
+            Class = "project",
+            Style = "text-align: left;",
+            Text = task.project
+        })
+        table.insert(tasks_list, ui.Text:new{
+            Text = string.format(
+                "%dh %02dmin",
+                duration:gethours(), duration:getminutes()
+            )
+        })
+        table.insert(tasks_list, ui.Button:new{
+            Width = 30,
+            Text = "x"
+        })
 
         if not total_time then
             total_time = duration
         else
             total_time = total_time + duration
         end
+    end
+
+    local total_time_text
+    if total_time then
+        total_time_text = string.format(
+            "Total Time: %02dh %02dmin",
+            total_time:gethours(),
+            total_time:getminutes()
+        )
+    else
+        total_time_text = "No records today"
+    end
+
+    local current_task = controller.get_task_in_progress()
+
+    local has_task_in_progress = false
+    if current_task ~= nil then
+        has_task_in_progress = true
     end
 
     return ui.Window:new {
@@ -52,6 +87,7 @@ return function()
                     },
                     ui.Button:new{
                         Width = 140,
+                        Disabled = not has_task_in_progress,
                         Text = "Stop Tracking",
                         onPress = function(self)
                             print("Yo")
@@ -88,18 +124,19 @@ return function()
                 Text = "Today",
                 Style = "font: 24/b;"
             },
-            ui.ListView:new{
-                HSliderMode = "auto",
+            ui.ScrollGroup:new{
+                Width = "fill",
+                HSliderMode = "off",
+                VSliderMode = "on",
                 Style = "margin-bottom: 20;",
-                Child = ui.Lister:new{
-                    SelectMode = "single",
-                    ListObject = List:new{
-                        Items = tasks_list
-                    },
-                    onSelectLine = function(self)
-                        ui.Lister.onSelectLine(self)
-                        local line = self:getItem(self.SelectedLine)
-                    end,
+                Child = ui.Canvas:new{
+                    AutoWidth = true,
+                    AutoHeight = true,
+                    Child = ui.Group:new{
+                        Columns = 4,
+                        Orientation = "vertical",
+                        Children = tasks_list
+                    }
                 }
             },
             ui.Group:new{
@@ -109,11 +146,7 @@ return function()
                     ui.Text:new{
                         Width = 100,
                         Class = "caption",
-                        Text = string.format(
-                            "Total Time: %02dh %02dmin",
-                            total_time:gethours(),
-                            total_time:getminutes()
-                        )
+                        Text = total_time_text
                     },
                     ui.Area:new{
                         Width = "fill",
