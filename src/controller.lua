@@ -41,6 +41,27 @@ return {
                 start_time="2019-11-17T17:09:25",
                 end_time="2019-11-17T17:32:25",
                 description="Testing"
+            },
+            {
+                id=5,
+                project="D-Tracker",
+                start_time="2019-11-17T17:35:25",
+                end_time="2019-11-17T20:12:21",
+                description="Platform dasdasdsa asdsad sa dsa sdsadsad sad as das dasd asd asd sad sa dsa dsa dasd sa dsa dsa dsa ads sad"
+            },
+            {
+                id=6,
+                project="D-Tracker_Testing_Debugging_Deploying",
+                start_time="2019-11-17T21:09:25",
+                end_time="2019-11-17T22:23:25",
+                description="Testing"
+            },
+            {
+                id=7,
+                project="D-Tracker_Testing_Debugging_Deploying",
+                start_time="2019-11-17T22:27:25",
+                end_time="2019-11-17T23:44:25",
+                description="Platform dasdasdsa asdsad sa dsa sdsadsad sad as das dasd asd asd sad sa dsa dsa dasd sa dsa dsa dsa ads sad"
             }
         }
     end

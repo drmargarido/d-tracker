@@ -1,7 +1,6 @@
 # TODO
 
 * Improve graphical appearance as much as possible
-    + Add focus colors when selecting the task in the list
     + Add icon for the window
 
 * Create the popup of task time

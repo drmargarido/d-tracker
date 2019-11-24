@@ -4,6 +4,8 @@ local List = require "tek.class.list"
 local controller = require "src.controller"
 local date = require "date.date"
 
+local utils = require "src.utils"
+
 local selected_line = nil
 
 local line_closure = function(line, func)
@@ -41,7 +43,7 @@ return function()
             if selected_line then
                 self:getById("row-"..selected_line):setValue(
                     "Style", [[
-                        border-width: 0;
+                        border-width: 1;
                         border-color: #fff;
                     ]]
                 )
@@ -51,7 +53,7 @@ return function()
             selected_line = line
             self:getById("row-"..selected_line):setValue(
                 "Style", [[
-                    border-width: 2;
+                    border-width: 1;
                     border-color: #55b;
                 ]]
             )
@@ -61,6 +63,10 @@ return function()
             Id = "row-"..i,
             Class = "task_row",
             Orientation = "horizontal",
+            Style = [[
+                border-width: 1;
+                border-color: #fff;
+            ]],
             Children = {
                 ui.Text:new{
                     Id = "description-row-"..i,
@@ -75,7 +81,7 @@ return function()
                         "%02d:%02d - %02d:%02d %s",
                         start_time:gethours(), start_time:getminutes(),
                         end_time:gethours(), end_time:getminutes(),
-                        task.description
+                        utils.trim_text(task.description, 36)
                     ),
                     onPress = line_closure(i, function(self, line)
                         select_list_row(self, line)
@@ -89,7 +95,7 @@ return function()
                         padding-left: 5;
                     ]],
                     Mode = "button",
-                    Text = task.project,
+                    Text = utils.trim_text(task.project, 16),
                     onPress = line_closure(i, function(self, line)
                         select_list_row(self, line)
                     end)
