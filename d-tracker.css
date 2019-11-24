@@ -46,3 +46,15 @@ tek.ui.class.frame {
 tek.ui.class.slider {
 	border-width: 0;
 }
+
+.task_list {
+	background-color: background;
+}
+
+.task_data {
+	background-color: #fff;
+	border-color: #fff;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+}

@@ -5,6 +5,9 @@ local controller = require "src.controller"
 local date = require "date.date"
 
 return function()
+    -- Prepare data for the display
+    local pencil_image = ui.loadImage("images/pencil_icon.PPM")
+
     local today_tasks = controller.list_tasks(date(), date())
 
     local tasks_list = {}
@@ -14,10 +17,13 @@ return function()
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
         local duration = date.diff(end_time, start_time)
-
         table.insert(tasks_list, ui.Text:new{
+            Class = "task_data",
             Width = "free",
-            Style = "text-align: left;",
+            Style = [[
+                text-align: left;
+                margin-left: 5;
+            ]],
             Text = string.format(
                 "%02d:%02d - %02d:%02d %s",
                 start_time:gethours(), start_time:getminutes(),
@@ -26,19 +32,27 @@ return function()
             )
         })
         table.insert(tasks_list, ui.Text:new{
-            Class = "project",
+            Class = "project task_data",
             Style = "text-align: left;",
             Text = task.project
         })
         table.insert(tasks_list, ui.Text:new{
+            Class = "task_data",
+            Style = "text-align: right;",
             Text = string.format(
                 "%dh %02dmin",
                 duration:gethours(), duration:getminutes()
             )
         })
-        table.insert(tasks_list, ui.Button:new{
+        table.insert(tasks_list, ui.ImageWidget:new{
+            Class = "task_data",
+            Height = "fill",
             Width = 30,
-            Text = "x"
+            Mode = "button",
+            Image = pencil_image,
+            onPress = function(self)
+                print("hay")
+            end
         })
 
         if not total_time then
@@ -66,9 +80,18 @@ return function()
         has_task_in_progress = true
     end
 
+    -- Display the window
     return ui.Window:new {
         Title = "D-Tracker",
         Orientation = "vertical",
+        Width = 640,
+        Height = 480,
+        MaxWidth = "none",
+        MaxHeight = "none";
+        MinWidth = 250,
+        MinHeight = 250;
+        HideOnEscape = true,
+        SizeButton = true,
         Style = "margin: 15;",
         Children = {
             ui.Group:new{
@@ -126,13 +149,14 @@ return function()
             },
             ui.ScrollGroup:new{
                 Width = "fill",
-                HSliderMode = "off",
-                VSliderMode = "on",
+                HSliderMode = "auto",
+                VSliderMode = "auto",
                 Style = "margin-bottom: 20;",
                 Child = ui.Canvas:new{
                     AutoWidth = true,
                     AutoHeight = true,
                     Child = ui.Group:new{
+                        Class = "task_list",
                         Columns = 4,
                         Orientation = "vertical",
                         Children = tasks_list

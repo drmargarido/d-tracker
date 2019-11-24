@@ -1,8 +1,7 @@
 # TODO
 
 * Improve graphical appearance as much as possible
-    + Add edit task icon in the table rows
-    + Make the tasks table have its content better spaced out
+    + Add focus colors when selecting the task in the list
     + Add icon for the window
 
 * Create the popup of task time

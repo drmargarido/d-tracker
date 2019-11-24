@@ -14,6 +14,7 @@ base: structure luajit date tekui lsqlite timetracker
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
 	cp -R -n src $(DEPLOY_FOLDER)/
+	cp -R -n images $(DEPLOY_FOLDER)/
 
 luajit:
 	cd $(LUA_FOLDER)/ && make
