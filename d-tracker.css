@@ -52,9 +52,20 @@ tek.ui.class.slider {
 }
 
 .task_data {
-	background-color: #fff;
-	border-color: #fff;
+	border-color: background;
 	border-width: 0;
 	margin: 0;
 	padding: 0;
+}
+
+.task_data:hover {
+	background-color: background;
+}
+
+.task_data:active {
+	background-color: background;
+}
+
+.task_row {
+	background-color: background;
 }

@@ -4,6 +4,14 @@ local List = require "tek.class.list"
 local controller = require "src.controller"
 local date = require "date.date"
 
+local selected_line = nil
+
+local line_closure = function(line, func)
+    return function(self)
+        return func(self, line)
+    end
+end
+
 return function()
     -- Prepare data for the display
     local pencil_image = ui.loadImage("images/pencil_icon.PPM")
@@ -13,46 +21,102 @@ return function()
     local tasks_list = {}
     local total_time = nil
 
-    for _, task in ipairs(today_tasks) do
+    for i, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
         local duration = date.diff(end_time, start_time)
-        table.insert(tasks_list, ui.Text:new{
-            Class = "task_data",
-            Width = "free",
-            Style = [[
-                text-align: left;
-                margin-left: 5;
-            ]],
-            Text = string.format(
-                "%02d:%02d - %02d:%02d %s",
-                start_time:gethours(), start_time:getminutes(),
-                end_time:gethours(), end_time:getminutes(),
-                task.description
-            )
-        })
-        table.insert(tasks_list, ui.Text:new{
-            Class = "project task_data",
-            Style = "text-align: left;",
-            Text = task.project
-        })
-        table.insert(tasks_list, ui.Text:new{
-            Class = "task_data",
-            Style = "text-align: right;",
-            Text = string.format(
-                "%dh %02dmin",
-                duration:gethours(), duration:getminutes()
-            )
-        })
-        table.insert(tasks_list, ui.ImageWidget:new{
-            Class = "task_data",
-            Height = "fill",
-            Width = 30,
-            Mode = "button",
-            Image = pencil_image,
-            onPress = function(self)
-                print("hay")
+
+        local duration_text = ""
+        if duration:gethours() > 0 then
+            duration_text = string.format("%dh ", duration:gethours())
+        end
+
+        duration_text = duration_text..string.format(
+            "%02dmin",
+            duration:getminutes()
+        )
+
+        local select_list_row = function(self, line)
+            -- Clean old selected task style
+            if selected_line then
+                self:getById("row-"..selected_line):setValue(
+                    "Style", [[
+                        border-width: 0;
+                        border-color: #fff;
+                    ]]
+                )
             end
+
+            -- Mark the now select one as selected
+            selected_line = line
+            self:getById("row-"..selected_line):setValue(
+                "Style", [[
+                    border-width: 2;
+                    border-color: #55b;
+                ]]
+            )
+        end
+
+        table.insert(tasks_list, ui.Group:new{
+            Id = "row-"..i,
+            Class = "task_row",
+            Orientation = "horizontal",
+            Children = {
+                ui.Text:new{
+                    Id = "description-row-"..i,
+                    Class = "task_data",
+                    Width = "auto",
+                    Style = [[
+                        text-align: left;
+                        padding-left: 5;
+                    ]],
+                    Mode = "button",
+                    Text = string.format(
+                        "%02d:%02d - %02d:%02d %s",
+                        start_time:gethours(), start_time:getminutes(),
+                        end_time:gethours(), end_time:getminutes(),
+                        task.description
+                    ),
+                    onPress = line_closure(i, function(self, line)
+                        select_list_row(self, line)
+                    end)
+                },
+                ui.Text:new{
+                    Id = "project-row-"..i,
+                    Class = "project task_data",
+                    Style = [[
+                        text-align: left;
+                        padding-left: 5;
+                    ]],
+                    Mode = "button",
+                    Text = task.project,
+                    onPress = line_closure(i, function(self, line)
+                        select_list_row(self, line)
+                    end)
+                },
+                ui.Text:new{
+                    Id = "duration-row-"..i,
+                    Class = "task_data",
+                    Style = "text-align: right;",
+                    Width = 70,
+                    Mode = "button",
+                    Text = duration_text,
+                    onPress = line_closure(i, function(self, line)
+                        select_list_row(self, line)
+                    end)
+                },
+                ui.ImageWidget:new{
+                    Id = "edit-row-"..i,
+                    Class = "task_data",
+                    Height = "fill",
+                    Width = 30,
+                    Mode = "button",
+                    Image = pencil_image,
+                    onPress = function(self)
+                        print("hay")
+                    end
+                }
+            }
         })
 
         if not total_time then
@@ -157,7 +221,6 @@ return function()
                     AutoHeight = true,
                     Child = ui.Group:new{
                         Class = "task_list",
-                        Columns = 4,
                         Orientation = "vertical",
                         Children = tasks_list
                     }
