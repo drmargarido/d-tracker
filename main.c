@@ -13,5 +13,6 @@ int main(int argc, char ** argv){
         printf("Lua error: %s\n", lua_tostring(L, -1));
     }
 
+    lua_close(L);
     return 0;
 }

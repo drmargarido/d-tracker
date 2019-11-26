@@ -13,12 +13,18 @@ Release 1.0:
 * [ ] Listing of tasks per range of days
 * [ ] Export filtered tasks to XML with the same format as the hamster timetracker
 
+Release 1.1:
+* [ ] Select themes
+* [ ] Command line client
+
+
 ## Build
 
 Build dependencies and the executable for Linux
 ```sh
 make
 ```
+
 
 ## Dependencies
 

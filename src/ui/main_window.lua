@@ -6,8 +6,6 @@ local date = require "date.date"
 
 local utils = require "src.utils"
 
-local selected_line = nil
-
 local line_closure = function(line, func)
     return function(self)
         return func(self, line)
@@ -19,6 +17,7 @@ return function()
     local pencil_image = ui.loadImage("images/pencil_icon.PPM")
 
     local today_tasks = controller.list_tasks(date(), date())
+    local selected_line = nil
 
     local tasks_list = {}
     local total_time = nil
