@@ -118,7 +118,7 @@ return function()
                     Mode = "button",
                     Image = pencil_image,
                     onPress = function(self)
-                        print("hay")
+
                     end
                 }
             }
