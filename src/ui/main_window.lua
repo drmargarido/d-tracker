@@ -46,7 +46,7 @@ return function()
                         border-color: #fff;
                     ]]
                 )
-            end
+	    end
 
             -- Mark the now select one as selected
             selected_line = line
@@ -118,7 +118,9 @@ return function()
                     Mode = "button",
                     Image = pencil_image,
                     onPress = function(self)
-
+                        self:getById("edit_task_window"):setValue(
+                            "Status", "show"
+                        )                        
                     end
                 }
             }
