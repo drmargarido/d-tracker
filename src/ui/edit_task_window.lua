@@ -8,29 +8,36 @@ return function()
     return ui.Window:new {
         Title = "D-Tracker",
         Id = "edit_task_window",
-        Orientation = "vertical",
         Style = "margin: 15;",
-        Status = "hide",
-        Width = "auto",
+        Status = "show",
+        Orientation = "vertical",
         Children = {
-            ui.Group:new{
-                Width = "auto",
-                ui.Text:new{
-		    Width = 100,
-                    Text = "Description"
-                },
-		ui.Input:new{
-                }
-            },
-            ui.Group:new{
-	        Width = "free",
-                ui.Text:new{
-		    Width = 100,
-                    Text = "Project"
-                },
-		ui.Input:new{
-                }
-            }
+           ui.Group:new{
+              Width = "auto",
+              Height = "auto",
+              Children = {
+                 ui.Text:new{
+                    Text = "Description",
+                    Class = "caption"
+                 },
+                 ui.Input:new{
+                    
+                 }
+              }
+           },
+           ui.Group:new{
+              Width = "auto",
+              Height = "auto",
+              Children = {
+                 ui.Text:new{
+                    Text = "Project",
+                    Class = "caption"
+                 },
+                 ui.Input:new{
+                    
+                 }
+              }
+           }
         }
     }
 end
