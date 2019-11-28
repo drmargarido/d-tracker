@@ -2,9 +2,11 @@ local ui = require "tek.ui"
 local List = require "tek.class.list"
 
 local controller = require "src.controller"
+local edit_task_window = require "src.ui.edit_task_window"
+local utils = require "src.utils"
+
 local date = require "date.date"
 
-local utils = require "src.utils"
 
 local line_closure = function(line, func)
     return function(self)
@@ -118,6 +120,7 @@ return function()
                     Mode = "button",
                     Image = pencil_image,
                     onPress = function(self)
+                        edit_task_window.set_task_to_edit(self, task.id)
                         self:getById("edit_task_window"):setValue(
                             "Status", "show"
                         )                        

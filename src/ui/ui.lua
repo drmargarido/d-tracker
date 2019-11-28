@@ -7,7 +7,7 @@ local function init()
     ui.Application:new{
         Children = {
             main_window(),
-            edit_task_window()
+            edit_task_window.init()
         }
     }:run()
 end

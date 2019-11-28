@@ -12,6 +12,15 @@ return {
     get_task_in_progress = function()
         return nil
     end,
+    get_task = function(task_id)
+       return {
+          id=1,
+          project="D-Tracker",
+          start_time="2019-11-17T11:09:25",
+          end_time="2019-11-17T12:09:25",
+          description="Creating build setup"
+       } 
+    end,
     list_tasks = function(start_date, end_date)
         return {
             {
