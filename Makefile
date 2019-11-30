@@ -43,3 +43,4 @@ clean:
 	rm -f -R $(DEPLOY_FOLDER)/tek
 	rm -f -R date
 	rm -f *.so
+	rm -f *.sqlite3

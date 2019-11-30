@@ -26,6 +26,12 @@ return function()
 
     for i, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
+        
+        local task_finished = true
+        if not task.end_time then
+           task_finished = false
+        end
+
         local end_time = date(task.end_time)
         local duration = date.diff(end_time, start_time)
 
@@ -60,6 +66,23 @@ return function()
             )
         end
 
+        local start_time_text = string.format(
+           "%02d:%02d",
+           start_time:gethours(),
+           start_time:getminutes()
+        )
+
+        local end_time_text
+        if task_finished then    
+           end_time_text = string.format(
+              "%02d:%02d",
+              end_time:gethours(),
+              end_time:getminutes()
+           )
+        else
+           end_time_text = ""
+        end
+           
         table.insert(tasks_list, ui.Group:new{
             Id = "row-"..i,
             Class = "task_row",
@@ -79,9 +102,9 @@ return function()
                     ]],
                     Mode = "button",
                     Text = string.format(
-                        "%02d:%02d - %02d:%02d %s",
-                        start_time:gethours(), start_time:getminutes(),
-                        end_time:gethours(), end_time:getminutes(),
+                        "%s - %s %s",
+                        start_time_text,
+                        end_time_text,
                         utils.trim_text(task.description, 36)
                     ),
                     onPress = line_closure(i, function(self, line)
@@ -183,7 +206,7 @@ return function()
                         Height = "auto"
                     },
                     ui.Button:new{
-                        Width = 140,
+                        Width = 120,
                         Disabled = not has_task_in_progress,
                         Text = "Stop Tracking",
                         onPress = function(self)
@@ -203,14 +226,31 @@ return function()
                 Style = "margin-bottom: 10;",
                 Children = {
                     ui.Input:new{
+                        Id = "task-description",
                         Width = "free"
                     },
+                    ui.Input:new{
+                        Id = "task-project",
+                        Width = "free"
+                    },                    
                     ui.Button:new{
-                        Width = 140,
+                        Width = 120,
                         Style = "margin-left: 5;",
                         Text = "Start Tracking",
                         onPress = function(self)
-                            print("Yo")
+                           if not self.Pressed then
+                              return                             
+                           end
+
+                           local description = self:getById(
+                              "task-description"
+                           ):getText()
+                           
+                           local project = self:getById(
+                              "task-project"
+                           ):getText()
+                           
+                           controller.add_task(description, project)
                         end
                     }
                 }
@@ -250,7 +290,13 @@ return function()
                         Height = "auto"
                     },
                     ui.Button:new{
-                        Width = 180,
+                       Width = 120,
+                       Text = "XML Export",
+                       onPress = function(self)
+                       end
+                    },
+                    ui.Button:new{
+                        Width = 120,
                         Text = "Show Overview",
                         onPress = function(self)
                         end

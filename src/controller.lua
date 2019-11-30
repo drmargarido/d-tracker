@@ -1,77 +1,88 @@
+local sqlite3 = require "lsqlite3"
+local conf = require "src.conf"
+
+local date = require "date.date"
+
 return {
-    autocomplete_task = function(description)
-        return {}
-    end,
-    add_task = function(description, project)
-        return 0
-    end,
-    edit_task = function(task_id, field, new_value)
-    end,
-    delete_task = function(task_id)
-    end,
-    get_task_in_progress = function()
-        return nil
-    end,
-    get_task = function(task_id)
-       return {
-          id=1,
-          project="D-Tracker",
-          start_time="2019-11-17T11:09:25",
-          end_time="2019-11-17T12:09:25",
-          description="Creating build setup"
-       } 
-    end,
-    list_tasks = function(start_date, end_date)
-        return {
-            {
-                id=1,
-                project="D-Tracker",
-                start_time="2019-11-17T11:09:25",
-                end_time="2019-11-17T12:09:25",
-                description="Creating build setup"
-            },
-            {
-                id=2,
-                project="D-Tracker",
-                start_time="2019-11-17T13:09:25",
-                end_time="2019-11-17T14:29:25",
-                description="Requirements"
-            },
-            {
-                id=3,
-                project="D-Tracker",
-                start_time="2019-11-17T15:29:25",
-                end_time="2019-11-17T16:09:25",
-                description="Development"
-            },
-            {
-                id=4,
-                project="D-Tracker",
-                start_time="2019-11-17T17:09:25",
-                end_time="2019-11-17T17:32:25",
-                description="Testing"
-            },
-            {
-                id=5,
-                project="D-Tracker",
-                start_time="2019-11-17T17:35:25",
-                end_time="2019-11-17T20:12:21",
-                description="Platform dasdasdsa asdsad sa dsa sdsadsad sad as das dasd asd asd sad sa dsa dsa dasd sa dsa dsa dsa ads sad"
-            },
-            {
-                id=6,
-                project="D-Tracker_Testing_Debugging_Deploying",
-                start_time="2019-11-17T21:09:25",
-                end_time="2019-11-17T22:23:25",
-                description="Testing"
-            },
-            {
-                id=7,
-                project="D-Tracker_Testing_Debugging_Deploying",
-                start_time="2019-11-17T22:27:25",
-                end_time="2019-11-17T23:44:25",
-                description="Platform dasdasdsa asdsad sa dsa sdsadsad sad as das dasd asd asd sad sa dsa dsa dasd sa dsa dsa dsa ads sad"
-            }
-        }
-    end
+   autocomplete_task = function(description)
+      return {}
+   end,
+   add_task = function(description, project)
+      local db = sqlite3.open(conf.db)
+      -- Check if the project already exists
+      local sql_check = "SELECT * FROM project WHERE name=?"
+      local check_stmt = db:prepare(sql_check)
+      check_stmt:bind_values(project)
+
+      local project_exists = false
+      for row in check_stmt:nrows() do
+         project_exists = true
+      end
+      
+      -- Create a new project if it doesn't exists
+      if not project_exists then
+         local sql_project = "INSERT INTO project (name) VALUES (?)"
+         local project_stmt = db:prepare(sql_project)
+         project_stmt:bind_values(project)
+         project_stmt:step()
+      end
+      
+      -- Create a new task starting at the current moment
+      local sql_create = [[
+            INSERT INTO task (project_id, start_time, description) 
+            VALUES ((SELECT id FROM project WHERE name=?), ?, ?)
+      ]]
+      local project_stmt = db:prepare(sql_create)
+      project_stmt:bind_values(
+         project,
+         date():fmt("${iso}"),
+         description
+      )
+      project_stmt:step()
+      
+      db:close()
+      return 0
+   end,
+   edit_task = function(task_id, field, new_value)
+   end,
+   delete_task = function(task_id)
+   end,
+   get_task_in_progress = function()
+      return nil
+   end,
+   get_task = function(task_id)
+      return {
+         id=1,
+         project="D-Tracker",
+         start_time="2019-11-17T11:09:25",
+         end_time="2019-11-17T12:09:25",
+         description="Creating build setup"
+      }
+   end,
+   list_tasks = function(start_date, end_date)
+      local tasks = {}
+
+      local db = sqlite3.open(conf.db)
+      local today = date():fmt("%F")
+      
+      local query = string.format([[
+         SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
+         FROM task as t
+         LEFT JOIN project p ON p.id = t.project_id
+         WHERE t.start_time > date('%s')
+      ]], today)
+      
+      for row in db:nrows(query) do
+         table.insert(tasks, {
+            id=row.id,
+            project=row.project,
+            start_time=row.start_time,
+            end_time=row.end_time,
+            description=row.description
+         })
+      end      
+
+      db:close()
+      return tasks
+   end
 }

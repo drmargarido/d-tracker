@@ -1,3 +1,3 @@
 return {
-    db = "timetracker.sqlite3"
+    db = "d-tracker.sqlite3"
 }

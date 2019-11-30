@@ -7,5 +7,14 @@ return {
         end
 
         return trimmed_text
+    end,
+    
+    -- Tries to rename the file, if it fails the file does not exist
+    file_exists = function (name)
+       if type(name) ~= "string" then
+          return false
+       end
+
+       return os.rename(name,name) and true or false
     end
 }

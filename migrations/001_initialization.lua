@@ -1,7 +1,4 @@
-local sqlite3 = require "lsqlite3"
-
-return function(dbname)
-    local db = sqlite3.open(dbname)
+return function(db)
     db:exec[[
         CREATE TABLE project (
             id INTEGER PRIMARY KEY,
