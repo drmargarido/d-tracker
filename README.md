@@ -5,11 +5,11 @@ Lightweight, cross-platform and simple to setup timetracker. Similar to hamster 
 ## Milestones
 
 Release 1.0:
-* [ ] Start task
-* [ ] Stop task in progress
+* [x] Start task
+* [x] Stop task in progress
 * [ ] Edit the start and end time of an individual task
 * [ ] Autocomplete in task creation
-* [ ] Associate a task with a project
+* [x] Associate a task with a project
 * [ ] Listing of tasks per range of days
 * [ ] Export filtered tasks to XML with the same format as the hamster timetracker
 
@@ -25,6 +25,12 @@ Build dependencies and the executable for Linux
 make
 ```
 
+## Testing
+
+To run the tests you will need [busted](http://olivinelabs.com/busted/). With that just run:
+```sh
+make test
+```
 
 ## Dependencies
 

@@ -8,14 +8,15 @@ local ui = require "src.ui.ui"
 
 -- Create database if it doesn't exists
 if not utils.file_exists(conf.db) then
-   local db = sqlite3.open(
-      conf.db,
-      sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
-   )
+    local db = sqlite3.open(
+        conf.db,
+        sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+    )
 
-   -- Apply migrations
-   migrations.run(db)
-   db:close()
+    -- Apply migrations
+    migrations.run(db)
+    require "migrations.mock_data"(db)
+    db:close()
 end
 
 -- Start the UI

@@ -37,6 +37,9 @@ date:
 timetracker:
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
+test: base 
+	busted spec
+
 clean:
 	rm -f $(EXECUTABLE)
 	rm -f -R build

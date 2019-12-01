@@ -18,15 +18,33 @@ return function()
     -- Prepare data for the display
     local pencil_image = ui.loadImage("images/pencil_icon.PPM")
 
-    local today_tasks = controller.list_tasks(date(), date())
+    local today_tasks = controller.list_today_tasks()
     local selected_line = nil
 
     local tasks_list = {}
     local total_time = nil
 
+    local current_task = controller.get_task_in_progress()
+
+    local has_task_in_progress = false
+    if current_task ~= nil then
+        has_task_in_progress = true
+
+        local task_in_list = false
+        for _, task in ipairs(today_tasks) do
+            if task.id == current_task.id then
+                task_in_list = true
+            end
+        end
+
+        if not task_in_list then
+            table.insert(today_tasks, current_task)
+        end
+    end
+
     for i, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
-        
+
         local task_finished = true
         if not task.end_time then
            task_finished = false
@@ -48,13 +66,13 @@ return function()
         local select_list_row = function(self, line)
             -- Clean old selected task style
             if selected_line then
-                self:getById("row-"..selected_line):setValue(
+               self:getById("row-"..selected_line):setValue(
                     "Style", [[
                         border-width: 1;
                         border-color: #fff;
                     ]]
                 )
-	    end
+            end
 
             -- Mark the now select one as selected
             selected_line = line
@@ -73,7 +91,7 @@ return function()
         )
 
         local end_time_text
-        if task_finished then    
+        if task_finished then
            end_time_text = string.format(
               "%02d:%02d",
               end_time:gethours(),
@@ -82,7 +100,7 @@ return function()
         else
            end_time_text = ""
         end
-           
+
         table.insert(tasks_list, ui.Group:new{
             Id = "row-"..i,
             Class = "task_row",
@@ -146,7 +164,7 @@ return function()
                         edit_task_window.set_task_to_edit(self, task.id)
                         self:getById("edit_task_window"):setValue(
                             "Status", "show"
-                        )                        
+                        )
                     end
                 }
             }
@@ -168,13 +186,6 @@ return function()
         )
     else
         total_time_text = "No records today"
-    end
-
-    local current_task = controller.get_task_in_progress()
-
-    local has_task_in_progress = false
-    if current_task ~= nil then
-        has_task_in_progress = true
     end
 
     -- Display the window
@@ -210,7 +221,7 @@ return function()
                         Disabled = not has_task_in_progress,
                         Text = "Stop Tracking",
                         onPress = function(self)
-                            print("Yo")
+                            controller.stop_task()
                         end
                     }
                 }
@@ -232,24 +243,24 @@ return function()
                     ui.Input:new{
                         Id = "task-project",
                         Width = "free"
-                    },                    
+                    },
                     ui.Button:new{
                         Width = 120,
                         Style = "margin-left: 5;",
                         Text = "Start Tracking",
                         onPress = function(self)
                            if not self.Pressed then
-                              return                             
+                              return
                            end
 
                            local description = self:getById(
                               "task-description"
                            ):getText()
-                           
+
                            local project = self:getById(
                               "task-project"
                            ):getText()
-                           
+
                            controller.add_task(description, project)
                         end
                     }
