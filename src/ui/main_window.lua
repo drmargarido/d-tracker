@@ -2,24 +2,16 @@ local ui = require "tek.ui"
 local List = require "tek.class.list"
 
 local controller = require "src.controller"
-local edit_task_window = require "src.ui.edit_task_window"
-local utils = require "src.utils"
 
+local utils = require "src.utils"
 local date = require "date.date"
 
+local TaskRow = require "src.ui.components.task_row"
 
-local line_closure = function(line, func)
-    return function(self)
-        return func(self, line)
-    end
-end
 
 return function()
     -- Prepare data for the display
-    local pencil_image = ui.loadImage("images/pencil_icon.PPM")
-
     local today_tasks = controller.list_today_tasks()
-    local selected_line = nil
 
     local tasks_list = {}
     local total_time = nil
@@ -45,130 +37,10 @@ return function()
     for i, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
 
-        local task_finished = true
-        if not task.end_time then
-           task_finished = false
-        end
-
         local end_time = date(task.end_time)
         local duration = date.diff(end_time, start_time)
 
-        local duration_text = ""
-        if duration:gethours() > 0 then
-            duration_text = string.format("%dh ", duration:gethours())
-        end
-
-        duration_text = duration_text..string.format(
-            "%02dmin",
-            duration:getminutes()
-        )
-
-        local select_list_row = function(self, line)
-            -- Clean old selected task style
-            if selected_line then
-               self:getById("row-"..selected_line):setValue(
-                    "Style", [[
-                        border-width: 1;
-                        border-color: #fff;
-                    ]]
-                )
-            end
-
-            -- Mark the now select one as selected
-            selected_line = line
-            self:getById("row-"..selected_line):setValue(
-                "Style", [[
-                    border-width: 1;
-                    border-color: #55b;
-                ]]
-            )
-        end
-
-        local start_time_text = string.format(
-           "%02d:%02d",
-           start_time:gethours(),
-           start_time:getminutes()
-        )
-
-        local end_time_text
-        if task_finished then
-           end_time_text = string.format(
-              "%02d:%02d",
-              end_time:gethours(),
-              end_time:getminutes()
-           )
-        else
-           end_time_text = ""
-        end
-
-        table.insert(tasks_list, ui.Group:new{
-            Id = "row-"..i,
-            Class = "task_row",
-            Orientation = "horizontal",
-            Style = [[
-                border-width: 1;
-                border-color: #fff;
-            ]],
-            Children = {
-                ui.Text:new{
-                    Id = "description-row-"..i,
-                    Class = "task_data",
-                    Width = "auto",
-                    Style = [[
-                        text-align: left;
-                        padding-left: 5;
-                    ]],
-                    Mode = "button",
-                    Text = string.format(
-                        "%s - %s %s",
-                        start_time_text,
-                        end_time_text,
-                        utils.trim_text(task.description, 36)
-                    ),
-                    onPress = line_closure(i, function(self, line)
-                        select_list_row(self, line)
-                    end)
-                },
-                ui.Text:new{
-                    Id = "project-row-"..i,
-                    Class = "project task_data",
-                    Style = [[
-                        text-align: left;
-                        padding-left: 5;
-                    ]],
-                    Mode = "button",
-                    Text = utils.trim_text(task.project, 16),
-                    onPress = line_closure(i, function(self, line)
-                        select_list_row(self, line)
-                    end)
-                },
-                ui.Text:new{
-                    Id = "duration-row-"..i,
-                    Class = "task_data",
-                    Style = "text-align: right;",
-                    Width = 70,
-                    Mode = "button",
-                    Text = duration_text,
-                    onPress = line_closure(i, function(self, line)
-                        select_list_row(self, line)
-                    end)
-                },
-                ui.ImageWidget:new{
-                    Id = "edit-row-"..i,
-                    Class = "task_data",
-                    Height = "fill",
-                    Width = 30,
-                    Mode = "button",
-                    Image = pencil_image,
-                    onPress = function(self)
-                        edit_task_window.set_task_to_edit(self, task.id)
-                        self:getById("edit_task_window"):setValue(
-                            "Status", "show"
-                        )
-                    end
-                }
-            }
-        })
+        table.insert(tasks_list, TaskRow.new(task))
 
         if not total_time then
             total_time = duration
