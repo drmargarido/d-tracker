@@ -1,6 +1,16 @@
-local controller = require "src.controller"
+-- Controllers
+local list_tasks = require "src.controller.list_tasks"
+local list_today_tasks = require "src.controller.list_today_tasks"
+local add_task = require "src.controller.add_task"
+local stop_task = require "src.controller.stop_task"
+local delete_task = require "src.controller.delete_task"
 
+-- Exporters
+local xml_export = require "src.exporter.xml"
+
+-- Utils
 local conf = require "src.conf"
+local utils = require "src.utils"
 local date = require "date.date"
 
 -- database
@@ -35,16 +45,16 @@ describe("Tasks management", function()
     end)
 
     it("Creates a task", function()
-        local before_tasks = controller.list_tasks(date(1970, 1, 1), date())
+        local before_tasks = list_tasks(date(1970, 1, 1), date())
 
-        controller.add_task("A new task", "D-Tracker")
+        add_task("A new task", "D-Tracker")
 
-        local after_tasks = controller.list_tasks(date(1970, 1, 1), date())
+        local after_tasks = list_tasks(date(1970, 1, 1), date())
         assert.is_true(#before_tasks + 1 == #after_tasks)
     end)
 
     it("Lists today's tasks", function()
-       local tasks = controller.list_today_tasks()
+       local tasks = list_today_tasks()
        assert.is_true(#tasks == 2)
     end)
 
@@ -61,19 +71,38 @@ describe("Tasks management", function()
     end)
 
     it("Stops running task", function()
-       controller.add_task("A new task", "D-Tracker")
+       add_task("A new task", "D-Tracker")
 
-       local tasks = controller.list_tasks(date(1970, 1, 1), date())
+       local tasks = list_tasks(date(1970, 1, 1), date())
        local last_task = tasks[#tasks]
        assert.is_true(last_task.end_time == nil)
 
-       controller.stop_task()
+       stop_task()
 
-       tasks = controller.list_tasks(date(1970, 1, 1), date())
+       tasks = list_tasks(date(1970, 1, 1), date())
        last_task = tasks[#tasks]
        assert.is_false(last_task.end_time == nil)
     end)
 
     it("Deletes task", function()
+        local before_tasks = list_tasks(date(1970, 1, 1), date())
+
+        delete_task(before_tasks[1].id)
+
+        local after_tasks = list_tasks(date(1970, 1, 1), date())
+        assert.is_true(#before_tasks == #after_tasks + 1)
+    end)
+
+    it("Exports tasks list to XML", function()
+        local tasks = list_tasks(date(1970, 1, 1), date())
+        local filename = "test_export_tasks.xml"
+
+        assert.is_false(utils.file_exists(filename))
+
+        xml_export(tasks, filename)
+        assert.is_true(utils.file_exists(filename))
+
+        -- Clear file from filesystem
+        os.remove(filename)
     end)
 end)
