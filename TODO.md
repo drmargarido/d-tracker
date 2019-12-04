@@ -1,5 +1,11 @@
 # TODO
 
+* General
+    + Add error handling if the database queries fail
+    + Add error handling when creating the xml exported file
+    + Add error handling when creating the database the first time
+    + Test for sql injections
+
 * Improve graphical appearance as much as possible
     + Add icon for the window
 
@@ -31,10 +37,6 @@
 * Export task to XML
     + Export the tasks filtered by date range to xml
     + Ask for a file path/name when exporting
-
-* Setup unit testing
-    + Create test for the task delete
-    + Create test for the xml exporting
 
 * Create alternative styles
     + Dark

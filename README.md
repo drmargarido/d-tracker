@@ -11,7 +11,7 @@ Release 1.0:
 * [ ] Autocomplete in task creation
 * [x] Associate a task with a project
 * [ ] Listing of tasks per range of days
-* [ ] Export filtered tasks to XML with the same format as the hamster timetracker
+* [x] Export filtered tasks to XML with the same format as the hamster timetracker
 
 Release 1.1:
 * [ ] Select themes
