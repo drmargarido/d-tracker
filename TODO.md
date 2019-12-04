@@ -7,7 +7,6 @@
     + Edit task start and end dates
     + Edit task name
     + Edit task in progress change
-    + Delete task is delete button is pressed
     + Refresh main window after deleting task
 
 * Build the logic for the Main window actions
@@ -30,12 +29,12 @@
     + Display the total time in each project
 
 * Export task to XML
-    + Export directly the today tasks to xml
     + Export the tasks filtered by date range to xml
+    + Ask for a file path/name when exporting
 
 * Setup unit testing
-    + Tasks unit tests
-    + Project unit tests
+    + Create test for the task delete
+    + Create test for the xml exporting
 
 * Create alternative styles
     + Dark

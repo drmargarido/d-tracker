@@ -1,22 +1,27 @@
-local ui = require "tek.ui"
-local List = require "tek.class.list"
+-- Controllers
+local add_task = require "src.controller.add_task"
+local stop_task = require "src.controller.stop_task"
+local list_today_tasks = require "src.controller.list_today_tasks"
+local get_task_in_progress = require "src.controller.get_task_in_progress"
 
-local controller = require "src.controller"
+-- Exporters
+local xml_export = require "src.exporter.xml"
 
-local utils = require "src.utils"
+-- Utils
 local date = require "date.date"
 
+-- UI components
+local ui = require "tek.ui"
 local TaskRow = require "src.ui.components.task_row"
-
 
 return function()
     -- Prepare data for the display
-    local today_tasks = controller.list_today_tasks()
+    local today_tasks = list_today_tasks()
 
     local tasks_list = {}
     local total_time = nil
 
-    local current_task = controller.get_task_in_progress()
+    local current_task = get_task_in_progress()
 
     local has_task_in_progress = false
     if current_task ~= nil then
@@ -34,7 +39,7 @@ return function()
         end
     end
 
-    for i, task in ipairs(today_tasks) do
+    for _, task in ipairs(today_tasks) do
         local start_time = date(task.start_time)
 
         local end_time = date(task.end_time)
@@ -93,7 +98,7 @@ return function()
                         Disabled = not has_task_in_progress,
                         Text = "Stop Tracking",
                         onPress = function(self)
-                            controller.stop_task()
+                            stop_task()
                         end
                     }
                 }
@@ -133,7 +138,7 @@ return function()
                               "task-project"
                            ):getText()
 
-                           controller.add_task(description, project)
+                           add_task(description, project)
                         end
                     }
                 }
@@ -176,6 +181,7 @@ return function()
                        Width = 120,
                        Text = "XML Export",
                        onPress = function(self)
+                           xml_export(today_tasks, "mytime.xml")
                        end
                     },
                     ui.Button:new{

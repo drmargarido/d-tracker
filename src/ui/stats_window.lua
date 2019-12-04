@@ -1,8 +1,8 @@
 -- Tekui
 local ui = require "tek.ui"
 
--- Controller
-local controller = require "src.controller"
+-- Controllers
+local list_tasks = require "src.controller.list_tasks"
 
 -- Components
 local TaskRow = require "src.ui.components.task_row"
@@ -10,7 +10,7 @@ local TaskRow = require "src.ui.components.task_row"
 -- Exportable Methods
 return {
     init = function(start_date, end_date)
-        local filtered_tasks = controller.list_tasks(start_date, end_date)
+        local filtered_tasks = list_tasks(start_date, end_date)
 
         local tasks_list = {}
         for _, task in ipairs(filtered_tasks) do

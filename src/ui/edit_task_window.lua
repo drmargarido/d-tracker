@@ -1,14 +1,20 @@
+-- UI
 local ui = require "tek.ui"
-local controller = require "src.controller"
 
+-- Controllers
+local get_task = require "src.controller.get_task"
+local delete_task = require "src.controller.delete_task"
+
+-- Utils
 local date = require "date.date"
 
+-- Constats
 local row_space = 5
 
 
 return {
     set_task_to_edit = function(self, task_id)
-        local task = controller.get_task(task_id)
+        local task = get_task(task_id)
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
 
@@ -38,6 +44,13 @@ return {
         self:getById("edit_description"):setValue("Text", task.description)
         self:getById("edit_project"):setValue("Text", task.project)
         --self:getById("edit_in_progress"):setValue("Text", "")
+
+        self:getById("delete_task_btn"):setValue("onPress", function()
+            delete_task(task_id)
+            self:getById("edit_task_window"):setValue(
+                "Status", "hide"
+            )
+        end)
     end,
     init = function()
         return ui.Window:new {
@@ -145,6 +158,7 @@ return {
                     Height = "auto",
                     Children = {
                         ui.Button:new{
+                            Id = "delete_task_btn",
                             Width = 80,
                             Text = "Delete"
                         },
@@ -156,9 +170,9 @@ return {
                         Width = 80,
                         Text = "Cancel",
                             onPress = function(self)
-                            self:getById("edit_task_window"):setValue(
-                                "Status", "hide"
-                            )
+                                self:getById("edit_task_window"):setValue(
+                                    "Status", "hide"
+                                )
                             end
                         },
                         ui.Button:new{

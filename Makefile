@@ -37,7 +37,7 @@ date:
 timetracker:
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
-test: base 
+test: base
 	busted spec
 
 clean:
@@ -47,3 +47,4 @@ clean:
 	rm -f -R date
 	rm -f *.so
 	rm -f *.sqlite3
+	rm -f *.xml
