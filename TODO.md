@@ -4,15 +4,22 @@
     + Add error handling if the database queries fail
     + Add error handling when creating the xml exported file
     + Add error handling when creating the database the first time
+    + Add parameters type validations in the controllers
     + Test for sql injections
+
+* Unit Tests
+    + Test changes the task description
+    + Test changes the task associated project
+    + Test changes the task start date
+    + Test changes the task end date
+    + Test edits if the task is in progress
+    + Test creates a new project
+    + Test checks if project exists
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
 
 * Create the popup of task time
-    + Edit task start and end dates
-    + Edit task name
-    + Edit task in progress change
     + Refresh main window after deleting task
 
 * Build the logic for the Main window actions
@@ -23,7 +30,7 @@
     + Bugfix total duration not considering the days, months and years
     + Bugfix filtering not checking the end_time. If the task start_time to end_time passes the current day it should be shown
 
-* Create window with tasks filtering
+* Create stats window with tasks filtering
     + Display the list of filtered tasks while presenting the days
     + Create the filtering of tasks by day
     + Create the filtering of tasks by week
@@ -35,7 +42,6 @@
     + Display the total time in each project
 
 * Export task to XML
-    + Export the tasks filtered by date range to xml
     + Ask for a file path/name when exporting
 
 * Create alternative styles

@@ -7,7 +7,7 @@ Lightweight, cross-platform and simple to setup timetracker. Similar to hamster 
 Release 1.0:
 * [x] Start task
 * [x] Stop task in progress
-* [ ] Edit the start and end time of an individual task
+* [x] Edit the start and end time of an individual task
 * [ ] Autocomplete in task creation
 * [x] Associate a task with a project
 * [ ] Listing of tasks per range of days
