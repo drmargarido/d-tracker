@@ -4,6 +4,7 @@ local list_today_tasks = require "src.controller.list_today_tasks"
 local add_task = require "src.controller.add_task"
 local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
+local edit_task = require "src.controller.edit_task"
 
 -- Exporters
 local xml_export = require "src.exporter.xml"

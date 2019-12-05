@@ -30,10 +30,10 @@ return {
         local end_time = date(task.end_time)
 
         self:getById("edit_start_date"):setValue("Text", string.format(
-            "%02d/%02d/%04d",
-            start_time:getday(),
+            "%04d/%02d/%02d",
+            start_time:getyear(),
             start_time:getmonth(),
-            start_time:getyear()
+            start_time:getday()
         ))
         self:getById("edit_start_time"):setValue("Text", string.format(
             "%02d:%02d",
@@ -41,10 +41,10 @@ return {
             start_time:getminutes()
         ))
         self:getById("edit_end_date"):setValue("Text", string.format(
-            "%02d/%02d/%04d",
-            end_time:getday(),
+            "%04d/%02d/%02d",
+            end_time:getyear(),
             end_time:getmonth(),
-            end_time:getyear()
+            end_time:getday()
         ))
 
         self:getById("edit_end_time"):setValue("Text",  string.format(

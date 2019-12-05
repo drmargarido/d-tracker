@@ -16,5 +16,16 @@ return {
         end
 
         return os.rename(name,name) and true or false
+    end,
+
+    -- Checks if the table contains an entry with the key
+    has_key = function(_table, key)
+        for k, _ in pairs(_table) do
+            if k == key then
+                return true
+            end
+        end
+
+        return false
     end
 }
