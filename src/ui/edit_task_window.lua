@@ -3,6 +3,7 @@ local ui = require "tek.ui"
 
 -- Controllers
 local get_task = require "src.controller.get_task"
+local edit_task = require "src.controller.edit_task"
 local delete_task = require "src.controller.delete_task"
 
 -- Utils
@@ -45,8 +46,47 @@ return {
         self:getById("edit_project"):setValue("Text", task.project)
         --self:getById("edit_in_progress"):setValue("Text", "")
 
-        self:getById("delete_task_btn"):setValue("onPress", function()
+        self:getById("delete_task_btn"):setValue("onPress", function(self)
             delete_task(task_id)
+            self:getById("edit_task_window"):setValue(
+                "Status", "hide"
+            )
+        end)
+
+        self:getById("save_task_btn"):setValue("onPress", function(self)
+            -- Read new values from edit fields
+            local new_start_date = self:getById("edit_start_date"):getText()
+            local new_start_time = self:getById("edit_start_time"):getText()
+            local new_start = date(
+                string.format("%sT%s:00", new_start_date, new_start_time)
+            )
+
+            local new_end_date = self:getById("edit_end_date"):getText()
+            local new_end_time = self:getById("edit_end_time"):getText()
+            local new_end = date(
+                string.format("%sT%s:00", new_end_date, new_end_time)
+            )
+
+            local new_description = self:getById("edit_description"):getText()
+            local new_project = self:getById("edit_project"):getText()
+
+            -- Trigger field update when a change is detected
+            if new_start ~= start_time then
+                edit_task(task.id, "start_time", new_start)
+            end
+
+            if new_end ~= end_time then
+                edit_task(task.id, "end_time", new_end)
+            end
+
+            if new_description ~= task.description then
+                edit_task(task.id, "description", new_description)
+            end
+
+            if new_project ~= task.project then
+                edit_task(task.id, "project", new_project)
+            end
+
             self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
@@ -167,8 +207,8 @@ return {
                             Height = "auto"
                         },
                         ui.Button:new{
-                        Width = 80,
-                        Text = "Cancel",
+                            Width = 80,
+                            Text = "Cancel",
                             onPress = function(self)
                                 self:getById("edit_task_window"):setValue(
                                     "Status", "hide"
@@ -176,6 +216,7 @@ return {
                             end
                         },
                         ui.Button:new{
+                            Id = "save_task_btn",
                             Width = 80,
                             Text = "Save"
                         }
