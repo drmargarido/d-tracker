@@ -70,6 +70,10 @@ describe("Tasks management", function()
     it("Changes the task end date", function()
     end)
 
+    it("Edits if the task is in progress", function()
+
+    end)
+
     it("Stops running task", function()
        add_task("A new task", "D-Tracker")
 

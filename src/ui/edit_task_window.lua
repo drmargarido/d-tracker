@@ -4,7 +4,10 @@ local ui = require "tek.ui"
 -- Controllers
 local get_task = require "src.controller.get_task"
 local edit_task = require "src.controller.edit_task"
+local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
+local get_task_in_progress = require "src.controller.get_task_in_progress"
+local set_task_in_progress = require "src.controller.set_task_in_progress"
 
 -- Utils
 local date = require "date.date"
@@ -16,6 +19,13 @@ local row_space = 5
 return {
     set_task_to_edit = function(self, task_id)
         local task = get_task(task_id)
+        local task_in_progress = get_task_in_progress()
+
+        local in_progress = false
+        if task_in_progress and task.id == task_in_progress.id then
+            in_progress = true
+        end
+
         local start_time = date(task.start_time)
         local end_time = date(task.end_time)
 
@@ -44,7 +54,7 @@ return {
         ))
         self:getById("edit_description"):setValue("Text", task.description)
         self:getById("edit_project"):setValue("Text", task.project)
-        --self:getById("edit_in_progress"):setValue("Text", "")
+        self:getById("edit_in_progress"):setValue("Selected", in_progress)
 
         self:getById("delete_task_btn"):setValue("onPress", function(self)
             delete_task(task_id)
@@ -70,6 +80,8 @@ return {
             local new_description = self:getById("edit_description"):getText()
             local new_project = self:getById("edit_project"):getText()
 
+            local new_in_progress = self:getById("edit_in_progress").Selected
+
             -- Trigger field update when a change is detected
             if new_start ~= start_time then
                 edit_task(task.id, "start_time", new_start)
@@ -85,6 +97,14 @@ return {
 
             if new_project ~= task.project then
                 edit_task(task.id, "project", new_project)
+            end
+
+            if in_progress ~= new_in_progress then
+                if new_in_progress then
+                    set_task_in_progress(task.id)
+                else
+                    stop_task()
+                end
             end
 
             self:getById("edit_task_window"):setValue(
@@ -153,9 +173,7 @@ return {
                         ui.CheckMark:new{
                             Id = "edit_in_progress",
                             Text = "In Progress",
-                            Selected = false,
-                            onSelect = function(self)
-                            end
+                            Selected = false
                         }
                     }
                 },
