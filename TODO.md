@@ -7,25 +7,11 @@
     + Add parameters type validations in the controllers
     + Test for sql injections
 
-* Unit Tests
-    + Test changes the task description
-    + Test changes the task associated project
-    + Test changes the task start date
-    + Test changes the task end date
-    + Test edits if the task is in progress
-    + Test creates a new project
-    + Test checks if project exists
-
 * Improve graphical appearance as much as possible
     + Add icon for the window
 
-* Create the popup of task time
-    + Refresh main window after deleting task
-
 * Build the logic for the Main window actions
-    + Clear the input fields after adding a task
     + Delete task when pressing del while a task is selected
-    + Refresh the whole window after changing data, so it is up to date
     + Bugfix duration of individual tasks not considering the days, months and years
     + Bugfix total duration not considering the days, months and years
     + Bugfix filtering not checking the end_time. If the task start_time to end_time passes the current day it should be shown
@@ -37,7 +23,7 @@
     + Create the filtering of tasks by date range
     + Search by specific tasks
 
-* Create the display of total times of the filtered tasks
+* Create the display of total times of the filtered tasks in the stats window
     + Display the total time in each task
     + Display the total time in each project
 

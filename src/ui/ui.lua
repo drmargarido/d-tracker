@@ -11,13 +11,16 @@ local date = require "date.date"
 
 local function init()
     ui.ThemeName = "d-tracker"
-    ui.Application:new{
+    local base_window = main_window.init()
+    local application = ui.Application:new{
         Children = {
-            main_window(),
-            edit_task_window.init(),
+            base_window,
+            edit_task_window.init(main_window.refresh),
             stats_window.init(date(), date())
         }
-    }:run()
+    }
+    main_window.refresh(base_window)
+    application:run()
 end
 
 return {

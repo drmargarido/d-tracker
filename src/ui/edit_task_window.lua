@@ -15,6 +15,7 @@ local date = require "date.date"
 -- Constats
 local row_space = 5
 
+local refresh_main_window = nil
 
 return {
     set_task_to_edit = function(self, task_id)
@@ -52,6 +53,10 @@ return {
             end_time:gethours(),
             end_time:getminutes()
         ))
+
+        self:getById("edit_end_date"):setValue("Disabled", in_progress)
+        self:getById("edit_end_time"):setValue("Disabled", in_progress)
+
         self:getById("edit_description"):setValue("Text", task.description)
         self:getById("edit_project"):setValue("Text", task.project)
         self:getById("edit_in_progress"):setValue("Selected", in_progress)
@@ -87,7 +92,7 @@ return {
                 edit_task(task.id, "start_time", new_start)
             end
 
-            if new_end ~= end_time then
+            if new_end ~= end_time and not new_in_progress then
                 edit_task(task.id, "end_time", new_end)
             end
 
@@ -110,9 +115,11 @@ return {
             self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
+            refresh_main_window(self)
         end)
     end,
-    init = function()
+    init = function(refresh_method)
+        refresh_main_window = refresh_method
         return ui.Window:new {
             Title = "Edit Task",
             Id = "edit_task_window",
@@ -155,7 +162,8 @@ return {
                         ui.Input:new{
                             Id = "edit_end_time",
                             Width = 40,
-                            Text = "23:14"
+                            Text = "23:14",
+                            Disabled = false
                         },
                         ui.Area:new{
                             Width = 2,
@@ -164,7 +172,8 @@ return {
                         ui.Input:new{
                             Id = "edit_end_date",
                             Width = 76,
-                            Text = "27/11/2019"
+                            Text = "27/11/2019",
+                            Disabled = false
                         },
                         ui.Area:new{
                             Width = 5,
@@ -173,7 +182,11 @@ return {
                         ui.CheckMark:new{
                             Id = "edit_in_progress",
                             Text = "In Progress",
-                            Selected = false
+                            Selected = false,
+                            onSelect = function(self)
+                                self:getById("edit_end_date"):setValue("Disabled", self.Selected)
+                                self:getById("edit_end_time"):setValue("Disabled", self.Selected)
+                            end
                         }
                     }
                 },
