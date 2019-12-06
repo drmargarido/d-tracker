@@ -24,9 +24,6 @@
     + Display the total time in each task
     + Display the total time in each project
 
-* Export task to XML
-    + Ask for a file path/name when exporting
-
 * Create alternative styles
     + Dark
     + Stain

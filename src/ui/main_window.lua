@@ -86,6 +86,22 @@ local _refresh =  function(self)
     stop_tracking_element.Disabled = not has_task_in_progress
     total_time_element:setValue("Text", total_time_text)
 
+    -- Configure export xml callback
+
+    self:getById("export_xml_btn"):setValue("onPress", function(self)
+        local app = self.Application
+        app:addCoroutine(function()
+            local status, path, select = self.Application:requestFile{
+                Path = ""
+            }
+
+            if status == "selected" then
+                local fname = path .. "/" .. select[1]
+                xml_export(today_tasks, fname)
+            end
+        end)
+    end)
+
     -- Clear old tasks rows
     while #task_list_group_element.Children > 0 do
         task_list_group_element:remMember(task_list_group_element.Children[1])
@@ -234,17 +250,13 @@ return {
                             Height = "auto"
                         },
                         ui.Button:new{
-                           Width = 120,
-                           Text = "XML Export",
-                           onPress = function(self)
-                               xml_export(today_tasks, "mytime.xml")
-                           end
+                            Id = "export_xml_btn",
+                            Width = 120,
+                            Text = "XML Export"
                         },
                         ui.Button:new{
                             Width = 120,
-                            Text = "Show Overview",
-                            onPress = function(self)
-                            end
+                            Text = "Show Overview"
                         }
                     }
                 }
