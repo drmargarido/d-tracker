@@ -69,7 +69,7 @@ local _refresh =  function(self)
     if total_time then
         total_time_text = string.format(
             "Total Time: %02dh %02dmin",
-            total_time:gethours(),
+            total_time:spanhours(),
             total_time:getminutes()
         )
     else

@@ -12,9 +12,6 @@
 
 * Build the logic for the Main window actions
     + Delete task when pressing del while a task is selected
-    + Bugfix duration of individual tasks not considering the days, months and years
-    + Bugfix total duration not considering the days, months and years
-    + Bugfix filtering not checking the end_time. If the task start_time to end_time passes the current day it should be shown
 
 * Create stats window with tasks filtering
     + Display the list of filtered tasks while presenting the days

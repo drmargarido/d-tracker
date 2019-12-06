@@ -57,8 +57,8 @@ return {
         local duration = date.diff(end_time, start_time)
 
         local duration_text = ""
-        if duration:gethours() > 0 then
-          duration_text = string.format("%dh ", duration:gethours())
+        if duration:spanhours() > 0 then
+          duration_text = string.format("%dh ", duration:spanhours())
         end
 
         duration_text = duration_text..string.format(
