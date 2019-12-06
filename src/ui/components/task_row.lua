@@ -79,7 +79,7 @@ return {
                 end_time:getminutes()
             )
         else
-            end_time_text = ""
+            end_time_text = "         "
         end
 
         return ui.Group:new{

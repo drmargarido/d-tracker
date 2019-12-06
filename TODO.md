@@ -4,14 +4,25 @@
     + Add error handling if the database queries fail
     + Add error handling when creating the xml exported file
     + Add error handling when creating the database the first time
+    + Add standardized error reporting in the UI
+    + Add standardized error returning from controllers
     + Add parameters type validations in the controllers
     + Test for sql injections
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
+    + Adapt size of trimmed description and project according to the main window size
+    + Display task description and project placeholders in input fields
 
 * Build the logic for the Main window actions
     + Delete task when pressing del while a task is selected
+    + Start new task using others data when a row is double clicked -> use onDblClick callback
+    + Clear description and project inputs after pressing start tracking
+
+* XML export
+    + Escape the fields to not break the XML - https://stackoverflow.com/a/46637835/5555837
+    + Add default file name according to the date range in the XML export?
+    + Store the last save path and use it as the new base path
 
 * Create stats window with tasks filtering
     + Display the list of filtered tasks while presenting the days

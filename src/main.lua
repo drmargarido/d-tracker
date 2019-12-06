@@ -15,7 +15,7 @@ if not utils.file_exists(conf.db) then
 
     -- Apply migrations
     migrations.run(db)
-    require "migrations.mock_data"(db)
+
     db:close()
 end
 
