@@ -14,11 +14,6 @@
     + Adapt size of trimmed description and project according to the main window size
     + Display task description and project placeholders in input fields
 
-* Build the logic for the Main window actions
-    + Delete task when pressing del while a task is selected
-    + Start new task using others data when a row is double clicked -> use onDblClick callback
-    + Clear description and project inputs after pressing start tracking
-
 * XML export
     + Escape the fields to not break the XML - https://stackoverflow.com/a/46637835/5555837
     + Add default file name according to the date range in the XML export?

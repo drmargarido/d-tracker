@@ -1,6 +1,7 @@
 -- Controllers
 local add_task = require "src.controller.add_task"
 local stop_task = require "src.controller.stop_task"
+local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 
@@ -14,15 +15,18 @@ local date = require "date.date"
 local ui = require "tek.ui"
 local TaskRow = require "src.ui.components.task_row"
 
-local _refresh =  function(self)
+local this_window
+
+local _refresh
+_refresh = function()
     -- Clear row selection
     TaskRow.clear_selection()
 
     -- Get UI elements
-    local current_activity_element = self:getById("current_activity_text")
-    local stop_tracking_element = self:getById("stop_tracking_button")
-    local task_list_group_element = self:getById("task_list_group")
-    local total_time_element = self:getById("total_time_text")
+    local current_activity_element = this_window:getById("current_activity_text")
+    local stop_tracking_element = this_window:getById("stop_tracking_button")
+    local task_list_group_element = this_window:getById("task_list_group")
+    local total_time_element = this_window:getById("total_time_text")
 
     -- Prepare the updated data
     local today_tasks = list_today_tasks()
@@ -79,7 +83,7 @@ local _refresh =  function(self)
     -- Set the updated data in the UI elements
     local tasks_rows = {}
     for _, task in ipairs(today_tasks) do
-        table.insert(tasks_rows, TaskRow.new(task))
+        table.insert(tasks_rows, TaskRow.new(task, _refresh))
     end
 
     current_activity_element:setValue("Text", current_activity_text)
@@ -87,11 +91,10 @@ local _refresh =  function(self)
     total_time_element:setValue("Text", total_time_text)
 
     -- Configure export xml callback
-
-    self:getById("export_xml_btn"):setValue("onPress", function(self)
-        local app = self.Application
+    this_window:getById("export_xml_btn"):setValue("onPress", function(_self)
+        local app = this_window.Application
         app:addCoroutine(function()
-            local status, path, select = self.Application:requestFile{
+            local status, path, select = _self.Application:requestFile{
                 Path = ""
             }
 
@@ -118,7 +121,7 @@ return {
     refresh = _refresh,
 
     init = function()
-        return ui.Window:new {
+        this_window = ui.Window:new {
             Title = "D-Tracker",
             Orientation = "vertical",
             Width = 640,
@@ -157,7 +160,7 @@ return {
                                 end
 
                                 stop_task()
-                                _refresh(self)
+                                _refresh()
                             end
                         }
                     }
@@ -189,26 +192,23 @@ return {
                                     return
                                 end
 
-                                local description = self:getById(
-                                    "task-description"
-                                ):getText()
+                                local description_element = self:getById("task-description")
+                                local description = description_element:getText()
 
-                                local project = self:getById(
-                                    "task-project"
-                                ):getText()
+                                local project_element = self:getById("task-project")
+                                local project = project_element:getText()
 
                                 add_task(description, project)
 
                                 -- Clear inputs and refresh UI
-                                self:getById(
-                                    "task-description"
-                                ):setValue("Text", "")
 
-                                self:getById(
-                                    "task-project"
-                                ):setValue("Text", "")
+                                description_element:setValue("Text", "")
+                                description_element:onSetText()
 
-                                _refresh(self)
+                                project_element:setValue("Text", "")
+                                project_element:onSetText()
+
+                                _refresh()
                             end
                         }
                     }
@@ -262,5 +262,18 @@ return {
                 }
             }
         }
+
+        this_window:addInputHandler(ui.MSG_KEYDOWN, this_window, function(self, msg)
+            -- Delete Pressed
+            if msg[3] == 127 then
+                local selected_task = TaskRow.get_selection()
+                if selected_task.task_id then
+                    delete_task(selected_task.task_id)
+                    _refresh()
+                end
+            end
+        end)
+
+        return this_window
     end
 }

@@ -5,12 +5,17 @@ local ui = require "tek.ui"
 local date = require "date.date"
 local utils = require "src.utils"
 
+-- Controllers
+local add_task = require "src.controller.add_task"
+
 -- Windows
 local edit_task_window = require "src.ui.edit_task_window"
 
 -- Globals
 local pencil_image = ui.loadImage("images/pencil_icon.PPM")
 local selected_id = nil
+local selected_task_id = nil
+
 local task_counter = 1
 
 -- Local Methods
@@ -21,7 +26,7 @@ local id_closure = function(id, func)
 end
 
 
-local select_list_row = function(self, id)
+local select_list_row = function(self, id, task_id)
    -- Clean old selected task style
    if selected_id then
       self:getById("row-"..selected_id):setValue(
@@ -34,6 +39,7 @@ local select_list_row = function(self, id)
 
    -- Mark the now select one as selected
    selected_id = id
+   selected_task_id = task_id
    self:getById("row-"..selected_id):setValue(
       "Style", [[
           border-width: 1;
@@ -47,8 +53,15 @@ end
 return {
     clear_selection = function()
         selected_id = nil
+        selected_task_id = nil
     end,
-    new = function(task)
+    get_selection = function()
+        return {
+            row_id = selected_id,
+            task_id = selected_task_id
+        }
+    end,
+    new = function(task, refresh)
         local row_number = task_counter
         task_counter = task_counter + 1
 
@@ -107,8 +120,18 @@ return {
                     utils.trim_text(task.description, 36)
                     ),
                     onPress = id_closure(row_number, function(self, id)
-                        select_list_row(self, id)
-                    end)
+                        select_list_row(self, id, task.id)
+                    end),
+                    onDblClick = function(self)
+                        if self.DblClick then
+                            add_task(task.description, task.project)
+
+                            local app = self.Application
+                            app:addCoroutine(function()
+                                refresh()
+                            end)
+                        end
+                    end
                 },
                 ui.Text:new{
                     Id = "project-row-"..tostring(row_number),
@@ -120,8 +143,18 @@ return {
                     Mode = "button",
                     Text = utils.trim_text(task.project, 16),
                     onPress = id_closure(row_number, function(self, id)
-                        select_list_row(self, id)
-                    end)
+                        select_list_row(self, id, task.id)
+                    end),
+                    onDblClick = function(self)
+                        if self.DblClick then
+                            add_task(task.description, task.project)
+
+                            local app = self.Application
+                            app:addCoroutine(function()
+                                refresh()
+                            end)
+                        end
+                    end
                 },
                 ui.Text:new{
                     Id = "duration-row-"..tostring(row_number),
@@ -131,8 +164,18 @@ return {
                     Mode = "button",
                     Text = duration_text,
                     onPress = id_closure(row_number, function(self, id)
-                        select_list_row(self, id)
-                    end)
+                        select_list_row(self, id, task.id)
+                    end),
+                    onDblClick = function(self)
+                        if self.DblClick then
+                            add_task(task.description, task.project)
+
+                            local app = self.Application
+                            app:addCoroutine(function()
+                                refresh()
+                            end)
+                        end
+                    end
                 },
                 ui.ImageWidget:new{
                     Id = "edit-row-"..tostring(row_number),
@@ -142,7 +185,7 @@ return {
                     Mode = "button",
                     Image = pencil_image,
                     onPress = function(self)
-                        edit_task_window.set_task_to_edit(self, task.id)
+                        edit_task_window.set_task_to_edit(self, task.id, refresh)
                         self:getById("edit_task_window"):setValue(
                             "Status", "show"
                         )

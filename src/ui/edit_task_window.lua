@@ -15,10 +15,8 @@ local date = require "date.date"
 -- Constats
 local row_space = 5
 
-local refresh_main_window = nil
-
 return {
-    set_task_to_edit = function(self, task_id)
+    set_task_to_edit = function(self, task_id, refresh)
         local task = get_task(task_id)
         local task_in_progress = get_task_in_progress()
 
@@ -61,11 +59,12 @@ return {
         self:getById("edit_project"):setValue("Text", task.project)
         self:getById("edit_in_progress"):setValue("Selected", in_progress)
 
-        self:getById("delete_task_btn"):setValue("onPress", function(self)
+        self:getById("delete_task_btn"):setValue("onPress", function(_self)
             delete_task(task_id)
-            self:getById("edit_task_window"):setValue(
+            _self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
+            refresh()
         end)
 
         self:getById("save_task_btn"):setValue("onPress", function(self)
@@ -115,11 +114,10 @@ return {
             self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
-            refresh_main_window(self)
+            refresh()
         end)
     end,
-    init = function(refresh_method)
-        refresh_main_window = refresh_method
+    init = function()
         return ui.Window:new {
             Title = "Edit Task",
             Id = "edit_task_window",
