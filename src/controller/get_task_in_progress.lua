@@ -1,8 +1,7 @@
-local sqlite3 = require "lsqlite3"
-local conf = require "src.conf"
+-- Decorators
+local decorators = require "src.decorators"
 
-return function()
-    local db = sqlite3.open(conf.db)
+return decorators.use_db(function(db)
     local task_in_progress = nil
 
     local task_query = [[
@@ -22,6 +21,5 @@ return function()
         break
     end
 
-    db:close()
-    return task_in_progress
-end
+    return task_in_progress, nil
+end)

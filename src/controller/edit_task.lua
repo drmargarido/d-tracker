@@ -1,7 +1,10 @@
-local sqlite3 = require "lsqlite3"
+-- Utils
 local utils = require "src.utils"
-local conf = require "src.conf"
 
+-- Decorators
+local decorators = require "src.decorators"
+
+-- Controllers
 local project_exists = require "src.controller.project_exists"
 local create_project = require "src.controller.create_project"
 
@@ -62,15 +65,12 @@ local edit_task_field = {
     end
 }
 
-return function(task_id, field, new_value)
+return decorators.use_db(function(db, task_id, field, new_value)
     if not utils.has_key(edit_task_field, field) then
         print("Unknown field for task edit: "..field)
-        return false
+        return false, "Unknown field for task edit: "..field
     end
 
-    local db = sqlite3.open(conf.db)
     edit_task_field[field](db, task_id, new_value)
-    db:close()
-
-    return true
-end
+    return true, nil
+end)

@@ -1,8 +1,7 @@
-local sqlite3 = require "lsqlite3"
-local conf = require "src.conf"
+-- Decorators
+local decorators = require "src.decorators"
 
-return function(task_id)
-    local db = sqlite3.open(conf.db)
+return decorators.use_db(function(db, task_id)
     local task_query = string.format([[
         SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
         FROM task as t
@@ -22,6 +21,5 @@ return function(task_id)
         break
     end
 
-    db:close()
-    return task
-end
+    return task, nil
+end)

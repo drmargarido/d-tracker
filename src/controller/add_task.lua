@@ -1,14 +1,14 @@
-local sqlite3 = require "lsqlite3"
-local conf = require "src.conf"
 local date = require "date.date"
 
+-- Decorators
+local decorators = require "src.decorators"
+
+-- Controllers
 local stop_task = require "src.controller.stop_task"
 local project_exists = require "src.controller.project_exists"
 local create_project = require "src.controller.create_project"
 
-return function(description, project)
-    local db = sqlite3.open(conf.db)
-
+return decorators.use_db(function(db, description, project)
     -- Create a new project if it doesn't exists
     if not project_exists(project) then
         create_project(project)
@@ -30,6 +30,5 @@ return function(description, project)
     )
     task_stmt:step()
 
-    db:close()
-    return true
-end
+    return true, nil
+end)

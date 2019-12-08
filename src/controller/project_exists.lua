@@ -1,9 +1,7 @@
-local sqlite3 = require "lsqlite3"
-local conf = require "src.conf"
+-- Decorators
+local decorators = require "src.decorators"
 
-return function(project_name)
-    local db = sqlite3.open(conf.db)
-
+return decorators.use_db(function(db, project_name)
     local sql_check = "SELECT * FROM project WHERE name=?"
     local check_stmt = db:prepare(sql_check)
     check_stmt:bind_values(project_name)
@@ -13,6 +11,5 @@ return function(project_name)
         project_exists = true
     end
 
-    db:close()
-    return project_exists
-end
+    return project_exists, nil
+end)

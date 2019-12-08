@@ -1,13 +1,10 @@
-local sqlite3 = require "lsqlite3"
-local conf = require "src.conf"
+-- Decorators
+local decorators = require "src.decorators"
 
-return function(start_date, end_date)
-    local tasks = {}
-
+return decorators.use_db(function(db, start_date, end_date)
     -- To include the end_date one day is added
     end_date:adddays(1)
 
-    local db = sqlite3.open(conf.db)
     local query = string.format(
         [[
             SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
@@ -22,6 +19,7 @@ return function(start_date, end_date)
         start_date:fmt("${iso}"), end_date:fmt("${iso}")
     )
 
+    local tasks = {}
     for row in db:nrows(query) do
         table.insert(tasks, {
             id=row.id,
@@ -30,8 +28,7 @@ return function(start_date, end_date)
             end_time=row.end_time,
             description=row.description
         })
-   end
+    end
 
-    db:close()
-    return tasks
-end
+    return tasks, nil
+end)
