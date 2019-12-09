@@ -7,11 +7,6 @@
     + Add standardized error reporting in the UI
     + Test for sql injections
 
-* Testing
-    + Test the XML escaping?
-    + Test the checking if the database is open before each controller
-    + Test calls to the controllers with unexpected input data
-
 * Improve graphical appearance as much as possible
     + Add icon for the window
     + Adapt size of trimmed description and project according to the main window size

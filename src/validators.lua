@@ -1,25 +1,27 @@
 return {
     is_number = function(data)
-        if type(data) == "number" then
+        if data and type(data) == "number" then
             return true, nil
         else
             return false, "Received value is not a number"
         end
     end,
+
     is_text = function(data)
-        if type(data) == "string" then
+        if data and type(data) == "string" then
             return true, nil
         else
             return false, "Received value is not a string"
         end
     end,
+
     --[[
         Here I just search for functions which are expected
         to exist in a date, if they exist I accept the data as
         a valid date.
     ]]
     is_date = function(data)
-        if type(data) ~= "table" then
+        if not data or type(data) ~= "table" then
             return false, "The received data is not a date"
         end
 
@@ -33,6 +35,7 @@ return {
             return false, "The received data is not a date"
         end
     end,
+
     max_length = function(max_len)
         return function(data)
             if #data > max_len then
@@ -42,6 +45,7 @@ return {
             end
         end
     end,
+
     one_of = function(list)
         return function(data)
             for _, element in ipairs(list) do
@@ -51,6 +55,14 @@ return {
             end
 
             return false, "The received element is not part of the allowed ones"
+        end
+    end,
+
+    is_positive = function(data)
+        if data >= 0 then
+            return true, nil
+        else
+            return false, "The received number should be positive"
         end
     end
 }

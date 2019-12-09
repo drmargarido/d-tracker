@@ -1,22 +1,16 @@
-local sqlite3 = require "lsqlite3"
-local migrations = require "migrations.migrations"
-
+-- Utils
 local conf = require "src.conf"
 local utils = require "src.utils"
 
+-- Database
+local create_database = require "src.create_database"
+
+-- UI
 local ui = require "src.ui.ui"
 
 -- Create database if it doesn't exists
 if not utils.file_exists(conf.db) then
-    local db = sqlite3.open(
-        conf.db,
-        sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
-    )
-
-    -- Apply migrations
-    migrations.run(db)
-
-    db:close()
+    create_database()
 end
 
 -- Start the UI

@@ -1,6 +1,9 @@
 -- Utils
-local validators = require "src.validators"
 local date = require "date.date"
+
+-- validators
+local validators = require "src.validators"
+local db_validators = require "src.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -9,7 +12,6 @@ local check_input = decorators.check_input
 
 -- Controllers
 local stop_task = require "src.controller.stop_task"
-local project_exists = require "src.controller.project_exists"
 local create_project = require "src.controller.create_project"
 
 return check_input(
@@ -19,7 +21,8 @@ return check_input(
     },
     use_db(function(db, description, project)
         -- Create a new project if it doesn't exists
-        if not project_exists(project) then
+        local project_exists, _ = db_validators.project_exists(project)
+        if not project_exists then
             create_project(project)
         end
 

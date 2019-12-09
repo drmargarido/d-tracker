@@ -1,6 +1,8 @@
 -- Controllers
 local create_project = require "src.controller.create_project"
-local project_exists = require "src.controller.project_exists"
+
+-- validators
+local db_validators = require "src.db_validators"
 
 -- Utils
 local conf = require "src.conf"
@@ -38,14 +40,11 @@ describe("Project Management", function()
 
 
     it("Creates a new project", function()
-        assert.is_false(project_exists("New Test Project"))
+        local project_exists, _ = db_validators.project_exists("New Test Project")
+        assert.is_false(project_exists)
         create_project("New Test Project")
-        assert.is_true(project_exists("New Test Project"))
-    end)
 
-    it("Checks if project exists", function()
-        assert.is_false(project_exists("New Test Project"))
-        create_project("New Test Project")
-        assert.is_true(project_exists("New Test Project"))
+        project_exists, _ = db_validators.project_exists("New Test Project")
+        assert.is_true(project_exists)
     end)
 end)

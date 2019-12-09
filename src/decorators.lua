@@ -33,9 +33,9 @@ return {
                 return nil, "Missing expected fields"
             end
 
-            for i, field in ipairs(fields) do
-                for _, validation in ipairs(validations[i]) do
-                    local success, err = validation(field)
+            for i, validation_list in ipairs(validations) do
+                for _, validation in ipairs(validation_list) do
+                    local success, err = validation(fields[i])
 
                     if not success then
                         print(err)

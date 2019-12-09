@@ -1,5 +1,6 @@
 -- Utils
 local validators = require "src.validators"
+local db_validators = require "src.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -8,7 +9,7 @@ local check_input = decorators.check_input
 
 return check_input(
     {
-        {validators.is_number}
+        {validators.is_number, db_validators.task_exists}
     },
     use_db(function(db, task_id)
         local task_query = string.format([[

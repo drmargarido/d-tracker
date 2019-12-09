@@ -22,7 +22,7 @@ local sqlite3 = require "lsqlite3"
 local mock_data = require "migrations.mock_data"
 local migrations = require "migrations.migrations"
 
-describe("Tasks management", function()
+describe("Base Path of Tasks management", function()
     setup(function()
         conf.db = "testdb.sqlite3"
     end)
@@ -150,5 +150,174 @@ describe("Tasks management", function()
 
         -- Clear file from filesystem
         os.remove(filename)
+    end)
+end)
+
+describe("Invalid input types in tasks management", function()
+    setup(function()
+        conf.db = "testdb.sqlite3"
+    end)
+
+    before_each(function()
+        -- Create database
+        local db = sqlite3.open(
+           conf.db,
+           sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+        )
+
+        -- Run migrations
+        migrations.run(db)
+
+        -- Add mock data
+        mock_data(db)
+
+        db:close()
+    end)
+
+    after_each(function()
+        -- Destroy database
+        os.remove(conf.db)
+    end)
+
+    it("Tries to create a task with invalid fields", function()
+        local before_tasks = list_tasks(date(1970, 1, 1), date())
+
+        local _, err = add_task(nil, "D-Tracker")
+        assert.is_false(err == nil)
+
+        _, err = add_task("A good description", 123)
+        assert.is_false(err == nil)
+
+        local after_tasks = list_tasks(date(1970, 1, 1), date())
+        assert.is_true(#before_tasks == #after_tasks)
+    end)
+
+    it("Tries to change a task description with invalid inputs", function()
+        local tasks = list_tasks(date(1970, 1, 1), date())
+        local last_task = tasks[#tasks]
+
+        local _, err = edit_task(last_task.id, "description", 123)
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "description", nil)
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "description", {})
+        assert.is_false(err == nil)
+
+        local edited_task = get_task(last_task.id)
+        assert.is_true(last_task.description == edited_task.description)
+    end)
+
+    it("Tries to change the task associated project with invalid data", function()
+        local tasks = list_tasks(date(1970, 1, 1), date())
+        local last_task = tasks[#tasks]
+
+        local _,err = edit_task(last_task.id, "project", 123)
+        assert.is_false(err == nil)
+
+        _,err = edit_task(last_task.id, "project", nil)
+        assert.is_false(err == nil)
+
+        _,err = edit_task(last_task.id, "project", {})
+        assert.is_false(err == nil)
+
+        local edited_task = get_task(last_task.id)
+        assert.is_true(last_task.project == edited_task.project)
+    end)
+
+    it("Tries to change the task start date with invalid data", function()
+        local tasks = list_tasks(date(1970, 1, 1), date())
+        local last_task = tasks[#tasks]
+
+        local _, err = edit_task(last_task.id, "start_time", "2019/11/27T22:45:27")
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "start_time", "Random Text")
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "start_time", 123)
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "start_time", {})
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "start_time", nil)
+        assert.is_false(err == nil)
+
+        local edited_task = get_task(last_task.id)
+        assert.is_true(last_task.start_time == edited_task.start_time)
+    end)
+
+    it("Tries to change the task end date with invalid data", function()
+        local tasks = list_tasks(date(1970, 1, 1), date())
+        local last_task = tasks[#tasks]
+
+        local _, err = edit_task(last_task.id, "end_time", "2019/11/27T22:45:27")
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "end_time", "Random Text")
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "end_time", 123)
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "end_time", {})
+        assert.is_false(err == nil)
+
+        _, err = edit_task(last_task.id, "end_time", nil)
+        assert.is_false(err == nil)
+
+        local edited_task = get_task(last_task.id)
+        assert.is_true(last_task.end_time == edited_task.end_time)
+    end)
+
+    it("Tries to edits if the task is in progress with invalid data", function()
+        local task_id = get_task_in_progress().id
+
+        stop_task()
+
+        local task_in_progress = get_task_in_progress()
+        assert.is_true(task_in_progress == nil)
+
+        local _, err = set_task_in_progress("asd")
+        assert.is_false(err == nil)
+
+        _, err = set_task_in_progress(nil)
+        assert.is_false(err == nil)
+
+        _, err = set_task_in_progress({})
+        assert.is_false(err == nil)
+
+        _, err = set_task_in_progress(-1)
+        assert.is_false(err == nil)
+
+        _, err = set_task_in_progress(10000)
+        assert.is_false(err == nil)
+
+        task_in_progress = get_task_in_progress()
+        assert.is_true(task_in_progress == nil)
+    end)
+
+    it("Tries to delete a task with invalid data", function()
+        local before_tasks = list_tasks(date(1970, 1, 1), date())
+
+        local _, err = delete_task("asd")
+        assert.is_false(err == nil)
+
+        _, err = delete_task(nil)
+        assert.is_false(err == nil)
+
+        _, err = delete_task({})
+        assert.is_false(err == nil)
+
+        _, err = delete_task(-1)
+        assert.is_false(err == nil)
+
+        _, err = delete_task(10000)
+        assert.is_false(err == nil)
+
+        local after_tasks = list_tasks(date(1970, 1, 1), date())
+        assert.is_true(#before_tasks == #after_tasks)
     end)
 end)

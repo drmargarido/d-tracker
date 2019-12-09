@@ -1,6 +1,7 @@
 -- Utils
 local utils = require "src.utils"
 local validators = require "src.validators"
+local db_validators = require "src.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -8,7 +9,6 @@ local use_db = decorators.use_db
 local check_input = decorators.check_input
 
 -- Controllers
-local project_exists = require "src.controller.project_exists"
 local create_project = require "src.controller.create_project"
 
 -- Strategy to edit each field of the task
@@ -20,7 +20,8 @@ local edit_task_field = {
             {validators.is_text, validators.max_length(255)}
         },
         function(db, task_id, new_value)
-            if not project_exists(new_value) then
+            local project_exists, _ = db_validators.project_exists(new_value)
+            if not project_exists then
                 create_project(new_value)
             end
 
