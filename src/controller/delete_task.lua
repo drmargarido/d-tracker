@@ -1,9 +1,19 @@
+-- Utils
+local validators = require "src.validators"
+
 -- Decorators
 local decorators = require "src.decorators"
+local use_db = decorators.use_db
+local check_input = decorators.check_input
 
-return decorators.use_db(function(db, task_id)
-    local remove_query = "DELETE FROM task WHERE id=?"
-    local remove_stmt = db:prepare(remove_query)
-    remove_stmt:bind_values(task_id)
-    remove_stmt:step()
-end)
+return check_input(
+    {
+        {validators.is_number}
+    },
+    use_db(function(db, task_id)
+        local remove_query = "DELETE FROM task WHERE id=?"
+        local remove_stmt = db:prepare(remove_query)
+        remove_stmt:bind_values(task_id)
+        remove_stmt:step()
+    end)
+)

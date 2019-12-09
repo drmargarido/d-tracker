@@ -1,4 +1,3 @@
-local validate = require "src.validate"
 local sqlite3 = require "lsqlite3"
 local conf = require "src.conf"
 
@@ -23,22 +22,25 @@ return {
     end,
 
     --[[
-        Checks if the received fields of the function match the
-        specified table of types.
+        Checks if the received fields of the function pass the
+        validations for each of them.
     ]]
-    check_fields  = function(field_types, func)
+    check_input  = function(validations, func)
         return function(...)
             local fields = {...}
 
-            if #field_types ~= #fields then
+            if #validations ~= #fields then
                 return nil, "Missing expected fields"
             end
 
-            for i, type in ipairs(field_types) do
-                local success, err = validate(type, fields[i])
-                if not success then
-                    print(err)
-                    return nil, err
+            for i, field in ipairs(fields) do
+                for _, validation in ipairs(validations[i]) do
+                    local success, err = validation(field)
+
+                    if not success then
+                        print(err)
+                        return nil, err
+                    end
                 end
             end
 

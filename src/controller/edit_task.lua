@@ -1,8 +1,11 @@
 -- Utils
 local utils = require "src.utils"
+local validators = require "src.validators"
 
 -- Decorators
 local decorators = require "src.decorators"
+local use_db = decorators.use_db
+local check_input = decorators.check_input
 
 -- Controllers
 local project_exists = require "src.controller.project_exists"
@@ -10,67 +13,109 @@ local create_project = require "src.controller.create_project"
 
 -- Strategy to edit each field of the task
 local edit_task_field = {
-    project = function(db, task_id, new_value)
-        if not project_exists(new_value) then
-            create_project(new_value)
+    project = check_input(
+        {
+            {},
+            {},
+            {validators.is_text, validators.max_length(255)}
+        },
+        function(db, task_id, new_value)
+            if not project_exists(new_value) then
+                create_project(new_value)
+            end
+
+            local project_edit = [[
+                UPDATE task
+                SET project_id=(SELECT id FROM project WHERE name=?)
+                WHERE id=?
+            ]]
+            local project_stmt = db:prepare(project_edit)
+            project_stmt:bind_values(
+                new_value,
+                task_id
+            )
+            project_stmt:step()
+
+            return true, nil
         end
+    ),
 
-        local project_edit = [[
-            UPDATE task
-            SET project_id=(SELECT id FROM project WHERE name=?)
-            WHERE id=?
-        ]]
-        local project_stmt = db:prepare(project_edit)
-        project_stmt:bind_values(
-            new_value,
-            task_id
-        )
-        project_stmt:step()
-    end,
+    start_time = check_input(
+        {
+            {},
+            {},
+            {validators.is_date}
+        },
+        function(db, task_id, new_value)
+            local start_edit = [[
+                UPDATE task SET start_time=? WHERE id=?
+            ]]
+            local start_stmt = db:prepare(start_edit)
+            start_stmt:bind_values(
+                new_value:fmt("${iso}"),
+                task_id
+            )
+            start_stmt:step()
 
-    start_time = function(db, task_id, new_value)
-        local start_edit = [[
-            UPDATE task SET start_time=? WHERE id=?
-        ]]
-        local start_stmt = db:prepare(start_edit)
-        start_stmt:bind_values(
-            new_value:fmt("${iso}"),
-            task_id
-        )
-        start_stmt:step()
-    end,
+            return true, nil
+        end
+    ),
 
-    end_time = function(db, task_id, new_value)
-        local end_edit = [[
-            UPDATE task SET end_time=? WHERE id=?
-        ]]
-        local end_stmt = db:prepare(end_edit)
-        end_stmt:bind_values(
-            new_value:fmt("${iso}"),
-            task_id
-        )
-        end_stmt:step()
-    end,
+    end_time = check_input(
+        {
+            {},
+            {},
+            {validators.is_date}
+        },
+        function(db, task_id, new_value)
+            local end_edit = [[
+                UPDATE task SET end_time=? WHERE id=?
+            ]]
+            local end_stmt = db:prepare(end_edit)
+            end_stmt:bind_values(
+                new_value:fmt("${iso}"),
+                task_id
+            )
+            end_stmt:step()
 
-    description = function(db, task_id, new_value)
-        local end_edit = [[
-            UPDATE task SET description=? WHERE id=?
-        ]]
-        local end_stmt = db:prepare(end_edit)
-        end_stmt:bind_values(
-            new_value,
-            task_id
-        )
-        end_stmt:step()
-    end
+            return true, nil
+        end
+    ),
+
+    description = check_input(
+        {
+            {},
+            {},
+            {validators.is_text, validators.max_length(512)}
+        },
+        function(db, task_id, new_value)
+
+
+            local end_edit = [[
+                UPDATE task SET description=? WHERE id=?
+            ]]
+            local end_stmt = db:prepare(end_edit)
+            end_stmt:bind_values(
+                new_value,
+                task_id
+            )
+            end_stmt:step()
+
+            return true, nil
+        end
+    )
 }
 
-return decorators.use_db(function(db, task_id, field, new_value)
-    if not utils.has_key(edit_task_field, field) then
-        print("Unknown field for task edit: "..field)
-        return false, "Unknown field for task edit: "..field
-    end
-
-    edit_task_field[field](db, task_id, new_value)
-    return true, nil
-end)
+return check_input(
+    {
+        {validators.is_number},
+        {
+            validators.is_text,
+            validators.one_of(utils.get_keys(edit_task_field))
+        },
+        {}
+    },
+    use_db(function(db, task_id, field, new_value)
+        return edit_task_field[field](db, task_id, new_value)
+    end)
+)

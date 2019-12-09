@@ -19,13 +19,13 @@ return {
     end,
 
     -- Checks if the table contains an entry with the key
-    has_key = function(_table, key)
+    get_keys = function(_table)
+        local keys = {}
+
         for k, _ in pairs(_table) do
-            if k == key then
-                return true
-            end
+            table.insert(keys, k)
         end
 
-        return false
+        return keys
     end
 }

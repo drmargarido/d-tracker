@@ -5,9 +5,12 @@
     + Add error handling when creating the xml exported file
     + Add error handling when creating the database the first time
     + Add standardized error reporting in the UI
-    + Add standardized error returning from controllers
-    + Add parameters type validations in the controllers
     + Test for sql injections
+
+* Testing
+    + Test the XML escaping?
+    + Test the checking if the database is open before each controller
+    + Test calls to the controllers with unexpected input data
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
