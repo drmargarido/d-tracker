@@ -15,7 +15,6 @@
     + Display task description and project placeholders in input fields
 
 * XML export
-    + Escape the fields to not break the XML - https://stackoverflow.com/a/46637835/5555837
     + Add default file name according to the date range in the XML export?
     + Store the last save path and use it as the new base path
 
