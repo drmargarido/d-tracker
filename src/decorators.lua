@@ -16,6 +16,11 @@ return {
 
             local result, err = func(db, ...)
 
+            local error_code = db:errcode()
+            if error_code > 0 and error_code < 100 then
+                print(db:errmsg())
+            end
+
             db:close()
             return result, err
         end

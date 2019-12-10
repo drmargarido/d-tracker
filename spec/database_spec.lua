@@ -18,6 +18,11 @@ local conf = require "src.conf"
 local create_database = require "src.create_database"
 
 describe("Operations without database", function()
+    setup(function()
+        conf.db = "testdb.sqlite3"
+    end)
+
+
     it("Try to call controllers", function()
         local _, err = add_task("new Task", "D-Tracker")
         assert.is_true(err ~= nil)
@@ -48,7 +53,6 @@ describe("Operations without database", function()
     end)
 
     it("Create a new database", function()
-        conf.db = "testdb.sqlite3"
         assert.is_false(utils.file_exists(conf.db))
 
         create_database()

@@ -1,7 +1,7 @@
 -- Utils
 local utils = require "src.utils"
-local validators = require "src.validators"
-local db_validators = require "src.db_validators"
+local validators = require "src.validators.base_validators"
+local db_validators = require "src.validators.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"

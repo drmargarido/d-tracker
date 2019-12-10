@@ -2,7 +2,7 @@
 local create_project = require "src.controller.create_project"
 
 -- validators
-local db_validators = require "src.db_validators"
+local db_validators = require "src.validators.db_validators"
 
 -- Utils
 local conf = require "src.conf"
