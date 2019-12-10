@@ -40,16 +40,16 @@ make
 
 ## Project Structure
 
-|src/               - Implementation of the application
-|src/ui/            - Application user interface
-|src/controllers/   - Logic which present the main system actions and interacts with the database
-|src/validators/    - Validators for data
-|src/exporter/      - Exporte tasks lists to files in specific formats
-|spec/              - Tests to validate the correct behavior of the system
-|platform/          - Platforms specific settings files, like the mac .app and windows .rc
-|external/          - Dependencies repositories
-|migrations/        - Scripts for to create and update the database model
-|main.c             - Used to create the application embeded with the lua execution
+* |src/               - Implementation of the application
+* |src/ui/            - Application user interface
+* |src/controllers/   - Logic which present the main system actions and interacts with the database
+* |src/validators/    - Validators for data
+* |src/exporter/      - Exporte tasks lists to files in specific formats
+* |spec/              - Tests to validate the correct behavior of the system
+* |platform/          - Platforms specific settings files, like the mac .app and windows .rc
+* |external/          - Dependencies repositories
+* |migrations/        - Scripts for to create and update the database model
+* |main.c             - Used to create the application embeded with the lua execution
 
 ## Testing
 
