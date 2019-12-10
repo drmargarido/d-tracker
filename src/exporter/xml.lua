@@ -61,6 +61,12 @@ return function(tasks, file_path)
     )
 
     local file = io.open(file_path, "w")
-    file:write(final_xml)
-    file:close()
+    if file then
+        file:write(final_xml)
+        file:close()
+
+        return true, nil
+    end
+
+    return false, "Failed to create the xml file"..final_xml
 end

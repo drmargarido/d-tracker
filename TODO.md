@@ -2,15 +2,18 @@
 
 * General
     + Add error handling if the database queries fail
-    + Add error handling when creating the xml exported file
-    + Add error handling when creating the database the first time
     + Add standardized error reporting in the UI
-    + Test for sql injections
+    + Check for the most common errors and report them using the error popup
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
     + Adapt size of trimmed description and project according to the main window size
     + Display task description and project placeholders in input fields
+    + Change the task/project input space racio so the description has more space
+
+* Main window fast input
+    + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
+    + If autocomplete is applied to a task the project should also be automatically filled
 
 * XML export
     + Add default file name according to the date range in the XML export?
