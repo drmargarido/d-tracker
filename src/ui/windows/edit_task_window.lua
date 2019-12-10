@@ -1,6 +1,9 @@
 -- UI
 local ui = require "tek.ui"
 
+-- Validators
+local validators = require "src.validators.base_validators"
+
 -- Controllers
 local get_task = require "src.controller.get_task"
 local edit_task = require "src.controller.edit_task"
@@ -11,14 +14,15 @@ local set_task_in_progress = require "src.controller.set_task_in_progress"
 
 -- Utils
 local date = require "date.date"
+local ui_utils = require "src.ui.utils"
 
 -- Constats
 local row_space = 5
 
 return {
     set_task_to_edit = function(self, task_id, refresh)
-        local task = get_task(task_id)
-        local task_in_progress = get_task_in_progress()
+        local task, _ = ui_utils.report_error(get_task(task_id))
+        local task_in_progress, _ = get_task_in_progress()
 
         local in_progress = false
         if task_in_progress and task.id == task_in_progress.id then
@@ -34,33 +38,43 @@ return {
             start_time:getmonth(),
             start_time:getday()
         ))
+        self:getById("edit_start_date"):onSetText()
+
         self:getById("edit_start_time"):setValue("Text", string.format(
             "%02d:%02d",
             start_time:gethours(),
             start_time:getminutes()
         ))
+        self:getById("edit_start_time"):onSetText()
+
         self:getById("edit_end_date"):setValue("Text", string.format(
             "%04d/%02d/%02d",
             end_time:getyear(),
             end_time:getmonth(),
             end_time:getday()
         ))
+        self:getById("edit_end_date"):onSetText()
 
         self:getById("edit_end_time"):setValue("Text",  string.format(
             "%02d:%02d",
             end_time:gethours(),
             end_time:getminutes()
         ))
+        self:getById("edit_end_time"):onSetText()
 
         self:getById("edit_end_date"):setValue("Disabled", in_progress)
         self:getById("edit_end_time"):setValue("Disabled", in_progress)
 
         self:getById("edit_description"):setValue("Text", task.description)
+        self:getById("edit_description"):onSetText()
+
         self:getById("edit_project"):setValue("Text", task.project)
+        self:getById("edit_project"):onSetText()
+
         self:getById("edit_in_progress"):setValue("Selected", in_progress)
 
         self:getById("delete_task_btn"):setValue("onPress", function(_self)
-            delete_task(task_id)
+            ui_utils.report_error(delete_task(task_id))
             _self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
@@ -71,12 +85,32 @@ return {
             -- Read new values from edit fields
             local new_start_date = self:getById("edit_start_date"):getText()
             local new_start_time = self:getById("edit_start_time"):getText()
+            local _, err = ui_utils.report_error(
+                validators.is_iso8601(
+                    string.format("%sT%s:00", new_start_date, new_start_time)
+                )
+            )
+            if err ~= nil then
+                print(err)
+                return
+            end
+
             local new_start = date(
                 string.format("%sT%s:00", new_start_date, new_start_time)
             )
 
             local new_end_date = self:getById("edit_end_date"):getText()
             local new_end_time = self:getById("edit_end_time"):getText()
+            _, err = ui_utils.report_error(
+                validators.is_iso8601(
+                    string.format("%sT%s:00", new_end_date, new_end_time)
+                )
+            )
+            if err ~= nil then
+                print(err)
+                return
+            end
+
             local new_end = date(
                 string.format("%sT%s:00", new_end_date, new_end_time)
             )
@@ -88,26 +122,26 @@ return {
 
             -- Trigger field update when a change is detected
             if new_start ~= start_time then
-                edit_task(task.id, "start_time", new_start)
+                ui_utils.report_error(edit_task(task.id, "start_time", new_start))
             end
 
             if new_end ~= end_time and not new_in_progress then
-                edit_task(task.id, "end_time", new_end)
+                ui_utils.report_error(edit_task(task.id, "end_time", new_end))
             end
 
             if new_description ~= task.description then
-                edit_task(task.id, "description", new_description)
+                ui_utils.report_error(edit_task(task.id, "description", new_description))
             end
 
             if new_project ~= task.project then
-                edit_task(task.id, "project", new_project)
+                ui_utils.report_error(edit_task(task.id, "project", new_project))
             end
 
             if in_progress ~= new_in_progress then
                 if new_in_progress then
-                    set_task_in_progress(task.id)
+                    ui_utils.report_error(set_task_in_progress(task.id))
                 else
-                    stop_task()
+                    ui_utils.report_error(stop_task())
                 end
             end
 

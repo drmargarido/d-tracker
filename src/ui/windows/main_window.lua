@@ -10,6 +10,7 @@ local xml_export = require "src.exporter.xml"
 
 -- Utils
 local date = require "date.date"
+local ui_utils = require "src.ui.utils"
 
 -- UI components
 local ui = require "tek.ui"
@@ -100,7 +101,7 @@ _refresh = function()
 
             if status == "selected" then
                 local fname = path .. "/" .. select[1]
-                xml_export(today_tasks, fname)
+                ui_utils.report_error(xml_export(today_tasks, fname))
             end
         end)
     end)
@@ -159,7 +160,7 @@ return {
                                     return
                                 end
 
-                                stop_task()
+                                ui_utils.report_error(stop_task())
                                 _refresh()
                             end
                         }
@@ -198,7 +199,7 @@ return {
                                 local project_element = self:getById("task-project")
                                 local project = project_element:getText()
 
-                                add_task(description, project)
+                                ui_utils.report_error(add_task(description, project))
 
                                 -- Clear inputs and refresh UI
 
@@ -268,7 +269,7 @@ return {
             if msg[3] == 127 then
                 local selected_task = TaskRow.get_selection()
                 if selected_task.task_id then
-                    delete_task(selected_task.task_id)
+                    ui_utils.report_error(delete_task(selected_task.task_id))
                     _refresh()
                 end
             end

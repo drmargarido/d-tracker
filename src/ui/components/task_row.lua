@@ -9,7 +9,7 @@ local utils = require "src.utils"
 local add_task = require "src.controller.add_task"
 
 -- Windows
-local edit_task_window = require "src.ui.edit_task_window"
+local edit_task_window = require "src.ui.windows.edit_task_window"
 
 -- Globals
 local pencil_image = ui.loadImage("images/pencil_icon.PPM")

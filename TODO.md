@@ -1,9 +1,5 @@
 # TODO
 
-* General
-    + Add standardized error reporting in the UI
-    + Check for the most common errors and report them using the error popup
-
 * Improve graphical appearance as much as possible
     + Add icon for the window
     + Adapt size of trimmed description and project according to the main window size

@@ -64,5 +64,18 @@ return {
         else
             return false, "The received number should be positive"
         end
+    end,
+
+    --[[
+        Expects ISO datetime in format yyyy/mm/ddTHH:MM:SS or yyyy/mm/dd HH:MM:SS
+    ]]
+    is_iso8601 = function(data)
+        local y,m,d,h,M,s = data:match("(%d%d%d%d)/(%d?%d)/(%d?%d)[T ](%d?%d):(%d?%d):(%d?%d)$")
+
+        if not y or not m or not d or not h or not M or not s then
+            return false, "Invalid date format received"
+        end
+
+        return true, nil
     end
 }

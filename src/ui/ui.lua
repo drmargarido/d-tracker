@@ -2,9 +2,10 @@
 local ui = require "tek.ui"
 
 -- Windows
-local main_window = require "src.ui.main_window"
-local edit_task_window = require "src.ui.edit_task_window"
-local stats_window = require "src.ui.stats_window"
+local main_window = require "src.ui.windows.main_window"
+local edit_task_window = require "src.ui.windows.edit_task_window"
+local stats_window = require "src.ui.windows.stats_window"
+local notification_window = require "src.ui.windows.notification_window"
 
 -- Utils
 local date = require "date.date"
@@ -16,7 +17,8 @@ local function init()
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),
-            stats_window.init(date(), date())
+            stats_window.init(date(), date()),
+            notification_window.init()
         }
     }
     main_window.refresh(base_window)
