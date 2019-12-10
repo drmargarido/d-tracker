@@ -1,5 +1,7 @@
 -- Utils
 local utils = require "src.utils"
+
+-- Validators
 local validators = require "src.validators.base_validators"
 local db_validators = require "src.validators.db_validators"
 
@@ -22,7 +24,10 @@ local edit_task_field = {
         function(db, task_id, new_value)
             local project_exists, _ = db_validators.project_exists(new_value)
             if not project_exists then
-                create_project(new_value)
+                local _, err = create_project(new_value)
+                if err ~= nil then
+                    return false, "Failed to create the project"
+                end
             end
 
             local project_edit = [[
@@ -36,6 +41,9 @@ local edit_task_field = {
                 task_id
             )
             project_stmt:step()
+            if not db_validators.operation_ok(db) then
+                return false, "Failed to edit the task project"
+            end
 
             return true, nil
         end
@@ -57,6 +65,9 @@ local edit_task_field = {
                 task_id
             )
             start_stmt:step()
+            if not db_validators.operation_ok(db) then
+                return false, "Failed to edit the start time of the task"
+            end
 
             return true, nil
         end
@@ -78,6 +89,9 @@ local edit_task_field = {
                 task_id
             )
             end_stmt:step()
+            if not db_validators.operation_ok(db) then
+                return false, "Failed to edit the end time of the task"
+            end
 
             return true, nil
         end
@@ -90,8 +104,6 @@ local edit_task_field = {
             {validators.is_text, validators.max_length(512)}
         },
         function(db, task_id, new_value)
-
-
             local end_edit = [[
                 UPDATE task SET description=? WHERE id=?
             ]]
@@ -101,6 +113,9 @@ local edit_task_field = {
                 task_id
             )
             end_stmt:step()
+            if not db_validators.operation_ok(db) then
+                return false, "Failed to edit the task description"
+            end
 
             return true, nil
         end

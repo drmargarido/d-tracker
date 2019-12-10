@@ -19,18 +19,16 @@ return check_input(
             WHERE t.id=%d
         ]], task_id)
 
-        local task = nil
         for t in db:nrows(task_query) do
-            task = {
+            return {
                 id=t.id,
                 project=t.project,
                 start_time=t.start_time,
                 end_time=t.end_time,
                 description=t.description
-            }
-            break
+            }, nil
         end
 
-        return task, nil
+        return nil, "Wanted task not found"
     end)
 )

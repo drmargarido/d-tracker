@@ -1,7 +1,6 @@
 # TODO
 
 * General
-    + Add error handling if the database queries fail
     + Add standardized error reporting in the UI
     + Check for the most common errors and report them using the error popup
 

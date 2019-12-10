@@ -23,11 +23,17 @@ return check_input(
         -- Create a new project if it doesn't exists
         local project_exists, _ = db_validators.project_exists(project)
         if not project_exists then
-            create_project(project)
+            local _, err = create_project(project)
+            if err ~= nil then
+                return false, "Failed to stop the running task"
+            end
         end
 
         -- If there is any task already running stop it
-        stop_task()
+        local _, err = stop_task()
+        if err ~= nil then
+            return false, "Failed to stop the running task"
+        end
 
         -- Create a new task starting at the current moment
         local sql_create = [[
@@ -41,6 +47,9 @@ return check_input(
             description
         )
         task_stmt:step()
+        if not db_validators.operation_ok(db) then
+            return false, "Failed to create the new task"
+        end
 
         return true, nil
     end)

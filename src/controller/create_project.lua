@@ -1,5 +1,6 @@
 -- Utils
 local validators = require "src.validators.base_validators"
+local db_validators = require "src.validators.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -16,6 +17,10 @@ return check_input(
         local project_stmt = db:prepare(sql_project)
         project_stmt:bind_values(project_name)
         project_stmt:step()
+
+        if not db_validators.operation_ok(db) then
+            return false, "Failed to create the new project"
+        end
 
         return true, nil
     end)

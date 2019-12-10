@@ -16,5 +16,11 @@ return check_input(
         local remove_stmt = db:prepare(remove_query)
         remove_stmt:bind_values(task_id)
         remove_stmt:step()
+
+        if not db_validators.operation_ok(db) then
+            return false, "Failed to delete the task"
+        end
+
+        return true, nil
     end)
 )

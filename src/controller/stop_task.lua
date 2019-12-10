@@ -1,3 +1,6 @@
+-- Validators
+local db_validators = require "src.validators.db_validators"
+
 -- Utils
 local date = require "date.date"
 
@@ -12,5 +15,9 @@ return use_db(function(db)
     )
 
     db:exec(stop_query)
+    if not db_validators.operation_ok(db) then
+        return false, "Failed to stop the running task"
+    end
+
     return true, nil
 end)

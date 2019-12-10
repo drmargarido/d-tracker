@@ -35,5 +35,15 @@ return {
         else
             return false, "The received project does not exist"
         end
-    end)
+    end),
+
+    operation_ok = function(db)
+        local error_code = db:errcode()
+        if error_code > 0 and error_code < 100 then
+            print(db:errmsg())
+            return false, db:errmsg()
+        end
+
+        return true, nil
+    end
 }
