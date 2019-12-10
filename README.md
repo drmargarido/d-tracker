@@ -2,6 +2,18 @@
 
 Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses less than 10MB of RAM, and has 4 small dependencies.
 
+
+## Motivation
+
+I used hamster timetracker for my projects for years, but lately it disappeared from the debian repositories. I downloaded their latest version from github and it was not working well. After trying their other alternatives it was still not working well, so I decided to build the 'D-Tracker'.
+
+My focus here is to:
+* Implement the main features I use regularly.
+* Reduce the number of dependencies and build steps so it is easier to make sure the application will still be easy to install in the future.
+* Have a small resources usage so I can have it open all day without thinking about it.
+* Be cross-platform so it works in more machines(I have never used any of the hamster integrations with the system).
+
+
 ## Milestones
 
 Release 1.0:
@@ -25,6 +37,19 @@ Build dependencies and the executable for Linux
 ```sh
 make
 ```
+
+## Project Structure
+
+|src/               - Implementation of the application
+|src/ui/            - Application user interface
+|src/controllers/   - Logic which present the main system actions and interacts with the database
+|src/validators/    - Validators for data
+|src/exporter/      - Exporte tasks lists to files in specific formats
+|spec/              - Tests to validate the correct behavior of the system
+|platform/          - Platforms specific settings files, like the mac .app and windows .rc
+|external/          - Dependencies repositories
+|migrations/        - Scripts for to create and update the database model
+|main.c             - Used to create the application embeded with the lua execution
 
 ## Testing
 
