@@ -48,3 +48,4 @@ clean:
 	rm -f *.so
 	rm -f *.sqlite3
 	rm -f *.xml
+	rm -f xml_save_path.lua

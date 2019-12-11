@@ -6,15 +6,10 @@
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
-    + Display task description and project placeholders in input fields
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
     + If autocomplete is applied to a task the project should also be automatically filled
-
-* XML export
-    + Add default file name according to the date range in the XML export?
-    + Store the last save path and use it as the new base path
 
 * Create stats window with tasks filtering
     + Display the list of filtered tasks while presenting the days

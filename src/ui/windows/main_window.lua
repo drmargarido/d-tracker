@@ -8,6 +8,10 @@ local get_task_in_progress = require "src.controller.get_task_in_progress"
 -- Exporters
 local xml_export = require "src.exporter.xml"
 
+-- Settings
+local conf = require "src.conf"
+local persistance = require "src.persistance"
+
 -- Utils
 local date = require "date.date"
 local utils = require "src.utils"
@@ -98,10 +102,16 @@ _refresh = function()
         local app = this_window.Application
         app:addCoroutine(function()
             local status, path, select = _self.Application:requestFile{
-                Path = ""
+                Title = "Select the export path",
+                SelectText = "save",
+                Location = date():fmt("%F")..".xml",
+                Path = conf.xml_path
             }
 
             if status == "selected" then
+                conf.xml_path = path.."/"
+                persistance.update_xml_save_path(path.."/")
+
                 local fname = path .. "/" .. select[1]
                 ui_utils.report_error(xml_export(today_tasks, fname))
             end
