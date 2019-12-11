@@ -31,7 +31,7 @@ tek.ui.class.display {
 	color: #666;
 }
 
-tek.ui.class.input { 
+tek.ui.class.input {
 	border-width: 1;
 }
 
@@ -68,4 +68,8 @@ tek.ui.class.slider {
 
 .task_row {
 	background-color: background;
+}
+
+.placeholder {
+    color: #666;
 }

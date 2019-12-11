@@ -10,11 +10,13 @@ local xml_export = require "src.exporter.xml"
 
 -- Utils
 local date = require "date.date"
+local utils = require "src.utils"
 local ui_utils = require "src.ui.utils"
 
 -- UI components
 local ui = require "tek.ui"
 local TaskRow = require "src.ui.components.task_row"
+local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 
 local this_window
 
@@ -52,7 +54,7 @@ _refresh = function()
 
     local current_activity_text = "No Activity"
     if has_task_in_progress then
-        current_activity_text = current_task.description
+        current_activity_text = utils.trim_text(current_task.description, 54)
     end
 
     -- Calculate total time
@@ -125,8 +127,8 @@ return {
         this_window = ui.Window:new {
             Title = "D-Tracker",
             Orientation = "vertical",
-            Width = 640,
-            Height = 480,
+            Width = 800,
+            Height = 600,
             MaxWidth = "none",
             MaxHeight = "none";
             MinWidth = 250,
@@ -134,6 +136,7 @@ return {
             HideOnEscape = true,
             SizeButton = true,
             Style = "margin: 15;",
+            Id = "main_ui_window",
             Children = {
                 ui.Group:new{
                     Width = "free",
@@ -176,13 +179,16 @@ return {
                     Orientation = "horizontal",
                     Style = "margin-bottom: 10;",
                     Children = {
-                        ui.Input:new{
+                        InputWithPlaceholder:new{
                             Id = "task-description",
-                            Width = "free"
+                            Width = "free",
+                            MinWidth = 240,
+                            Placeholder = "Description"
                         },
-                        ui.Input:new{
+                        InputWithPlaceholder:new{
                             Id = "task-project",
-                            Width = "free"
+                            Width = "free",
+                            Placeholder = "Project"
                         },
                         ui.Button:new{
                             Width = 120,
@@ -203,11 +209,8 @@ return {
 
                                 -- Clear inputs and refresh UI
 
-                                description_element:setValue("Text", "")
-                                description_element:onSetText()
-
-                                project_element:setValue("Text", "")
-                                project_element:onSetText()
+                                InputWithPlaceholder.reset(description_element)
+                                InputWithPlaceholder.reset(project_element)
 
                                 _refresh()
                             end
@@ -222,7 +225,7 @@ return {
                 },
                 ui.ScrollGroup:new{
                     Width = "fill",
-                    HSliderMode = "auto",
+                    --HSliderMode = "auto",
                     VSliderMode = "auto",
                     Style = "margin-bottom: 20;",
                     Child = ui.Canvas:new{

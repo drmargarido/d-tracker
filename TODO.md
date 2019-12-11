@@ -1,10 +1,12 @@
 # TODO
 
+* Maintainabilty
+    + Create migrations table in the database
+    + Make the initial database creation also check for missing migrations so if a new version of the program is released the users can have their database updated
+
 * Improve graphical appearance as much as possible
     + Add icon for the window
-    + Adapt size of trimmed description and project according to the main window size
     + Display task description and project placeholders in input fields
-    + Change the task/project input space racio so the description has more space
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
