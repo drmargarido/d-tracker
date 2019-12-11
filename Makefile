@@ -19,6 +19,7 @@ structure:
 luajit:
 	cd $(LUA_FOLDER)/ && make
 	cp $(LUA_FOLDER)/src/libluajit.so $(DEPLOY_FOLDER)/
+	ln -sf $(DEPLOY_FOLDER)/libluajit.so $(DEPLOY_FOLDER)/libluajit-5.1.so.2
 
 tekui:
 	cp -R external/tek $(DEPLOY_FOLDER)/

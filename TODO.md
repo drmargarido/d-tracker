@@ -11,6 +11,10 @@
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
     + If autocomplete is applied to a task the project should also be automatically filled
 
+* Placeholders
+    + Make the placeholder text disappear after selecting the input
+    + Make the placeholder text reappear if there is no text in the input and it its not selected anymore
+
 * Create stats window with tasks filtering
     + Display the list of filtered tasks while presenting the days
     + Create the filtering of tasks by day
@@ -28,6 +32,16 @@
     + Klinik
     + Monochrome
     + Gradient
+
+* Dependencies support
+    + Add LuaFileSystem lib to the dependencies list
+    + Add compilation instructions for the LuaFileSystem lib for linux/POSIX
+    + Add compilation instructions for the LuaFileSystem lib for windows
+    + Add the source of the tekui project instead of the ready dependencies
+    + Add instructions for compilation of the lsqlite for windows
+    + Add instructions for compilation of luajit for windows
+    + Add instructions for compilation of the tekui for linux/POSIX
+    + Add instructions for compilation of the tekui for windows
 
 * Build releases
     + Windows Binary Release
