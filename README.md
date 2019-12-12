@@ -1,6 +1,6 @@
 # Timetracker
 
-Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses less than 10MB of RAM, and has 4 small dependencies.
+Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses about 10MB of RAM and has a small quantity of dependencies.
 
 
 ## Motivation
@@ -23,7 +23,7 @@ Release 1.0:
 * [x] Associate a task with a project
 * [x] Export filtered tasks to XML with the same format as the hamster timetracker
 * [ ] Autocomplete in task creation
-* [ ] Listing of tasks per range of days
+* [x] Listing of tasks per range of days
 * [ ] Project/Task Statistics by range of days
 
 Release 1.1:
@@ -65,7 +65,8 @@ make test
 
 The dependencies are in the external folder.
 
-* luajit - [link](https://luajit.org/)
-* lsqlite - [link](http://lua.sqlite.org/index.cgi/index)
-* date - [link](https://github.com/Tieske/date)
-* tekui - [link](http://tekui.neoscientists.org/)
+* [luajit](https://luajit.org/) - Used as scripting language to implement the application.
+* [lsqlite](http://lua.sqlite.org/index.cgi/index) - Contains the database and lua wrapper to communicate with it, so we can store the application data.
+* [date](https://github.com/Tieske/date) - Used for parsing and handling of dates.
+* [tekui](http://tekui.neoscientists.org/) - Used to implement the whole UI.
+* [LuaFileSystem](https://keplerproject.github.io/luafilesystem/manual.html) - Used to list the folders when exporting the tasks to XML.
