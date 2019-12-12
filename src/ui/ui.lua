@@ -7,9 +7,6 @@ local edit_task_window = require "src.ui.windows.edit_task_window"
 local stats_window = require "src.ui.windows.stats_window"
 local notification_window = require "src.ui.windows.notification_window"
 
--- Utils
-local date = require "date.date"
-
 local function init()
     ui.ThemeName = "d-tracker"
     local base_window = main_window.init()
@@ -17,7 +14,7 @@ local function init()
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),
-            stats_window.init(date(), date()),
+            stats_window.init(),
             notification_window.init()
         }
     }

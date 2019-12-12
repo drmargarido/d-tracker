@@ -12,6 +12,8 @@ function InputWithPlaceholder.new(_, self)
     end
 
     local input = ui.Input:new(self)
+
+    -- The widget that really olds the text is the grandson of the input
     local _onSelect = input.Child.Child.onSelect
     input.Child.Child.onSelect = function(_self)
         _onSelect(_self)

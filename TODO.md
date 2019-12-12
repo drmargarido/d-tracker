@@ -12,10 +12,6 @@
     + If autocomplete is applied to a task the project should also be automatically filled
 
 * Create stats window with tasks filtering
-    + Display the list of filtered tasks while presenting the days
-    + Create the filtering of tasks by day
-    + Create the filtering of tasks by week
-    + Create the filtering of tasks by date range
     + Search by specific tasks
 
 * Create the display of total times of the filtered tasks in the stats window

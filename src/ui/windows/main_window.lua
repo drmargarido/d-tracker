@@ -22,6 +22,8 @@ local ui = require "tek.ui"
 local TaskRow = require "src.ui.components.task_row"
 local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 
+-- Windows
+local stats_window = require "src.ui.windows.stats_window"
 local this_window
 
 local _refresh
@@ -270,7 +272,11 @@ return {
                         },
                         ui.Button:new{
                             Width = 120,
-                            Text = "Show Overview"
+                            Text = "Show Overview",
+                            onPress = function(self)
+                                stats_window.update(self, date(), date())
+                                self:getById("stats_window"):setValue("Status", "show")
+                            end
                         }
                     }
                 }
