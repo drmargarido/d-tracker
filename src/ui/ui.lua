@@ -14,7 +14,7 @@ local function init()
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),
-            stats_window.init(),
+            stats_window.init(main_window.refresh),
             notification_window.init()
         }
     }

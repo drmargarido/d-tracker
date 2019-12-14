@@ -23,6 +23,7 @@ return check_input(
                 WHERE t.start_time > date('%s') AND t.start_time < date('%s')
                 OR t.end_time > date('%s') AND t.end_time < date('%s')
                 OR t.start_time > date('%s') AND t.end_time < date('%s')
+                ORDER BY start_time
             ]],
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),

@@ -13,10 +13,8 @@
 
 * Create stats window with tasks filtering
     + Search by specific tasks
-
-* Create the display of total times of the filtered tasks in the stats window
-    + Display the total time in each task
-    + Display the total time in each project
+    + Allow delete of tasks and update the window
+    + Implement the XML export
 
 * Create alternative styles
     + Dark
