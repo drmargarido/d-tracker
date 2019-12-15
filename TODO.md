@@ -13,8 +13,6 @@
 
 * Create stats window with tasks filtering
     + Search by specific tasks
-    + Allow delete of tasks and update the window
-    + Implement the XML export
 
 * Create alternative styles
     + Dark

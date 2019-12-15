@@ -117,7 +117,7 @@ return {
                         "%02d:%02d - %s %s",
                         start_time:gethours(), start_time:getminutes(),
                         end_time_text,
-                        utils.trim_text(task.description, 58)
+                        utils.trim_text(task.description, 56)
                     ),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
@@ -141,7 +141,7 @@ return {
                         padding-left: 5;
                     ]],
                     Mode = "button",
-                    Text = utils.trim_text(task.project, 24),
+                    Text = utils.trim_text(task.project, 22),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
                     end),

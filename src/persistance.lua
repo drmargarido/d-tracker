@@ -6,7 +6,7 @@ local conf = require "src.conf"
 ]]
 return {
     update_xml_save_path = function(path)
-        local f = io.open(conf.xml_path_file, "w")
+        local f = io.open(conf.xml_path_file..".lua", "w")
         if not f then
             print("Failed to persist the configuration")
             return false, "Failed to persist the configuration"

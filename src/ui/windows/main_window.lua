@@ -111,8 +111,8 @@ _refresh = function()
             }
 
             if status == "selected" then
-                conf.xml_path = path.."/"
-                persistance.update_xml_save_path(path.."/")
+                conf.xml_path = path
+                persistance.update_xml_save_path(path)
 
                 local fname = path .. "/" .. select[1]
                 ui_utils.report_error(xml_export(today_tasks, fname))

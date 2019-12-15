@@ -3,24 +3,41 @@ local ui = require "tek.ui"
 
 -- Controllers
 local list_tasks = require "src.controller.list_tasks"
+local delete_task = require "src.controller.delete_task"
 
 -- Components
 local TaskRow = require "src.ui.components.task_row"
 local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 
 -- Utils
+local conf = require "src.conf"
 local date = require "date.date"
+local utils = require "src.utils"
 local ui_utils = require "src.ui.utils"
 
 -- Validators
 local validators = require "src.validators.base_validators"
 
+-- Exporters
+local xml_export = require "src.exporter.xml"
+
+-- Persistance
+local persistance = require "src.persistance"
+
 local main_refresh = nil
+local last_start_date = date()
+local last_end_date = date()
 
 local _update
 _update = function(self, start_date, end_date)
+    last_start_date = start_date
+    last_end_date = end_date
+
     -- Get the new list of tasks
-    local filtered_tasks = list_tasks(start_date, end_date)
+    local filtered_tasks, err = list_tasks(start_date, end_date)
+    if err ~= nil then
+        print(err)
+    end
 
     -- Prepare the tasks for each day
     local days_tasks = {}
@@ -39,18 +56,20 @@ _update = function(self, start_date, end_date)
 
         -- Time By Project
         local project_duration = date.diff(date(task.end_time), date(task.start_time))
-        if not projects_time[task.project] then
-            projects_time[task.project] = project_duration
+        local project_text = utils.trim_text(task.project, 95)
+        if not projects_time[project_text] then
+            projects_time[project_text] = project_duration
         else
-            projects_time[task.project] = projects_time[task.project] + project_duration
+            projects_time[project_text] = projects_time[project_text] + project_duration
         end
 
         -- Time By Task
         local task_duration = date.diff(date(task.end_time), date(task.start_time))
-        if not tasks_time[task.description] then
-            tasks_time[task.description] = task_duration
+        local task_text = utils.trim_text(task.description, 95)
+        if not tasks_time[task_text] then
+            tasks_time[task_text] = task_duration
         else
-            tasks_time[task.description] = tasks_time[task.description] + task_duration
+            tasks_time[task_text] = tasks_time[task_text] + task_duration
         end
     end
 
@@ -144,6 +163,27 @@ _update = function(self, start_date, end_date)
             }
         })
     end
+
+    -- Bind tasks to xml export button
+    self:getById("stats_xml_export"):setValue("onPress", function(_self)
+        local app = _self.Application
+        app:addCoroutine(function()
+            local status, path, select = _self.Application:requestFile{
+                Title = "Select the export path",
+                SelectText = "save",
+                Location = start_date:fmt("%F").."_"..end_date:fmt("%F")..".xml",
+                Path = conf.xml_path
+            }
+
+            if status == "selected" then
+                conf.xml_path = path
+                persistance.update_xml_save_path(path)
+
+                local fname = path.. "/" .. select[1]
+                ui_utils.report_error(xml_export(filtered_tasks, fname))
+            end
+        end)
+    end)
 end
 
 local date_search = function(self)
@@ -176,7 +216,7 @@ return {
     update = _update,
     init = function(refresh)
         main_refresh = refresh
-        return ui.Window:new{
+        local window = ui.Window:new{
             Id = "stats_window",
             Title = "Tasks Overview",
             Style = "margin: 15;",
@@ -321,11 +361,26 @@ return {
                     }
                 },
                 ui.Button:new{
+                    Id = "stats_xml_export",
                     HAlign = "right",
                     Width = 120,
                     Text = "XML Export"
                 }
             }
         }
+
+        window:addInputHandler(ui.MSG_KEYDOWN, window, function(self, msg)
+            -- Delete Pressed
+            if msg[3] == 127 then
+                local selected_task = TaskRow.get_selection()
+                if selected_task.task_id then
+                    ui_utils.report_error(delete_task(selected_task.task_id))
+                    refresh()
+                    _update(self, last_start_date, last_end_date)
+                end
+            end
+        end)
+
+        return window
    end
 }
