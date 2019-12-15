@@ -28,6 +28,8 @@ Release 1.0:
 
 Release 1.1:
 * [ ] Select themes
+
+Release 1.2:
 * [ ] Command line client
 
 
