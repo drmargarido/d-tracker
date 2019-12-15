@@ -22,9 +22,9 @@ Release 1.0:
 * [x] Edit the start and end time of an individual task
 * [x] Associate a task with a project
 * [x] Export filtered tasks to XML with the same format as the hamster timetracker
-* [ ] Autocomplete in task creation
 * [x] Listing of tasks per range of days
 * [x] Project/Task Statistics by range of days
+* [ ] Autocomplete in task creation
 
 Release 1.1:
 * [ ] Select themes

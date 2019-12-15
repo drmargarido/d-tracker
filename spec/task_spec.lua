@@ -6,6 +6,7 @@ local edit_task = require "src.controller.edit_task"
 local list_tasks = require "src.controller.list_tasks"
 local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
+local list_tasks_by_text = require "src.controller.list_tasks_by_text"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local set_task_in_progress = require "src.controller.set_task_in_progress"
 
@@ -58,8 +59,16 @@ describe("Base Path of Tasks management", function()
     end)
 
     it("Lists today's tasks", function()
-       local tasks = list_today_tasks()
-       assert.is_true(#tasks == 2)
+        local tasks = list_today_tasks()
+        assert.is_true(#tasks == 2)
+    end)
+
+    it("Lists tasks by text", function()
+        local tasks = list_tasks_by_text(date(1970, 1, 1), date(), "Dev")
+        assert.is_true(#tasks == 2)
+
+        tasks = list_tasks_by_text(date(1970, 1, 1), date(), "Arglan2")
+        assert.is_true(#tasks == 3)
     end)
 
     it("Changes the task description", function()
@@ -319,5 +328,13 @@ describe("Invalid input types in tasks management", function()
 
         local after_tasks = list_tasks(date(1970, 1, 1), date())
         assert.is_true(#before_tasks == #after_tasks)
+    end)
+
+    it("Tries to get tasks by text with invalid data", function()
+        local _, err = list_tasks_by_text(date(1970, 1, 1), date(), nil)
+        assert.is_false(err == nil)
+
+        _, err = list_tasks_by_text(date(1970, 1, 1), date(), 123)
+        assert.is_false(err == nil)
     end)
 end)

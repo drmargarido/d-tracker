@@ -20,10 +20,12 @@ return check_input(
                 SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
                 FROM task as t
                 LEFT JOIN project p ON p.id = t.project_id
-                WHERE t.start_time > date('%s') AND t.start_time < date('%s')
-                OR t.end_time > date('%s') AND t.end_time < date('%s')
-                OR t.start_time > date('%s') AND t.end_time < date('%s')
-                ORDER BY start_time
+                WHERE (
+                    t.start_time > date('%s') AND t.start_time < date('%s')
+                    OR t.end_time > date('%s') AND t.end_time < date('%s')
+                    OR t.start_time > date('%s') AND t.end_time < date('%s')
+                )
+                ORDER BY t.start_time
             ]],
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),

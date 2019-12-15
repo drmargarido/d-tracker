@@ -4,6 +4,7 @@ local ui = require "tek.ui"
 -- Controllers
 local list_tasks = require "src.controller.list_tasks"
 local delete_task = require "src.controller.delete_task"
+local list_tasks_by_text = require "src.controller.list_tasks_by_text"
 
 -- Components
 local TaskRow = require "src.ui.components.task_row"
@@ -29,14 +30,26 @@ local last_start_date = date()
 local last_end_date = date()
 
 local _update
-_update = function(self, start_date, end_date)
+_update = function(self, start_date, end_date, text)
     last_start_date = start_date
     last_end_date = end_date
 
     -- Get the new list of tasks
-    local filtered_tasks, err = list_tasks(start_date, end_date)
-    if err ~= nil then
-        print(err)
+    local filtered_tasks
+    if text then
+        local err
+        filtered_tasks, err = ui_utils.report_error(list_tasks_by_text(
+            start_date,
+            end_date,
+            text
+        ))
+
+        if err ~= nil then
+            print(err)
+            return
+        end
+    else
+        filtered_tasks = list_tasks(start_date, end_date)
     end
 
     -- Prepare the tasks for each day
@@ -211,6 +224,22 @@ local date_search = function(self)
     _update(self, date(start_date), date(end_date))
 end
 
+local text_search = function(self)
+    if not self.Pressed then
+        return
+    end
+
+    local input_element = self:getById("stats_text_search")
+    local text = input_element:getText()
+
+    -- Clear the text if its only the placeholder text
+    if input_element.Class == "placeholder" and text == input_element.Placeholder then
+        text = ""
+    end
+
+    _update(self, last_start_date, last_end_date, text)
+end
+
 -- Exportable Methods
 return {
     update = _update,
@@ -270,12 +299,14 @@ return {
                             Height = "auto",
                             Children = {
                                 InputWithPlaceholder:new{
+                                    Id = "stats_text_search",
                                     Width = "free",
                                     Placeholder = "Search"
                                 },
                                 ui.Button:new{
                                     Width = 60,
-                                    Text = "Apply"
+                                    Text = "Apply",
+                                    onPress = text_search
                                 }
                             }
                         }

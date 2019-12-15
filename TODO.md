@@ -11,15 +11,21 @@
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
     + If autocomplete is applied to a task the project should also be automatically filled
 
-* Create stats window with tasks filtering
-    + Search by specific tasks
-
 * Create alternative styles
     + Dark
     + Stain
     + Klinik
     + Monochrome
     + Gradient
+
+* Implement a command line interface to interact with D-tracker
+    + Present help text when no arguments are received
+    + Starting of a new task
+    + Stop of the running task
+    + Listing of the today tasks
+    + Listing of the tasks by range of dates
+    + Listing of the tasks by text
+    + Exporting to XML
 
 * Dependencies support
     + Add LuaFileSystem lib to the dependencies list
