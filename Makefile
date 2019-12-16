@@ -1,4 +1,4 @@
-DEPLOY_FOLDER=.
+DEPLOY_FOLDER=build
 EXECUTABLE=d-tracker
 
 LUA_FOLDER=external/LuaJIT
@@ -13,7 +13,7 @@ base: structure luajit date tekui lsqlite timetracker
 
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
-	cp -R -n src $(DEPLOY_FOLDER)/
+	cp -R -n dtracker $(DEPLOY_FOLDER)/
 	cp -R -n images $(DEPLOY_FOLDER)/
 
 luajit:
@@ -38,15 +38,16 @@ date:
 timetracker:
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
+install:
+	install $(DEPLOY_FOLDER)/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
+	cp -R -n $(DEPLOY_FOLDER)/dtracker /usr/local/share/lua/5.1/
+
+
 test: base
 	busted spec
 
 clean:
-	rm -f $(EXECUTABLE)
 	rm -f -R build
-	rm -f -R $(DEPLOY_FOLDER)/tek
-	rm -f -R date
-	rm -f *.so
 	rm -f *.sqlite3
 	rm -f *.xml
 	rm -f xml_save_path.lua

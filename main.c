@@ -7,9 +7,9 @@
 int main(int argc, char ** argv){
     lua_State *L = luaL_newstate();
     luaL_openlibs(L);
-    
-    luaL_loadfile(L, "src/main.lua");
-    if (lua_pcall(L, 0, 0, 0) != 0){            
+
+    luaL_loadfile(L, "dtracker/main.lua");
+    if (lua_pcall(L, 0, 0, 0) != 0){
         printf("Lua error: %s\n", lua_tostring(L, -1));
     }
 

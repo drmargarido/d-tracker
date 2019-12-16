@@ -37,6 +37,13 @@
     + Add instructions for compilation of the tekui for linux/POSIX
     + Add instructions for compilation of the tekui for windows
 
+* Linux Build
+    + Bundle lua files and put them in the /usr/local/share/lua/5.1/
+    + Make main.c lua path configurable
+    + Make pencil edit image path configurable
+    + Set the database storage path to the user home
+    + Set the last used path file to the user home
+
 * Build releases
     + Windows Binary Release
         - Compile the exe file with the wanted icon
