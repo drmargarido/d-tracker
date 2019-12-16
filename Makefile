@@ -41,7 +41,10 @@ timetracker:
 install:
 	install $(DEPLOY_FOLDER)/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
 	cp -R -n $(DEPLOY_FOLDER)/dtracker /usr/local/share/lua/5.1/
+	cp platform/linux/d-tracker.desktop /usr/share/applications/
 
+uninstall:
+	echo "Uninstalled"
 
 test: base
 	busted spec

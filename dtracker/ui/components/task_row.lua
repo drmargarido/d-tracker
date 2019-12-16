@@ -4,6 +4,7 @@ local ui = require "tek.ui"
 -- Utils
 local date = require "date.date"
 local utils = require "dtracker.utils"
+local conf = require "dtracker.conf"
 
 -- Controllers
 local add_task = require "dtracker.controller.add_task"
@@ -12,7 +13,7 @@ local add_task = require "dtracker.controller.add_task"
 local edit_task_window = require "dtracker.ui.windows.edit_task_window"
 
 -- Globals
-local pencil_image = ui.loadImage("images/pencil_icon.PPM")
+local pencil_image = ui.loadImage(conf.pencil_icon)
 local selected_id = nil
 local selected_task_id = nil
 

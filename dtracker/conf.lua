@@ -9,6 +9,9 @@ end
 
 return {
     db = "d-tracker.sqlite3",
+
     xml_path_file = xml_path_file,
-    xml_path = xml_path
+    xml_path = xml_path,
+
+    pencil_icon = "images/pencil_icon.PPM"
 }

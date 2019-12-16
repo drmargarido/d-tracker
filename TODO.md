@@ -38,11 +38,13 @@
     + Add instructions for compilation of the tekui for windows
 
 * Linux Build
-    + Bundle lua files and put them in the /usr/local/share/lua/5.1/
+    + Executable in /usr/bin/d-tracker
+    + Bundle lua files and put them in the /usr/share/lua/5.1/dtracker
+    + Put dependencies shared objects in /usr/lib/d-tracker
+    + Put the images and read only application content in /usr/share/d-tracker
+    + Put the runtime data(DB and XML path) in  ~/.local/share/d-tracker/
+    + Put the d-tracker icon in the hicolor theme in /usr/share/icons/*/apps/d-tracker.(svg|png)
     + Make main.c lua path configurable
-    + Make pencil edit image path configurable
-    + Set the database storage path to the user home
-    + Set the last used path file to the user home
 
 * Build releases
     + Windows Binary Release
