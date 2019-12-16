@@ -28,18 +28,13 @@
     + Exporting to XML
 
 * Dependencies support
-    + Add LuaFileSystem lib to the dependencies list
-    + Add compilation instructions for the LuaFileSystem lib for linux/POSIX
     + Add compilation instructions for the LuaFileSystem lib for windows
-    + Add the source of the tekui project instead of the ready dependencies
     + Add instructions for compilation of the lsqlite for windows
     + Add instructions for compilation of luajit for windows
-    + Add instructions for compilation of the tekui for linux/POSIX
     + Add instructions for compilation of the tekui for windows
 
 * Linux Build
-    + Bundle lua files and put them in the /usr/share/lua/5.1/d-tracker
-    + Put dependencies shared objects in /usr/lib/d-tracker
+    + Add a configuration specific for linux system wide installation
     + Put the runtime data(DB and XML path) in  ~/.local/share/d-tracker/
     + Put the d-tracker icon in the hicolor theme in /usr/share/icons/hicolor/scalable/apps/d-tracker.(svg|png)
     + Make main.c lua path configurable

@@ -5,4 +5,4 @@ Name=D-Tracker
 GenericName=A lightweight timetracker that looks like hamster
 Categories=Utility;
 Exec=/usr/local/bin/d-tracker
-Icon=d-tracker_icon
+Icon=d-tracker

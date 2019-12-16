@@ -9,7 +9,7 @@ CC=gcc
 CFLAGS=-O2
 
 
-base: structure luajit date tekui lsqlite timetracker
+base: structure luajit date tekui lsqlite luafilesystem timetracker
 
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
@@ -22,7 +22,8 @@ luajit:
 	ln -sf $(DEPLOY_FOLDER)/libluajit.so $(DEPLOY_FOLDER)/libluajit-5.1.so.2
 
 tekui:
-	cp -R external/tek $(DEPLOY_FOLDER)/
+	cd external/tekUI && make all
+	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
 	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
 
 lsqlite: sqlite.o
@@ -35,6 +36,10 @@ date:
 	mkdir -p $(DEPLOY_FOLDER)/date
 	cp -R external/date/src/date.lua $(DEPLOY_FOLDER)/date/
 
+luafilesystem: luajit
+	cd external/luafilesystem && make
+	cp external/luafilesystem/src/lfs.so $(DEPLOY_FOLDER)/
+
 timetracker:
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
@@ -46,6 +51,7 @@ install:
 	mkdir -p /usr/share/lua/5.1/d-tracker
 	cp -R $(DEPLOY_FOLDER)/src /usr/share/lua/5.1/d-tracker/
 	cp -R $(DEPLOY_FOLDER)/date /usr/share/lua/5.1/d-tracker/
+	cp -R $(DEPLOY_FOLDER)/tek /usr/share/lua/5.1/d-tracker/
 
 	# Override local lua configuration with the linux one
 
@@ -54,15 +60,20 @@ install:
 	mkdir -p /usr/lib/d-tracker
 	cp $(DEPLOY_FOLDER)/libluajit* /usr/lib/d-tracker/
 	cp $(DEPLOY_FOLDER)/lsqlite3.so /usr/lib/d-tracker/
+	cp $(DEPLOY_FOLDER)/lfs.so /usr/lib/d-tracker/
 
 	# Desktop configuration and icon
 	cp platform/linux/d-tracker.desktop /usr/share/applications/
-	cp images/d-tracker.svg /usr/share/icons/hicolor/scalable/apps/
+	cp images/d-tracker.svg /usr/share/icons/hicolor/scalable/apps/d-tracker.svg
+	cp images/d-tracker_32x32.png /usr/share/icons/hicolor/32x32/apps/d-tracker.png
+	cp images/d-tracker_64x64.png /usr/share/icons/hicolor/64x64/apps/d-tracker.png
+	cp images/d-tracker_128x128.png /usr/share/icons/hicolor/128x128/apps/d-tracker.png
+	cp images/d-tracker_256x256.png /usr/share/icons/hicolor/256x256/apps/d-tracker.png
+	cp images/d-tracker_512x512.png /usr/share/icons/hicolor/512x512/apps/d-tracker.png
 
 	# Read only data
 	mkdir -p /usr/share/d-tracker
 	cp -R images /usr/share/d-tracker/images
-	cp d-tracker.css /usr/share/d-tracker/
 
 	echo "D-Tracker successfully installed!"
 

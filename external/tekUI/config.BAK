@@ -129,17 +129,17 @@ TEKLIB_DEFS = -DENABLE_LAZY_SINGLETON
 PREFIX ?= /usr/local
 LUAVER ?= 5.1
 
-LUA_DIR = ../LuaJIT/src
-LUA_INCDIR = ../LuaJIT/src
+LUA_DIR = $(PREFIX)
+LUA_INCDIR = $(LUA_DIR)/include
 LUA_DEFS = -I$(LUA_INCDIR)
 # other known paths - better comment out what is inappropriate:
-#LUA_DEFS += -I/usr/include/lua$(LUAVER)
-#LUA_DEFS += -I/usr/local/include/lua51
+LUA_DEFS += -I/usr/include/lua$(LUAVER)
+LUA_DEFS += -I/usr/local/include/lua51
 
-#LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
-#LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
-#SYS_LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
-#SYS_LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
+LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
+LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
+SYS_LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
+SYS_LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
 
 #------------------------------------------------------------------------------
 # Libraries:
@@ -163,7 +163,7 @@ X11_DEFS = -I$(X11_INCDIR) -DX11_PIXMAP_CACHE -DENABLE_XSHM # -DENABLE_XVID
 
 # For Xft (antialiased fonts) support:
 X11_LIBS += $(XFT_LIBS) $(FONTCONFIG_LIBS) $(FREETYPE_LIBS)
-X11_DEFS += $(XFT_DEFS) $(FONTCONFIG_DEFS) $(FREETYPE_DEFS)
+X11_DEFS += $(XFT_DEFS) $(FONTCONFIG_DEFS) $(FREETYPE_DEFS) 
 
 XFT_DIR = $(X11_DIR)
 XFT_INCDIR = $(XFT_DIR)/include
@@ -188,10 +188,10 @@ FONTCONFIG_DEFS = -I$(FONTCONFIG_INCDIR)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 RAWFB_LIBS = $(FREETYPE_LIBS) $(RAWFB_SUB_LIBS) $(VNCSERVER_LIBS) $(TEKUI_LIBS)
-RAWFB_DEFS = $(FREETYPE_DEFS) $(RAWFB_SUB_DEFS) $(VNCSERVER_DEFS) -DRFB_PIXMAP_CACHE
+RAWFB_DEFS = $(FREETYPE_DEFS) $(RAWFB_SUB_DEFS) $(VNCSERVER_DEFS) -DRFB_PIXMAP_CACHE 
 
 # RAWFB_DEFS += -DDEF_FONTDIR=\"$(SYS_LUA_SHARE)/tek/ui/font\"
-# RAWFB_DEFS += -DRFBPIXFMT=TVPIXFMT_R5G6B5
+# RAWFB_DEFS += -DRFBPIXFMT=TVPIXFMT_R5G6B5 
 # RAWFB_DEFS += -DENABLE_WINBACKBUFFER # -DENABLE_BACKBUFFER
 
 # Linux framebuffer support:
