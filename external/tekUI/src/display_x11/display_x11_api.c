@@ -4,6 +4,7 @@
 #include "display_x11_mod.h"
 #include <tek/lib/imgcache.h>
 #include <tek/inline/exec.h>
+#include "../../tek/d-tracker.icon"
 
 #if defined(ENABLE_XSHM)
 #warning using globals (-DENABLE_XSHM)
@@ -438,7 +439,31 @@ static void x11_openvisual(struct X11Display *mod, struct TVRequest *req)
 		if (v->window == TNULL)
 			break;
 
-		/*Xutf8SetWMProperties(mod->x11_Display, v->window, v->title, v->title, 
+        XWMHints* win_hints;
+        Pixmap icon_pixmap = XCreateBitmapFromData(mod->x11_Display,
+                                           v->window,
+                                           d_tracker_bits,
+                                           d_tracker_width,
+                                           d_tracker_height);
+
+        /* allocate a WM hints structure. */
+        win_hints = XAllocWMHints();
+        if (!win_hints) {
+            fprintf(stderr, "XAllocWMHints - out of memory\n");
+            exit(1);
+        }
+
+        win_hints->flags = IconPixmapHint;
+        win_hints->icon_pixmap = icon_pixmap;
+
+        /* pass the hints to the window manager. */
+        XSetWMHints(mod->x11_Display, v->window, win_hints);
+
+        /* finally, we can free the WM hints structure. */
+        XFree(win_hints);
+
+
+		/*Xutf8SetWMProperties(mod->x11_Display, v->window, v->title, v->title,
 		   NULL, 0, v->sizehints, NULL, NULL); */
 
 		if (v->sizehints->flags)
@@ -646,7 +671,7 @@ static void x11_frect(struct X11Display *mod, struct TVRequest *req)
 	TINT x1 = x0 + req->tvr_Op.FRect.Rect[2] - 1;
 	TINT y1 = y0 + req->tvr_Op.FRect.Rect[3] - 1;
 
-	if (!REGION_OVERLAP(x0, y0, x1, y1, 0, 0, v->winwidth - 1, 
+	if (!REGION_OVERLAP(x0, y0, x1, y1, 0, 0, v->winwidth - 1,
 			v->winheight - 1))
 		return;
 
@@ -687,7 +712,7 @@ static void x11_rect(struct X11Display *mod, struct TVRequest *req)
 	TINT x1 = x0 + req->tvr_Op.FRect.Rect[2] - 1;
 	TINT y1 = y0 + req->tvr_Op.FRect.Rect[3] - 1;
 
-	if (!REGION_OVERLAP(x0, y0, x1, y1, 0, 0, v->winwidth - 1, 
+	if (!REGION_OVERLAP(x0, y0, x1, y1, 0, 0, v->winwidth - 1,
 			v->winheight - 1))
 		return;
 	setfgpen(mod, v, req->tvr_Op.Rect.Pen);
@@ -1459,7 +1484,7 @@ static void x11_drawbuffer(struct X11Display *mod, struct TVRequest *req)
 		return;
 
 	dst.tpb_Format = v->pixfmt;
-	pixconv_convert(&src, &dst, 0, 0, w - 1, h - 1, 0, 0, 0, 
+	pixconv_convert(&src, &dst, 0, 0, w - 1, h - 1, 0, 0, 0,
 		mod->x11_Flags & X11FL_SWAPBYTEORDER);
 	x11_putimage(mod, v, req, x, y, w, h);
 }

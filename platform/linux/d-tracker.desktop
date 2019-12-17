@@ -1,8 +1,9 @@
 [Desktop Entry]
 Type=Application
-Version=1.0
 Name=D-Tracker
+Terminal=false
 GenericName=A lightweight timetracker that looks like hamster
 Categories=Utility;
-Exec=/usr/local/bin/d-tracker
-Icon=d-tracker
+Exec=d-tracker
+Icon=d-tracker.png
+StartupWMClass=d-tracker

@@ -44,6 +44,9 @@ timetracker:
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 
 install:
+	# Recompile executable to use the system paths instead of the local ones
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DLINUX_INSTALL
+
 	# Executable
 	cp $(DEPLOY_FOLDER)/$(EXECUTABLE) /usr/bin/$(EXECUTABLE)
 
@@ -54,22 +57,18 @@ install:
 	cp -R $(DEPLOY_FOLDER)/tek /usr/share/lua/5.1/d-tracker/
 
 	# Override local lua configuration with the linux one
-
+	cp platform/linux/installed_conf.lua /usr/share/lua/5.1/d-tracker/src/conf.lua
 
 	# Shared Libraries
 	mkdir -p /usr/lib/d-tracker
-	cp $(DEPLOY_FOLDER)/libluajit* /usr/lib/d-tracker/
+	cp $(DEPLOY_FOLDER)/libluajit.so /usr/lib/d-tracker/
+	ln -sf /usr/lib/d-tracker/libluajit.so /usr/lib/d-tracker/libluajit-5.1.so.2
 	cp $(DEPLOY_FOLDER)/lsqlite3.so /usr/lib/d-tracker/
 	cp $(DEPLOY_FOLDER)/lfs.so /usr/lib/d-tracker/
 
-	# Desktop configuration and icon
+	# Desktop configuration and icons
 	cp platform/linux/d-tracker.desktop /usr/share/applications/
-	cp images/d-tracker.svg /usr/share/icons/hicolor/scalable/apps/d-tracker.svg
-	cp images/d-tracker_32x32.png /usr/share/icons/hicolor/32x32/apps/d-tracker.png
-	cp images/d-tracker_64x64.png /usr/share/icons/hicolor/64x64/apps/d-tracker.png
-	cp images/d-tracker_128x128.png /usr/share/icons/hicolor/128x128/apps/d-tracker.png
-	cp images/d-tracker_256x256.png /usr/share/icons/hicolor/256x256/apps/d-tracker.png
-	cp images/d-tracker_512x512.png /usr/share/icons/hicolor/512x512/apps/d-tracker.png
+	cp images/d-tracker_512x512.png /usr/share/pixmaps/d-tracker.png
 
 	# Read only data
 	mkdir -p /usr/share/d-tracker
@@ -78,12 +77,13 @@ install:
 	echo "D-Tracker successfully installed!"
 
 uninstall:
-	rm -R /usr/bin/$(EXECUTABLE)
-	rm -R /usr/share/lua/5.1/d-tracker
-	rm -R /usr/share/applications/d-tracker.desktop
-	rm -R /usr/share/icons/hicolor/scalable/apps/d-tracker.svg
-	rm -R /usr/share/d-tracker
-	rm -R /usr/lib/d-tracker
+	rm -f /usr/bin/$(EXECUTABLE)
+	rm -R -f /usr/share/lua/5.1/d-tracker
+	rm -f /usr/share/applications/d-tracker.desktop
+	rm -f /usr/share/pixmaps/d-tracker.png
+
+	rm -R -f /usr/share/d-tracker
+	rm -R -f /usr/lib/d-tracker
 
 	echo "D-Tracker uninstalled from the system!"
 

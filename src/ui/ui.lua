@@ -1,5 +1,6 @@
 -- Tekui
 local ui = require "tek.ui"
+local Visual = require "tek.lib.visual"
 
 -- Windows
 local main_window = require "src.ui.windows.main_window"
@@ -11,6 +12,7 @@ local function init()
     ui.ThemeName = "d-tracker"
     local base_window = main_window.init()
     local application = ui.Application:new{
+        RootWindow = true,
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),
