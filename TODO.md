@@ -6,6 +6,7 @@
 
 * Improve graphical appearance as much as possible
     + Add icon for the window
+    + Fix max trim sizes according to the window width
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
@@ -33,12 +34,6 @@
     + Add instructions for compilation of luajit for windows
     + Add instructions for compilation of the tekui for windows
 
-* Linux Build
-    + Add a configuration specific for linux system wide installation
-    + Put the runtime data(DB and XML path) in  ~/.local/share/d-tracker/
-    + Put the d-tracker icon in the hicolor theme in /usr/share/icons/hicolor/scalable/apps/d-tracker.(svg|png)
-    + Make main.c lua path configurable
-
 * Build releases
     + Windows Binary Release
         - Compile the exe file with the wanted icon
@@ -46,7 +41,6 @@
         - Create an app file
     + Linux Binary Release
     + Linux Source Release
-        - .desktop file to install the application
         - Setup the `make install` command
     + AUR package
         - Create a MAKEPKG

@@ -33,11 +33,24 @@ Release 1.2:
 * [ ] Command line client
 
 
-## Build
+## Install
 
-Build dependencies and the executable for Linux
+### Linux
+
+To run the application self contained in a single folder run the following command and check the build/ generated folder.
 ```sh
 make
+```
+
+To install the application in the system run:
+```sh
+make
+sudo make install
+```
+
+To uninstall the application from the system run:
+```sh
+sudo make uninstall
 ```
 
 ## Project Structure
@@ -48,10 +61,11 @@ make
 |---/controllers/   - Logic which present the main system actions and interacts with the database
 |---/validators/    - Validators for data
 |---/exporter/      - Exporte tasks lists to files in specific formats
-|spec/              - Tests to validate the correct behavior of the system
+|---/spec/          - Tests to validate the correct behavior of the system
+|---/migrations/    - Scripts for to create and update the database model
 |platform/          - Platforms specific settings files, like the mac .app and windows .rc
 |external/          - Dependencies repositories
-|migrations/        - Scripts for to create and update the database model
+|images/            - Images of the application
 |main.c             - Used to create the application embeded with the lua execution
 ```
 
@@ -72,3 +86,4 @@ The dependencies are in the external folder.
 * [date](https://github.com/Tieske/date) - Used for parsing and handling of dates.
 * [tekui](http://tekui.neoscientists.org/) - Used to implement the whole UI.
 * [LuaFileSystem](https://keplerproject.github.io/luafilesystem/manual.html) - Used to list the folders when exporting the tasks to XML.
+* [freetype2](https://www.freetype.org/) - (Only for X11) Used in the render of text and fonts in the tekui lib.
