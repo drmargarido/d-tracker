@@ -1,9 +1,5 @@
 # TODO
 
-* Maintainabilty
-    + Create migrations table in the database
-    + Make the initial database creation also check for missing migrations so if a new version of the program is released the users can have their database updated
-
 * Improve graphical appearance as much as possible
     + Add icon for the window
     + Fix max trim sizes according to the window width
@@ -40,8 +36,6 @@
     + Macos Binary Release
         - Create an app file
     + Linux Binary Release
-    + Linux Source Release
-        - Setup the `make install` command
     + AUR package
         - Create a MAKEPKG
         - Register in the AUR platform
