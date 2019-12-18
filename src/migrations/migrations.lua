@@ -33,7 +33,7 @@ return function()
             local migration = migrations[i]
             migration.execute(db)
             db:exec(string.format(
-                "INSERT INTO migration (name) VALUES (%s)", migration.name
+                "INSERT INTO migration (name) VALUES ('%s')", migration.name
             ))
         end
 
