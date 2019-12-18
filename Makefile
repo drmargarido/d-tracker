@@ -58,7 +58,8 @@ timetracker: luajit
 
 install:
 	# Executable
-	cp $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) /usr/bin/$(EXECUTABLE)
+	cp $(DEPLOY_FOLDER)/platform/linux/system_run.sh /usr/bin/d-tracker
+	chmod +x /usr/bin/d-tracker
 
 	# Main lua code and lua libraries
 	mkdir -p /usr/share/lua/5.1/d-tracker
@@ -87,6 +88,7 @@ install:
 	# Read only data
 	mkdir -p /usr/share/d-tracker
 	cp -R $(DEPLOY_FOLDER)/images /usr/share/d-tracker/images
+	cp $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) /usr/share/d-tracker/$(EXECUTABLE)
 
 	echo "D-Tracker successfully installed!"
 
