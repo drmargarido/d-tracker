@@ -1,4 +1,4 @@
-
+export BASE_PATH=$(PWD)
 include config
 
 .PHONY: all libs modules install clean help distclean docs release

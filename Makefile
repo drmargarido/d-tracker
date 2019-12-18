@@ -107,3 +107,8 @@ clean:
 	rm -f *.sqlite3
 	rm -f *.xml
 	rm -f xml_save_path.lua
+
+	cd external/freetype2/ && make clean
+	cd external/LuaJIT/ && make clean
+	cd external/luafilesystem/ && make clean
+	cd external/tekUI/ && make clean

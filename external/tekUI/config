@@ -129,8 +129,8 @@ TEKLIB_DEFS = -DENABLE_LAZY_SINGLETON
 PREFIX ?= /usr/local
 LUAVER ?= 5.1
 
-LUA_DIR = /home/dmargarido/GIT/d-tracker/external/LuaJIT/src
-LUA_INCDIR = /home/dmargarido/GIT/d-tracker/external/LuaJIT/src
+LUA_DIR = $(BASE_PATH)/../LuaJIT/src
+LUA_INCDIR = $(BASE_PATH)/../LuaJIT/src
 LUA_DEFS = -I$(LUA_INCDIR)
 # other known paths - better comment out what is inappropriate:
 #LUA_DEFS += -I/usr/include/lua$(LUAVER)
@@ -146,7 +146,7 @@ LUA_DEFS = -I$(LUA_INCDIR)
 #------------------------------------------------------------------------------
 
 #FREETYPE_DIR = $(PREFIX)
-FREETYPE_DIR = /home/dmargarido/GIT/d-tracker/external/freetype2
+FREETYPE_DIR = $(BASE_PATH)/../freetype2
 FREETYPE_INCDIR = $(FREETYPE_DIR)/include
 #FREETYPE_LIBDIR = $(FREETYPE_DIR)/lib
 FREETYPE_LIBDIR = $(FREETYPE_DIR)/objs/.libs
