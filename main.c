@@ -13,6 +13,7 @@ int main(int argc, char ** argv){
         luaL_dostring(L, "package.cpath = package.cpath .. ';/usr/lib/d-tracker/?.so'");
         luaL_loadfile(L, "/usr/share/lua/5.1/d-tracker/src/main.lua");
     #else
+        luaL_dostring(L, "package.cpath = package.cpath .. ';?.so'");
         luaL_loadfile(L, "src/main.lua");
     #endif
     if (lua_pcall(L, 0, 0, 0) != 0){

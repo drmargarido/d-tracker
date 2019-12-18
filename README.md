@@ -1,4 +1,4 @@
-# Timetracker
+# D-Tracker
 
 Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses about 10MB of RAM and has a small quantity of dependencies.
 
@@ -36,6 +36,12 @@ Release 1.2:
 ## Install
 
 ### Linux
+
+#### Binary Release
+
+#### Build from source
+
+The dependencies in the dependencies list are bundled within the repository and will also be compiled. In order to build the project from source you will need the following packages: `automake`, `libtool`, `libx11-dev`.
 
 To run the application self contained in a single folder run the following command and check the build/ generated folder.
 ```sh
