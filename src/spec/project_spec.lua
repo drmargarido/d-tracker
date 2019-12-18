@@ -9,8 +9,8 @@ local conf = require "src.conf"
 
 -- database
 local sqlite3 = require "lsqlite3"
-local mock_data = require "migrations.mock_data"
-local migrations = require "migrations.migrations"
+local mock_data = require "src.migrations.mock_data"
+local migrations = require "src.migrations.migrations"
 
 describe("Project Management", function()
     setup(function()
@@ -18,14 +18,13 @@ describe("Project Management", function()
     end)
 
     before_each(function()
-        -- Create database
+        -- Create and open database
+        migrations()
+
         local db = sqlite3.open(
            conf.db,
-           sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+           sqlite3.OPEN_READWRITE
         )
-
-        -- Run migrations
-        migrations.run(db)
 
         -- Add mock data
         mock_data(db)

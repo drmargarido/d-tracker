@@ -41,7 +41,7 @@ Release 1.2:
 
 #### Build from source
 
-The dependencies in the dependencies list are bundled within the repository and will also be compiled. In order to build the project from source you will need the following packages: `automake`, `libtool`, `libx11-dev`.
+The dependencies in the dependencies list are bundled within the repository and will also be compiled. In order to build the project from source you will need the following packages: `automake`, `libtool`, `libx11-dev`, `libxft2-dev`, `libxext-dev` and `libxxf86vm-dev`.
 
 To run the application self contained in a single folder run the following command and check the build/ generated folder.
 ```sh

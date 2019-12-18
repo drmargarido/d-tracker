@@ -15,7 +15,7 @@ local utils = require "src.utils"
 local conf = require "src.conf"
 
 -- Database
-local create_database = require "src.create_database"
+local migrations = require "src.migrations.migrations"
 
 describe("Operations without database", function()
     setup(function()
@@ -55,7 +55,7 @@ describe("Operations without database", function()
     it("Create a new database", function()
         assert.is_false(utils.file_exists(conf.db))
 
-        create_database()
+        migrations()
         assert.is_true(utils.file_exists(conf.db))
 
         -- Clear created database

@@ -13,15 +13,15 @@ base: structure luajit date freetype2 tekui lsqlite luafilesystem timetracker
 
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
-	cp -R -n src $(DEPLOY_FOLDER)/
-	cp -R -n images $(DEPLOY_FOLDER)/
+	cp -R src $(DEPLOY_FOLDER)/
+	cp -R images $(DEPLOY_FOLDER)/
 	mkdir -p $(DEPLOY_FOLDER)/platform
 	cp -R platform/linux $(DEPLOY_FOLDER)/platform/
 
 luajit:
 	cd $(LUA_FOLDER)/ && make
 	cp $(LUA_FOLDER)/src/libluajit.so $(DEPLOY_FOLDER)/
-	ln -sf $(DEPLOY_FOLDER)/libluajit.so $(DEPLOY_FOLDER)/libluajit-5.1.so.2
+	cd $(DEPLOY_FOLDER) && ln -sf libluajit.so libluajit-5.1.so.2
 
 tekui: freetype2 luajit
 	cd external/tekUI && make all

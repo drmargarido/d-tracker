@@ -1,6 +1,5 @@
 -- Tekui
 local ui = require "tek.ui"
-local Visual = require "tek.lib.visual"
 
 -- Windows
 local main_window = require "src.ui.windows.main_window"

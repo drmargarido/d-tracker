@@ -20,8 +20,8 @@ local utils = require "src.utils"
 
 -- database
 local sqlite3 = require "lsqlite3"
-local mock_data = require "migrations.mock_data"
-local migrations = require "migrations.migrations"
+local mock_data = require "src.migrations.mock_data"
+local migrations = require "src.migrations.migrations"
 
 describe("Base Path of Tasks management", function()
     setup(function()
@@ -29,14 +29,13 @@ describe("Base Path of Tasks management", function()
     end)
 
     before_each(function()
-        -- Create database
+        -- Create and open database
+        migrations()
+
         local db = sqlite3.open(
            conf.db,
-           sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+           sqlite3.OPEN_READWRITE
         )
-
-        -- Run migrations
-        migrations.run(db)
 
         -- Add mock data
         mock_data(db)
@@ -168,14 +167,13 @@ describe("Invalid input types in tasks management", function()
     end)
 
     before_each(function()
-        -- Create database
+        -- Create and open database
+        migrations()
+
         local db = sqlite3.open(
            conf.db,
-           sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+           sqlite3.OPEN_READWRITE
         )
-
-        -- Run migrations
-        migrations.run(db)
 
         -- Add mock data
         mock_data(db)
