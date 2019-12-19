@@ -13,7 +13,6 @@ My focus here is to:
 * Have a small resources usage so I can have it open all day without thinking about it.
 * Be cross-platform so it works in more machines(I have never used any of the hamster integrations with the system).
 
-
 ## Milestones
 
 Release 1.0:
@@ -32,8 +31,13 @@ Release 1.1:
 Release 1.2:
 * [ ] Command line client
 
+## Screenshots
+
+![UI with Base Theme](/screenshots/d-tracker_v0,09-alpha.jpg)
+
 
 ## Install
+The most recent fixed version is the 0.09-alpha.
 
 ### Linux
 
