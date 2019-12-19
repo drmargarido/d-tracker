@@ -1,7 +1,6 @@
 # TODO
 
 * Improve graphical appearance as much as possible
-    + Add icon for the window
     + Fix max trim sizes according to the window width
 
 * Main window fast input
@@ -35,7 +34,6 @@
         - Compile the exe file with the wanted icon
     + Macos Binary Release
         - Create an app file
-    + Linux Binary Release
     + AUR package
         - Create a MAKEPKG
         - Register in the AUR platform
