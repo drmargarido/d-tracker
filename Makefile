@@ -56,52 +56,18 @@ timetracker: luajit
 	# Compile executable version with global system paths instead of the local ones
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DLINUX_INSTALL
 
+	# Put INSTALL and UNINSTALL scripts in the base path
+	cp $(DEPLOY_FOLDER)/platform/linux/INSTALL.sh $(DEPLOY_FOLDER)/
+	chmod +x $(DEPLOY_FOLDER)/INSTALL.sh
+
+	cp $(DEPLOY_FOLDER)/platform/linux/UNINSTALL.sh $(DEPLOY_FOLDER)/
+	chmod +x $(DEPLOY_FOLDER)/UNINSTALL.sh
+
 install:
-	# Executable
-	cp $(DEPLOY_FOLDER)/platform/linux/system_run.sh /usr/bin/d-tracker
-	chmod +x /usr/bin/d-tracker
-
-	# Main lua code and lua libraries
-	mkdir -p /usr/share/lua/5.1/d-tracker
-	cp -R $(DEPLOY_FOLDER)/src /usr/share/lua/5.1/d-tracker/
-	cp -R $(DEPLOY_FOLDER)/date /usr/share/lua/5.1/d-tracker/
-	cp -R $(DEPLOY_FOLDER)/tek /usr/share/lua/5.1/d-tracker/
-
-	# Override local lua configuration with the linux one
-	cp $(DEPLOY_FOLDER)/platform/linux/installed_conf.lua /usr/share/lua/5.1/d-tracker/src/conf.lua
-
-	# Shared Libraries
-	mkdir -p /usr/lib/d-tracker
-	cp $(DEPLOY_FOLDER)/libluajit.so /usr/lib/d-tracker/
-	ln -sf /usr/lib/d-tracker/libluajit.so /usr/lib/d-tracker/libluajit-5.1.so.2
-	cp $(DEPLOY_FOLDER)/lsqlite3.so /usr/lib/d-tracker/
-	cp $(DEPLOY_FOLDER)/lfs.so /usr/lib/d-tracker/
-	cp $(DEPLOY_FOLDER)/libfreetype.so /usr/lib/d-tracker/
-	mkdir -p /usr/lib/d-tracker/tek
-	mkdir -p /usr/lib/d-tracker/tek/lib
-	cp -R /usr/share/lua/5.1/d-tracker/tek /usr/lib/d-tracker/
-
-	# Desktop configuration and icons
-	cp $(DEPLOY_FOLDER)/platform/linux/d-tracker.desktop /usr/share/applications/
-	cp $(DEPLOY_FOLDER)/images/d-tracker_512x512.png /usr/share/pixmaps/d-tracker.png
-
-	# Read only data
-	mkdir -p /usr/share/d-tracker
-	cp -R $(DEPLOY_FOLDER)/images /usr/share/d-tracker/images
-	cp $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) /usr/share/d-tracker/$(EXECUTABLE)
-
-	echo "D-Tracker successfully installed!"
+	cd $(DEPLOY_FOLDER) && sh INSTALL.sh
 
 uninstall:
-	rm -f /usr/bin/$(EXECUTABLE)
-	rm -R -f /usr/share/lua/5.1/d-tracker
-	rm -f /usr/share/applications/d-tracker.desktop
-	rm -f /usr/share/pixmaps/d-tracker.png
-
-	rm -R -f /usr/share/d-tracker
-	rm -R -f /usr/lib/d-tracker
-
-	echo "D-Tracker uninstalled from the system!"
+	cd $(DEPLOY_FOLDER) && sh UNINSTALL.sh
 
 test: base
 	cd $(DEPLOY_FOLDER) && busted src/spec
