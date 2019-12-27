@@ -187,6 +187,17 @@ return {
                     Text = "Start new activity",
                     Style = "font: 24/b;"
                 },
+                ui.PopItem:new{
+                    Text = "Test",
+                    Children = {
+                        ui.Text:new{
+                            Text = "Last Task"
+                        },
+                        ui.Text:new{
+                            Text = "Other Task"
+                        }
+                    }
+                },
                 ui.Group:new{
                     Orientation = "horizontal",
                     Style = "margin-bottom: 10;",
