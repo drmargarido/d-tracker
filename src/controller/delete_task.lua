@@ -9,7 +9,11 @@ local check_input = decorators.check_input
 
 return check_input(
     {
-        {validators.is_number, validators.is_positive, db_validators.task_exists}
+        {
+            validators.is_number,
+            validators.is_positive,
+            db_validators.task_exists
+        }
     },
     use_db(function(db, task_id)
         local remove_query = "DELETE FROM task WHERE id=?"

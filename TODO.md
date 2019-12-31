@@ -9,6 +9,8 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Borders in the totals of the tasks overview window are visible, they should be white like all the other lists.
     + When pressing the Show Overview in the main window only the current day is shown in the tasks overview, but the last filtered date is kept.
+    + Trigger task start when the input field is selected and enter is pressed
+    + When the application is opened the autocomplete popup appear out of position
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write

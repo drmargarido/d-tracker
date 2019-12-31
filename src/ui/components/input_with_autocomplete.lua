@@ -41,9 +41,13 @@ function InputWithAutocomplete.new(_, self)
     end
 
     input.beginPopup = function(_self)
-        local winx, winy, winw = _self:calcPopup()
-
         local entries = self.Callback(input:getText())
+        if #entries == 0 then
+            print("No entries for displaying the autocomplete")
+            return
+        end
+
+        local winx, winy, winw = _self:calcPopup()
         local winh = math.min(#entries, 7) * 26
 
         local text_entries = {}

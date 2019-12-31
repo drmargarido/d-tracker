@@ -3,6 +3,7 @@ local add_task = require "src.controller.add_task"
 local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
+local autocomplete_task = require "src.controller.autocomplete_task"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 
 -- Exporters
@@ -189,7 +190,7 @@ return {
                     Style = "font: 24/b;"
                 },
                 InputWithAutocomplete:new{
-                    Text = "Test",
+                    Callback = autocomplete_task
                 },
                 ui.Group:new{
                     Orientation = "horizontal",
