@@ -21,6 +21,7 @@ local ui_utils = require "src.ui.utils"
 local ui = require "tek.ui"
 local TaskRow = require "src.ui.components.task_row"
 local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
+local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete"
 
 -- Windows
 local stats_window = require "src.ui.windows.stats_window"
@@ -187,16 +188,8 @@ return {
                     Text = "Start new activity",
                     Style = "font: 24/b;"
                 },
-                ui.PopItem:new{
+                InputWithAutocomplete:new{
                     Text = "Test",
-                    Children = {
-                        ui.Text:new{
-                            Text = "Last Task"
-                        },
-                        ui.Text:new{
-                            Text = "Other Task"
-                        }
-                    }
                 },
                 ui.Group:new{
                     Orientation = "horizontal",

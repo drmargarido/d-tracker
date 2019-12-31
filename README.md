@@ -37,7 +37,7 @@ Release 1.2:
 
 
 ## Install
-To run the application use the most recent releas, which right now is the [0.09-alpha](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [0.09-alpha](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
@@ -47,9 +47,9 @@ You can download the latest binary [here](https://github.com/drmargarido/d-track
 
 The application is self-contained in the folder so if you just want to run it there execute the `run.sh` file.
 
-If you want to install it to the system run the `INSTALL.sh`. When installed in the system and started a database will be created inside the `~/.local/share/d-tracker/` folder.
+If you want to install it to the system run the `INSTALL.sh`. When installed in the system and started, a database will be created inside the `~/.local/share/d-tracker/` folder.
 
-To uninstall run the `UNINSTALL.sh` command. It will remove the whole application but still keeps the database, so you don't lose your data in case your want to reinstall it later.
+To uninstall run the `UNINSTALL.sh` command. It will remove the whole application but still keep the database, so you don't lose your data in case your want to re-install it later.
 
 
 #### Build from source
