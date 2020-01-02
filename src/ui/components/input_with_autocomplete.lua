@@ -90,16 +90,17 @@ function InputWithAutocomplete.new(_, self)
         local app = _self.Application
 
         app.connect(_self.PopupWindow)
-        --_self.Window.ActivePopup = _self
 
         app:addMember(_self.PopupWindow)
         _self.PopupWindow:setValue("Status", "show")
+
+        _self.Window:addNotify("Status", "hide", function(__self)
+            _self:setValue("Selected", false)
+        end)
     end
 
     self.endPopup = function(_self)
-        local base = _self.PopupBase or _self
         _self:setValue("Focus", false)
-        base:setValue("Focus", true)
 
         _self:setState()
         if _self.PopupWindow then
@@ -112,12 +113,35 @@ function InputWithAutocomplete.new(_, self)
         _self:setValue("Selected", false)
     end
 
+    local _onSelect = input.Child.Child.onSelect
     input.Child.Child.onSelect = function(_self)
+        _onSelect(_self)
         if _self.Selected then
             self.beginPopup(_self)
         else
             self.endPopup(_self)
         end
+    end
+
+    local _handleKeyboard = input.Child.Child.handleKeyboard
+    input.Child.Child.handleKeyboard = function(_self, msg)
+        _handleKeyboard(_self, msg)
+        if msg[2] == ui.MSG_KEYDOWN then
+            local code = msg[3]
+            if code == 27 then -- ESC
+                _self:setValue("Selected", false)
+                _self:setValue("Focus", false)
+                _self:setValue("Active", false)
+                return false
+            else
+                _self:setValue("Focus", true)
+                _self:setValue("Active", true)
+                _self:setValue("Selected", false)
+                _self:setValue("Selected", true)
+            end
+        end
+
+        return msg
     end
 
     return input

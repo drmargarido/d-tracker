@@ -11,6 +11,10 @@
     + When pressing the Show Overview in the main window only the current day is shown in the tasks overview, but the last filtered date is kept.
     + Trigger task start when the input field is selected and enter is pressed
     + When the application is opened the autocomplete popup appear out of position
+    + Title should show "Description" - "Project"
+    + Letter disappearing in the placeholder of the project box
+    + Mouse hover in the project changes color? Is it needed?
+    + When changing a task time range to a time that overlaps another task it should not be accepted or should try to fix the given range. Possible solution: Reject the modification and report to the user the failure, so he can handle it manually. Tasks in conflict should be presented to the user.
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
