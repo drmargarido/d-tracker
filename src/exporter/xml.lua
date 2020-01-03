@@ -68,5 +68,5 @@ return function(tasks, file_path)
         return true, nil
     end
 
-    return false, "Failed to create the xml file"..final_xml
+    return false, "Failed to create the xml file "..file_path.." : "..final_xml
 end

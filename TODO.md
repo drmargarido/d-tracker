@@ -15,6 +15,8 @@
     + Letter disappearing in the placeholder of the project box
     + Mouse hover in the project changes color? Is it needed?
     + When changing a task time range to a time that overlaps another task it should not be accepted or should try to fix the given range. Possible solution: Reject the modification and report to the user the failure, so he can handle it manually. Tasks in conflict should be presented to the user.
+    + Exporting of xml in show overview always puts the file name as a range even when just one day is filtered
+    + Crash happened in the first export of the xml?
 
 * Main window fast input
     + Implement autocomplete in the task and project search. This autocomplete should present the last results and filter after starting to write
