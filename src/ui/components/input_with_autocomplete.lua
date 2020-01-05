@@ -53,9 +53,11 @@ function InputWithAutocomplete.new(_, self)
         local text_entries = {}
         for _, entry in ipairs(entries) do
             table.insert(text_entries, ui.Text:new{
-                Class = "caption",
+                Class = "autocomplete_row",
+                Mode = "button",
                 Text = entry,
-                Style = "text-align: left;"
+                Style = "text-align: left;",
+                Width = "auto",
             })
         end
 
@@ -63,6 +65,7 @@ function InputWithAutocomplete.new(_, self)
             ui.ScrollGroup:new{
                 Child = ui.Canvas:new{
                     Child = ui.Group:new{
+                        Class = "autocomplete_group",
                         Orientation = "vertical",
                         Children = text_entries
                     }

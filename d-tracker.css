@@ -73,3 +73,11 @@ tek.ui.class.slider {
 .placeholder {
     color: #666;
 }
+
+.autocomplete_row {
+    border-width: 0;
+}
+
+.autocomplete_group {
+    background-color: background;
+}
