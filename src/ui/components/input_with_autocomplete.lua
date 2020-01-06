@@ -1,6 +1,7 @@
 local ui = require "tek.ui"
 
 local count = 1
+local ROW_HEIGHT= 26
 
 local InputWithAutocomplete = {}
 function InputWithAutocomplete.new(_, self)
@@ -11,7 +12,8 @@ function InputWithAutocomplete.new(_, self)
 
     self.Width = self.Width or "fill"
     self.SelectedLine = self.SelectedLine or 0
-    self.ListHeight = self.LIstHeight or false
+    self.ListHeight = self.ListHeight or false
+    self.TotalLines = 0
 
     self.Callback = self.Callback or function(text)
         print("Configure the autocomplete callback function")
@@ -42,13 +44,15 @@ function InputWithAutocomplete.new(_, self)
 
     input.beginPopup = function(_self)
         local entries = self.Callback(input:getText())
+        self.TotalLines = #entries
+
         if #entries == 0 then
             print("No entries for displaying the autocomplete")
             return
         end
 
         local winx, winy, winw = _self:calcPopup()
-        local winh = math.min(#entries, 7) * 26
+        local winh = math.min(#entries, 8) * ROW_HEIGHT
 
         local text_entries = {}
         for _, entry in ipairs(entries) do
@@ -58,6 +62,9 @@ function InputWithAutocomplete.new(_, self)
                 Text = entry,
                 Style = "text-align: left;",
                 Width = "auto",
+                onPress = function(__self)
+                    print("Yo")
+                end
             })
         end
 
@@ -65,6 +72,7 @@ function InputWithAutocomplete.new(_, self)
             ui.ScrollGroup:new{
                 Child = ui.Canvas:new{
                     Child = ui.Group:new{
+                        Id = "autocomplete_group",
                         Class = "autocomplete_group",
                         Orientation = "vertical",
                         Children = text_entries
@@ -91,7 +99,6 @@ function InputWithAutocomplete.new(_, self)
         }
 
         local app = _self.Application
-
         app.connect(_self.PopupWindow)
 
         app:addMember(_self.PopupWindow)
@@ -100,6 +107,11 @@ function InputWithAutocomplete.new(_, self)
         _self.Window:addNotify("Status", "hide", function(__self)
             _self:setValue("Selected", false)
         end)
+
+        Children[1].Clicked = false
+        Children[1]:setValue("Focus", true)
+        self.SelectedLine = 0
+
     end
 
     self.endPopup = function(_self)
@@ -128,7 +140,6 @@ function InputWithAutocomplete.new(_, self)
 
     local _handleKeyboard = input.Child.Child.handleKeyboard
     input.Child.Child.handleKeyboard = function(_self, msg)
-        _handleKeyboard(_self, msg)
         if msg[2] == ui.MSG_KEYDOWN then
             local code = msg[3]
             if code == 27 then -- ESC
@@ -136,9 +147,17 @@ function InputWithAutocomplete.new(_, self)
                 _self:setValue("Focus", false)
                 _self:setValue("Active", false)
                 return false
+            elseif code == 61458 then -- Up
+                self.SelectedLine = math.max(self.SelectedLine - 1, 0)
+            elseif code == 61459 then -- Down
+                self.SelectedLine = math.min(self.SelectedLine + 1, self.TotalLines)
+            elseif code == 13 then -- Enter
+                print("ENTER")
             else
+                _handleKeyboard(_self, msg)
                 _self:setValue("Focus", true)
                 _self:setValue("Active", true)
+
                 _self:setValue("Selected", false)
                 _self:setValue("Selected", true)
             end
