@@ -1,7 +1,9 @@
 local ui = require "tek.ui"
 
+local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
+
 local count = 1
-local ROW_HEIGHT= 26
+local ROW_HEIGHT = 26
 
 local InputWithAutocomplete = {}
 function InputWithAutocomplete.new(_, self)
@@ -28,7 +30,34 @@ function InputWithAutocomplete.new(_, self)
         }
     end
 
-    local input = ui.Input:new(self)
+    local input = InputWithPlaceholder:new(self)
+    self.onAutocomplete = self.onAutocomplete or function(_self, text)
+        input:setValue("Text", text)
+    end
+
+    input.toggleActiveLine = function(_self, new_line)
+        local lines_group = _self.PopupWindow.Children[1].Child.Child
+
+        -- Unselect all lines
+        for _, line in ipairs(lines_group.Children) do
+            line:setValue("Selected", true) -- Force redraw of all the lines
+            line:setValue("Selected", false)
+            line:setValue("Style", [[
+                border-color: #fff;
+            ]])
+        end
+
+        _self.SelectedLine = new_line
+
+        -- Select the selected one
+        if _self.PopupWindow and _self.SelectedLine ~= 0 then
+            local line = lines_group.Children[_self.SelectedLine]
+            line:setValue("Selected", true)
+            line:setValue("Style", [[
+                border-color: #55b;
+            ]])
+        end
+    end
 
     input.Child.Child.calcPopup = function(_self)
         local _, _, x, y = _self.Window.Drawable:getAttrs()
@@ -60,11 +89,11 @@ function InputWithAutocomplete.new(_, self)
                 Class = "autocomplete_row",
                 Mode = "button",
                 Text = entry,
-                Style = "text-align: left;",
-                Width = "auto",
-                onPress = function(__self)
-                    print("Yo")
-                end
+                Width = winw - 10,
+                Height = "auto",
+                Style = [[
+                    border-color: #fff;
+                ]]
             })
         end
 
@@ -72,7 +101,6 @@ function InputWithAutocomplete.new(_, self)
             ui.ScrollGroup:new{
                 Child = ui.Canvas:new{
                     Child = ui.Group:new{
-                        Id = "autocomplete_group",
                         Class = "autocomplete_group",
                         Orientation = "vertical",
                         Children = text_entries
@@ -81,7 +109,7 @@ function InputWithAutocomplete.new(_, self)
             }
         }
 
-        _self.PopupWindow = ui.PopupWindow:new{
+        self.PopupWindow = ui.PopupWindow:new{
             -- window in which the popup cascade is rooted:
             PopupRootWindow = _self.Window.PopupRootWindow or _self.Window,
             -- item in which this popup window is rooted:
@@ -91,7 +119,7 @@ function InputWithAutocomplete.new(_, self)
             Left = winx,
             Width = winw,
             Top = winy,
-            Height = winh,
+            Height = winh + 2,
             MaxWidth = winw,
             MaxHeight = winh,
             Borderless = true,
@@ -99,10 +127,10 @@ function InputWithAutocomplete.new(_, self)
         }
 
         local app = _self.Application
-        app.connect(_self.PopupWindow)
+        app.connect(self.PopupWindow)
 
-        app:addMember(_self.PopupWindow)
-        _self.PopupWindow:setValue("Status", "show")
+        app:addMember(self.PopupWindow)
+        self.PopupWindow:setValue("Status", "show")
 
         _self.Window:addNotify("Status", "hide", function(__self)
             _self:setValue("Selected", false)
@@ -118,13 +146,13 @@ function InputWithAutocomplete.new(_, self)
         _self:setValue("Focus", false)
 
         _self:setState()
-        if _self.PopupWindow then
-            _self.PopupWindow:setValue("Status", "hide")
-            _self.Application:remMember(_self.PopupWindow)
+        if self.PopupWindow then
+            self.PopupWindow:setValue("Status", "hide")
+            _self.Application:remMember(self.PopupWindow)
         end
 
         _self.Window.ActivePopup = false
-        _self.PopupWindow = false
+        self.PopupWindow = false
         _self:setValue("Selected", false)
     end
 
@@ -148,18 +176,24 @@ function InputWithAutocomplete.new(_, self)
                 _self:setValue("Active", false)
                 return false
             elseif code == 61458 then -- Up
-                self.SelectedLine = math.max(self.SelectedLine - 1, 0)
+                input.toggleActiveLine(self, math.max(self.SelectedLine - 1, 0))
             elseif code == 61459 then -- Down
-                self.SelectedLine = math.min(self.SelectedLine + 1, self.TotalLines)
+                input.toggleActiveLine(self, math.min(self.SelectedLine + 1, self.TotalLines))
             elseif code == 13 then -- Enter
-                print("ENTER")
+                if self.SelectedLine ~= 0 then
+                    local lines = self.PopupWindow.Children[1].Child.Child
+                    local line_text = lines.Children[self.SelectedLine]
+                    self.onAutocomplete(_self, line_text.Text)
+
+                    _self:setValue("Selected", false)
+                end
             else
                 _handleKeyboard(_self, msg)
                 _self:setValue("Focus", true)
                 _self:setValue("Active", true)
 
-                _self:setValue("Selected", false)
-                _self:setValue("Selected", true)
+                _self:setValue("Selected", false) -- Trigger onSelect to hide the popup
+                _self:setValue("Selected", true) -- Trigger onSelect to show the popup refreshed
             end
         end
 

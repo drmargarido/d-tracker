@@ -19,7 +19,7 @@ function InputWithPlaceholder.new(_, self)
         _onSelect(_self)
 
         if _self.Selected  then
-            if input.Class == "placeholder" then
+            if _self.Class == "placeholder" then
                 input:setValue("Text", "")
                 _self:setValue("Class", "")
             end

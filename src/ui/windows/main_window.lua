@@ -4,6 +4,7 @@ local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
 local autocomplete_task = require "src.controller.autocomplete_task"
+local autocomplete_project = require "src.controller.autocomplete_project"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 
 -- Exporters
@@ -189,20 +190,19 @@ return {
                     Text = "Start new activity",
                     Style = "font: 24/b;"
                 },
-                InputWithAutocomplete:new{
-                    Callback = autocomplete_task
-                },
                 ui.Group:new{
                     Orientation = "horizontal",
                     Style = "margin-bottom: 10;",
                     Children = {
-                        InputWithPlaceholder:new{
+                        InputWithAutocomplete:new{
+                            Callback = autocomplete_task,
                             Id = "task-description",
                             Width = "free",
                             MinWidth = 240,
                             Placeholder = "Description"
                         },
-                        InputWithPlaceholder:new{
+                        InputWithAutocomplete:new{
+                            Callback = autocomplete_project,
                             Id = "task-project",
                             Width = "free",
                             Placeholder = "Project"
