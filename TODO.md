@@ -9,7 +9,8 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Borders in the totals of the tasks overview window are visible, they should be white like all the other lists.
     + When pressing the Show Overview in the main window only the current day is shown in the tasks overview, but the last filtered date is kept.
-    + Trigger task start when the input field is selected and enter is pressed
+    + Trigger task start when the description field is selected, not autocomplete option is selected and enter is pressed
+    + Trigger task start when the project field is selected, not autocomplete option is selected and enter is pressed
     + When the application is opened the autocomplete popup appear out of position
     + Title should show "Description" - "Project"
     + Letter disappearing in the placeholder of the project box
@@ -20,6 +21,20 @@
     + Check if memory is leaking in the show overview queries.
     + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When tabbing from the autocomplete sometimes I got two cursors at the same time
+
+* Validate the success of the database operations in the controllers
+    + Task autocomplete
+    + Project autocomplete
+    + Get task by description
+
+* Implement tests for the new controllers
+    + Task autocomplete
+    + Project autocomplete
+    + Get task by description
+
+* Add error reporting in the new calls to the autocomplete
+    + Error reporting in the UI in the case of the description autocomplete fails
+    + Error reporting in the UI in the case of the default autocomplete fails
 
 * Create alternative styles
     + Dark
