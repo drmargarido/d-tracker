@@ -138,10 +138,13 @@ function InputWithAutocomplete.new(_, self)
             PopupWindow = true
         }
 
+        local _passMsg = self.passMsg
         self.passMsg = function(__self, msg)
             --local over, mx, my = _self.Children[1].Child:getMouseOver(msg)
             local mx, my = __self:getMsgFields(msg, "mousexy")
             print("X: "..tostring(mx).." Y: "..tostring(my))
+
+            _passMsg(__self, msg)
         end
 
         local app = _self.Application
