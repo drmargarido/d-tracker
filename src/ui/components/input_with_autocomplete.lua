@@ -30,9 +30,15 @@ function InputWithAutocomplete.new(_, self)
         }
     end
 
-    local input = InputWithPlaceholder:new(self)
+    local input
+    if self.Placeholder then
+        input = InputWithPlaceholder:new(self)
+    else
+        input = ui.Input:new(self)
+    end
+
     self.onAutocomplete = self.onAutocomplete or function(_self, text)
-        input:setValue("Text", text)
+        _self:setValue("Text", text)
     end
 
     input.toggleActiveLine = function(_self, new_line)
@@ -76,7 +82,7 @@ function InputWithAutocomplete.new(_, self)
         self.TotalLines = #entries
 
         if #entries == 0 then
-            print("No entries for displaying the autocomplete")
+            -- No entries, no need to display the popup
             return
         end
 
@@ -183,7 +189,7 @@ function InputWithAutocomplete.new(_, self)
                 if self.SelectedLine ~= 0 then
                     local lines = self.PopupWindow.Children[1].Child.Child
                     local line_text = lines.Children[self.SelectedLine]
-                    self.onAutocomplete(_self, line_text.Text)
+                    self.onAutocomplete(input, line_text.Text)
 
                     _self:setValue("Selected", false)
                 end

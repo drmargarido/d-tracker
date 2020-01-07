@@ -1,6 +1,5 @@
 -- Utils
 local validators = require "src.validators.base_validators"
-local db_validators = require "src.validators.db_validators"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -9,17 +8,17 @@ local check_input = decorators.check_input
 
 return check_input(
     {
-        {validators.is_number, db_validators.task_exists}
+        {validators.is_text}
     },
-    use_db(function(db, task_id)
+    use_db(function(db, description)
         local task_query = string.format([[
             SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
             FROM task as t
             LEFT JOIN project p ON p.id = t.project_id
-            WHERE t.id=?
+            WHERE t.description=?
         ]])
         local task_stmt = db:prepare(task_query)
-        task_stmt:bind_values(task_id)
+        task_stmt:bind_values(description)
 
         for t in task_stmt:nrows() do
             return {

@@ -6,6 +6,7 @@ local list_today_tasks = require "src.controller.list_today_tasks"
 local autocomplete_task = require "src.controller.autocomplete_task"
 local autocomplete_project = require "src.controller.autocomplete_project"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
+local get_task_by_description = require "src.controller.get_task_by_description"
 
 -- Exporters
 local xml_export = require "src.exporter.xml"
@@ -199,7 +200,15 @@ return {
                             Id = "task-description",
                             Width = "free",
                             MinWidth = 240,
-                            Placeholder = "Description"
+                            Placeholder = "Description",
+                            onAutocomplete = function(self, text)
+                                self:setValue("Text", text)
+
+                                local task = get_task_by_description(text)
+                                local project_input = this_window:getById("task-project")
+                                project_input:setValue("Text", task.project)
+                                project_input.Child.Child:setValue("Class", "")
+                            end
                         },
                         InputWithAutocomplete:new{
                             Callback = autocomplete_project,
