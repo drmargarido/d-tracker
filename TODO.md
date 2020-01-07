@@ -18,6 +18,8 @@
     + Exporting of xml in show overview always puts the file name as a range even when just one day is filtered
     + Crash happened in the first export of the xml?
     + Check if memory is leaking in the show overview queries.
+    + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
+    + When tabbing from the autocomplete sometimes I got two cursors at the same time
 
 * Main window fast input
     Allow the selection of the autocomplete options with the mouse
