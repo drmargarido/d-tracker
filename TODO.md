@@ -21,9 +21,6 @@
     + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When tabbing from the autocomplete sometimes I got two cursors at the same time
 
-* Main window fast input
-    Allow the selection of the autocomplete options with the mouse
-
 * Create alternative styles
     + Dark
     + Stain

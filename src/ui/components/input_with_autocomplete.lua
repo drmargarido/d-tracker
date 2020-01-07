@@ -41,6 +41,16 @@ function InputWithAutocomplete.new(_, self)
         _self:setValue("Text", text)
     end
 
+    input.submitSelectedLine = function(_self)
+        -- Triggers the submition of the selected line
+        if self.SelectedLine ~= 0 then
+            local lines = self.PopupWindow.Children[1].Child.Child
+            local line_text = lines.Children[self.SelectedLine]
+            self.onAutocomplete(input, line_text.Text)
+            _self:setValue("Selected", false)
+        end
+    end
+
     input.toggleActiveLine = function(_self, new_line)
         local lines_group = _self.PopupWindow.Children[1].Child.Child
 
@@ -99,13 +109,7 @@ function InputWithAutocomplete.new(_, self)
                 Height = "auto",
                 Style = [[
                     border-color: #fff;
-                ]],
-                onPress = function(__self)
-                    print("press")
-                end,
-                onClick = function(__self)
-                    print("click")
-                end
+                ]]
             })
         end
 
@@ -138,13 +142,45 @@ function InputWithAutocomplete.new(_, self)
             PopupWindow = true
         }
 
-        local _passMsg = self.passMsg
-        self.passMsg = function(__self, msg)
-            --local over, mx, my = _self.Children[1].Child:getMouseOver(msg)
-            local mx, my = __self:getMsgFields(msg, "mousexy")
-            print("X: "..tostring(mx).." Y: "..tostring(my))
+        local _passMsg = self.PopupWindow.passMsg
+        self.PopupWindow.passMsg = function(__self, msg)
+            if msg[2] == ui.MSG_MOUSEBUTTON then
+                if self.PopupWindow then
+                    local mx, my = __self:getMsgFields(msg, "mousexy")
 
-            _passMsg(__self, msg)
+                    local lines_group = self.PopupWindow.Children[1].Child.Child
+                    local pointed_line = 0
+                    for i, line in ipairs(lines_group.Children) do
+                        if line:getByXY(mx, my) then
+                            pointed_line = i
+                            break
+                        end
+                    end
+
+                    if pointed_line ~= 0 then
+                        input.toggleActiveLine(self, pointed_line)
+                        input.submitSelectedLine(_self)
+                    end
+                end
+            elseif msg[2] == ui.MSG_MOUSEMOVE then
+                if self.PopupWindow then
+                    local mx, my = __self:getMsgFields(msg, "mousexy")
+                    if mx ~= 0 and my ~= 0 then
+                        local lines_group = self.PopupWindow.Children[1].Child.Child
+                        local pointed_line = 0
+
+                        for i, line in ipairs(lines_group.Children) do
+                            if line:getByXY(mx, my) then
+                                pointed_line = i
+                                break
+                            end
+                        end
+                        input.toggleActiveLine(self, pointed_line)
+                    end
+                end
+            end
+
+            return _passMsg(__self, msg)
         end
 
         local app = _self.Application
@@ -202,11 +238,7 @@ function InputWithAutocomplete.new(_, self)
                 input.toggleActiveLine(self, math.min(self.SelectedLine + 1, self.TotalLines))
             elseif code == 13 then -- Enter
                 if self.SelectedLine ~= 0 then
-                    local lines = self.PopupWindow.Children[1].Child.Child
-                    local line_text = lines.Children[self.SelectedLine]
-                    self.onAutocomplete(input, line_text.Text)
-
-                    _self:setValue("Selected", false)
+                    input.submitSelectedLine(_self)
                 end
             else
                 _handleKeyboard(_self, msg)
