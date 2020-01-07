@@ -99,7 +99,13 @@ function InputWithAutocomplete.new(_, self)
                 Height = "auto",
                 Style = [[
                     border-color: #fff;
-                ]]
+                ]],
+                onPress = function(__self)
+                    print("press")
+                end,
+                onClick = function(__self)
+                    print("click")
+                end
             })
         end
 
@@ -129,8 +135,14 @@ function InputWithAutocomplete.new(_, self)
             MaxWidth = winw,
             MaxHeight = winh,
             Borderless = true,
-            PopupWindow = true,
+            PopupWindow = true
         }
+
+        self.passMsg = function(__self, msg)
+            --local over, mx, my = _self.Children[1].Child:getMouseOver(msg)
+            local mx, my = __self:getMsgFields(msg, "mousexy")
+            print("X: "..tostring(mx).." Y: "..tostring(my))
+        end
 
         local app = _self.Application
         app.connect(self.PopupWindow)
