@@ -78,6 +78,7 @@ clean:
 	rm -f *.sqlite3
 	rm -f *.xml
 	rm -f xml_save_path.lua
+	rm -f *.res
 
 	cd external/freetype2/ && make clean
 	cd external/LuaJIT/ && make clean
@@ -114,4 +115,5 @@ release_windows:
 	cp external/luafilesystem/src/lfs.dll $(DEPLOY_FOLDER)/
 
 	# D-tracker
-	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51
+	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
+	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res
