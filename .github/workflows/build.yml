@@ -15,6 +15,6 @@ jobs:
     - name: Linux Build
       run: make
     - name: Install Unit Testing dependencies
-      run: sudo apt-get install -y lua-busted
+      run: sudo apt-get install -y lua5.1 lua-busted
     - name: Unit Tests
       run: make test
