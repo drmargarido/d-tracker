@@ -5,16 +5,25 @@ LUA_FOLDER=external/LuaJIT
 LSQLITE_FOLDER=external/lsqlite
 LSQLITE_CFLAGS=-O2
 
-CC=gcc
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CC=gcc
+endif
+ifeq ($(UNAME_S),Darwin)
+	CC=clang
+endif
+
 CFLAGS=-O2
 
 
-base: structure luajit date freetype2 tekui lsqlite luafilesystem timetracker
+base: structure linux_platform luajit date freetype2 tekui lsqlite luafilesystem timetracker
 
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
 	cp -R src $(DEPLOY_FOLDER)/
 	cp -R images $(DEPLOY_FOLDER)/
+
+linux_platform:
 	mkdir -p $(DEPLOY_FOLDER)/platform
 	cp -R platform/linux $(DEPLOY_FOLDER)/platform/
 
@@ -86,13 +95,7 @@ clean:
 	cd external/luafilesystem/ && make clean
 	cd external/tekUI/ && make clean
 
-release_windows:
-	# Structure
-	mkdir -p $(DEPLOY_FOLDER)
-	cp -R src $(DEPLOY_FOLDER)/
-	cp -R images $(DEPLOY_FOLDER)/
-	mkdir -p $(DEPLOY_FOLDER)/platform
-
+release_windows: structure date
 	# Luajit
 	cd external/LuaJIT/src && make HOST_CC="gcc" CROSS=x86_64-w64-mingw32- TARGET_SYS=Windows
 	cp $(LUA_FOLDER)/src/lua51.dll $(DEPLOY_FOLDER)/
@@ -107,14 +110,25 @@ release_windows:
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
 	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
 
-	# date
-	mkdir -p $(DEPLOY_FOLDER)/date
-	cp -R external/date/src/date.lua $(DEPLOY_FOLDER)/date/
-
 	# luafilesystem
 	cd external/luafilesystem && make -f Makefile.crosswin
 	cp external/luafilesystem/src/lfs.dll $(DEPLOY_FOLDER)/
 
-	# D-tracker
+	# D-tracker with icon
 	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
 	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res
+
+release_mac: structure luajit date freetype2 tekui lsqlite luafilesystem timetracker
+	# Create app file
+	mkdir -p d-tracker.app
+	mkdir -p d-tracker.app/Contents
+	cp platform/mac/Info.plist d-tracker.app/Contents/
+
+	mkdir -p d-tracker.app/Contents/Resources
+	cp images/d-tracker.icns d-tracker.app/Contents/Resources
+
+	mkdir -p d-tracker.app/Contents/MacOS
+	cp -R $(DEPLOY_FOLDER)/* d-tracker.app/Contents/MacOS/
+
+	rm -R $(DEPLOY_FOLDER)/*
+	mv d-tracker.app $(DEPLOY_FOLDER)/d-tracker.app
