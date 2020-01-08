@@ -10,11 +10,11 @@ jobs:
     - uses: actions/checkout@v1
     - name: apt-update
       run: sudo apt-get update -qq
-    - name: Install dependencies
+    - name: Install Linux Build Dependencies
       run: sudo apt-get install -y automake libtool libx11-dev libxft2-dev libxext-dev libxxf86vm-dev
     - name: Linux Build
       run: make
+    - name: Install Unit Testing dependencies
+      run: sudo apt-get install -y lua-busted
     - name: Unit Tests
       run: make test
-    - name: Clean Linux Build
-      run: make clean
