@@ -22,7 +22,11 @@
     + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When tabbing from the autocomplete sometimes I got two cursors at the same time
     + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
+    + Missing day time in each day of the project overview like the hamster does
 
+* Windows specific bugs
+    + Focus of the autocomplete input is broken
+    + Colors and text fonts are a bit messed (Do something or wait for the themes?)
 
 * Validate the success of the database operations in the controllers
     + Task autocomplete
