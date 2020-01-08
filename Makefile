@@ -72,7 +72,7 @@ uninstall:
 
 test:
 	# To run the test some deploy should already have been done
-	cd $(DEPLOY_FOLDER) && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD && busted src/spec
+	cd $(DEPLOY_FOLDER) && busted src/spec
 
 clean:
 	rm -f -R build
