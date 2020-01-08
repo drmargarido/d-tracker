@@ -240,9 +240,13 @@ function InputWithAutocomplete.new(_, self)
                 _self:setValue("Active", false)
                 return false
             elseif code == 61458 then -- Up
-                input.toggleActiveLine(self, math.max(self.SelectedLine - 1, 0))
+                if self.PopupWindow then
+                    input.toggleActiveLine(self, math.max(self.SelectedLine - 1, 0))
+                end
             elseif code == 61459 then -- Down
-                input.toggleActiveLine(self, math.min(self.SelectedLine + 1, self.TotalLines))
+                if self.PopupWindow then
+                    input.toggleActiveLine(self, math.min(self.SelectedLine + 1, self.TotalLines))
+                end
             elseif code == 13 then -- Enter
                 if self.SelectedLine ~= 0 then
                     input.submitSelectedLine(_self)
