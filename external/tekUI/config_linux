@@ -2,13 +2,13 @@
 # Platform to build against [Choices: posix, winnt]:
 #------------------------------------------------------------------------------
 
-PLATFORM ?= winnt
+PLATFORM ?= posix
 
 #------------------------------------------------------------------------------
 # Dynamic link library extension [Choices: .so, .dll, .sl, ...]:
 #------------------------------------------------------------------------------
 
-DLLEXT = .dll
+DLLEXT = .so
 
 #------------------------------------------------------------------------------
 # Default display driver [Choices: x11, rawfb, directfb, windows]:
@@ -16,7 +16,7 @@ DLLEXT = .dll
 # and tek/lib/Makefile if you want to stack it on top of another driver.
 #------------------------------------------------------------------------------
 
-DISPLAY_DRIVER ?= windows
+DISPLAY_DRIVER ?= x11
 
 #------------------------------------------------------------------------------
 # Compiler configuration:
@@ -27,14 +27,14 @@ DISPLAY_DRIVER ?= windows
 # Uncomment TSYS_POSIX if your platform is not listed in include/tek/config.h
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# CC = $(CROSS_COMPILE)gcc -fpic # -DTSYS_POSIX
+CC = $(CROSS_COMPILE)gcc -fpic # -DTSYS_POSIX
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # For Windows using MinGW:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CC = $(CROSS_COMPILE)gcc -DWIN32 -DWINVER=0x0400 -D_WIN32_WINNT=0x0400
-CC += -DHAL_USE_ATOMICS # leave commented with very old versions of MinGW
+# CC = $(CROSS_COMPILE)gcc -DWIN32 -DWINVER=0x0400 -D_WIN32_WINNT=0x0400
+# CC += -DHAL_USE_ATOMICS # leave commented with very old versions of MinGW
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Cross compilation:
@@ -44,8 +44,7 @@ CC += -DHAL_USE_ATOMICS # leave commented with very old versions of MinGW
 # CROSS_COMPILE = i586-mingw32-
 # CROSS_COMPILE = i686-pc-mingw32-
 # CROSS_COMPILE = i686-w64-mingw32-
-# CROSS_COMPILE = x86_64-w64-mingw32-
-EXECUTE = wine
+# EXECUTE = wine
 
 #------------------------------------------------------------------------------
 # Platform libraries:
@@ -58,8 +57,8 @@ EXECUTE = wine
 # POSIX:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# PLATFORM_LIBS = -pthread
-# CC_LD_RT = -Wl,-rpath,
+PLATFORM_LIBS = -pthread
+CC_LD_RT = -Wl,-rpath,
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # HPPA, IA64 HPUX: Note that DLLEXT (see above) must be .sl
@@ -93,8 +92,8 @@ EXECUTE = wine
 # Windows:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-PLATFORM_LIBS = -lwinmm
-LUA_LIBS = -L$(BASEDIR) -llua51 # -llua5.2
+# PLATFORM_LIBS = -lwinmm
+# LUA_LIBS = -L$(BASEDIR) -llua51 # -llua5.2
 
 #------------------------------------------------------------------------------
 # tekUI features:
@@ -130,27 +129,30 @@ TEKLIB_DEFS = -DENABLE_LAZY_SINGLETON
 PREFIX ?= /usr/local
 LUAVER ?= 5.1
 
-LUA_DIR = $(PREFIX)
-LUA_INCDIR = $(LUA_DIR)/include
+LUA_DIR = $(BASE_PATH)/../LuaJIT/src
+LUA_INCDIR = $(BASE_PATH)/../LuaJIT/src
 LUA_DEFS = -I$(LUA_INCDIR)
 # other known paths - better comment out what is inappropriate:
-# LUA_DEFS += -I/usr/include/lua$(LUAVER)
-# LUA_DEFS += -I/usr/local/include/lua51
+#LUA_DEFS += -I/usr/include/lua$(LUAVER)
+#LUA_DEFS += -I/usr/local/include/lua51
 
-LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
-LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
-SYS_LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
-SYS_LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
+#LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
+#LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
+#SYS_LUA_LIB = $(PREFIX)/lib/lua/$(LUAVER)
+#SYS_LUA_SHARE = $(PREFIX)/share/lua/$(LUAVER)
 
 #------------------------------------------------------------------------------
 # Libraries:
 #------------------------------------------------------------------------------
 
-FREETYPE_DIR = $(PREFIX)
+#FREETYPE_DIR = $(PREFIX)
+FREETYPE_DIR = $(BASE_PATH)/../freetype2
 FREETYPE_INCDIR = $(FREETYPE_DIR)/include
-FREETYPE_LIBDIR = $(FREETYPE_DIR)/lib
+#FREETYPE_LIBDIR = $(FREETYPE_DIR)/lib
+FREETYPE_LIBDIR = $(FREETYPE_DIR)/objs/.libs
 FREETYPE_LIBS = -L$(FREETYPE_LIBDIR) -lfreetype # $(CC_LD_RT)$(FREETYPE_LIBDIR)
-FREETYPE_DEFS = -I$(FREETYPE_INCDIR)/freetype2 `freetype-config --cflags`
+#FREETYPE_DEFS = -I$(FREETYPE_INCDIR)/freetype2 `freetype-config --cflags`
+FREETYPE_DEFS = -I$(FREETYPE_INCDIR) `freetype-config --cflags`
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # X11 defines and libraries:
@@ -238,7 +240,7 @@ MODDIR = $(BINDIR)/mod
 #------------------------------------------------------------------------------
 
 DEBUG = -DTDEBUG=5 -g # TDEBUG: the lower, the more verbose. 5 = WARN
-WARN = -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-long-long
+WARN = -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-long-long -Wno-unused-value
 OPT = -O2 -fno-strict-aliasing
 INCL = -I. -Iinclude -I$(INCDIR)
 LIBCFLAGS = $(DEBUG) $(WARN) $(OPT) $(INCL) $(EXTRADEFS) $(CPPFLAGS) $(CFLAGS)
@@ -269,14 +271,14 @@ STRIP = $(CROSS_COMPILE)strip
 # Lua distribution path:
 LUADISTDIR = $(BASEDIR)/../lua-5.1.5
 # Linux:
-# LUAEXE_DEFS = $(X11_DEFS) $(TEKUI_DEFS) -DLUA_USE_LINUX
-# LUAEXE_LIBS = $(X11_LIBS) -lreadline -lm -ldl -pthread
+LUAEXE_DEFS = $(X11_DEFS) $(TEKUI_DEFS) -DLUA_USE_LINUX
+LUAEXE_LIBS = $(X11_LIBS) -lreadline -lm -ldl -pthread
 # Mac OS X:
 # LUAEXE_DEFS = $(X11_DEFS) $(TEKUI_DEFS) -DLUA_USE_MACOSX
 # LUAEXE_LIBS = $(X11_LIBS) -lreadline
 # Windows:
-LUAEXE_DEFS = $(TEKUI_DEFS)
-LUAEXE_LIBS = $(WIN_LIBS)
+# LUAEXE_DEFS = $(TEKUI_DEFS)
+# LUAEXE_LIBS = $(WIN_LIBS)
 # FreeBSD:
 # LUAEXE_DEFS = $(X11_DEFS) $(TEKUI_DEFS) -DLUA_USE_LINUX
 # LUAEXE_LIBS = -Wl,-E $(X11_LIBS) -lreadline -lm -pthread

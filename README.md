@@ -72,6 +72,21 @@ To uninstall the application from the system run:
 sudo make uninstall
 ```
 
+### Windows
+
+### Build from source
+
+The dependencies in the dependencies list are bundled within the repository and will also be compiled.
+
+My development environment is in Archlinux and Debian so I cross-compile the application by using the x86_64-w64-mingw32-gcc compiler.
+
+To build the application run:
+```sh
+make release_windows
+```
+
+After running the command, the self contained version of the software will be built in the `build/` folder.
+
 ## Project Structure
 
 ```

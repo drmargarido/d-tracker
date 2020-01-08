@@ -2,7 +2,7 @@
 
 T= lfs
 
-include config.win
+include d-tracker_config.win
 
 SRCS= src\$T.c
 OBJS= src\$T.obj

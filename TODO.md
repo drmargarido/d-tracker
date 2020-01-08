@@ -22,6 +22,9 @@
     + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When tabbing from the autocomplete sometimes I got two cursors at the same time
 
+* Windows major bugs
+    + Focus of the autocomplete input is broken
+
 * Validate the success of the database operations in the controllers
     + Task autocomplete
     + Project autocomplete
@@ -51,12 +54,6 @@
     + Listing of the tasks by range of dates
     + Listing of the tasks by text
     + Exporting to XML
-
-* Dependencies support
-    + Add compilation instructions for the LuaFileSystem lib for windows
-    + Add instructions for compilation of the lsqlite for windows
-    + Add instructions for compilation of luajit for windows
-    + Add instructions for compilation of the tekui for windows
 
 * Build releases
     + Windows Binary Release
