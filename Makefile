@@ -70,8 +70,9 @@ install:
 uninstall:
 	cd $(DEPLOY_FOLDER) && sh UNINSTALL.sh
 
-test: base
-	cd $(DEPLOY_FOLDER) && busted src/spec
+test:
+	# To run the test some deploy should already have been done
+	cd $(DEPLOY_FOLDER) && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD && busted src/spec
 
 clean:
 	rm -f -R build
