@@ -178,6 +178,12 @@ function InputWithAutocomplete.new(_, self)
                         input.toggleActiveLine(self, pointed_line)
                     end
                 end
+            elseif msg[2] == ui.MSG_KEYDOWN and msg[3] ~= 0 then
+                --[[
+                    On windows the focus is set in the popup instead of the input so here
+                     the generated key press is passed to the text edit of the input field
+                ]]
+                input.Child.Child.handleKeyboard(_self, msg)
             end
 
             return _passMsg(__self, msg)
@@ -227,6 +233,7 @@ function InputWithAutocomplete.new(_, self)
     input.Child.Child.handleKeyboard = function(_self, msg)
         if msg[2] == ui.MSG_KEYDOWN then
             local code = msg[3]
+
             if code == 27 then -- ESC
                 _self:setValue("Selected", false)
                 _self:setValue("Focus", false)

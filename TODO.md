@@ -21,9 +21,8 @@
     + Check if memory is leaking in the show overview queries.
     + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When tabbing from the autocomplete sometimes I got two cursors at the same time
+    + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
 
-* Windows major bugs
-    + Focus of the autocomplete input is broken
 
 * Validate the success of the database operations in the controllers
     + Task autocomplete
@@ -56,8 +55,6 @@
     + Exporting to XML
 
 * Build releases
-    + Windows Binary Release
-        - Compile the exe file with the wanted icon
     + Macos Binary Release
         - Create an app file
     + AUR package
