@@ -1,0 +1,20 @@
+name: Linux/Windows build and test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: apt-update
+      run: sudo apt-get update -qq
+    - name: Install dependencies
+      run: sudo apt-get install -y automake libtool libx11-dev libxft2-dev libxext-dev libxxf86vm-dev
+    - name: Linux Build
+      run: make
+    - name: Unit Tests
+      run: make test
+    - name: Clean Linux Build
+      run: make clean
