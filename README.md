@@ -78,9 +78,7 @@ sudo make uninstall
 
 The dependencies in the dependencies list are bundled within the repository and will also be compiled.
 
-My development environment is in Archlinux and Debian so I cross-compile the application by using the x86_64-w64-mingw32-gcc compiler.
-
-To build the application run:
+My development environment is in Archlinux and Debian so I cross-compile the application. To compile the windows version you will need to have installed the `mingw-w64` package. Then run:
 ```sh
 make release_windows
 ```
