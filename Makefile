@@ -118,7 +118,12 @@ release_windows: structure date
 	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
 	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res
 
-release_mac: structure luajit date freetype2 tekui lsqlite luafilesystem timetracker
+release_mac: structure date freetype2 tekui lsqlite luafilesystem timetracker
+	# Luajit
+	cd $(LUA_FOLDER)/ && MACOSX_DEPLOYMENT_TARGET=10.12 make TARGET_SYS=Darwin
+	cp $(LUA_FOLDER)/src/libluajit.so $(DEPLOY_FOLDER)/
+	cd $(DEPLOY_FOLDER) && ln -sf libluajit.so libluajit-5.1.so.2
+
 	# Create app file
 	mkdir -p d-tracker.app
 	mkdir -p d-tracker.app/Contents
@@ -132,3 +137,4 @@ release_mac: structure luajit date freetype2 tekui lsqlite luafilesystem timetra
 
 	rm -R $(DEPLOY_FOLDER)/*
 	mv d-tracker.app $(DEPLOY_FOLDER)/d-tracker.app
+

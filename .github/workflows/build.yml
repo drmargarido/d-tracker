@@ -1,4 +1,4 @@
-name: Linux/Windows build and test
+name: Build and Test
 
 on: [push, pull_request]
 
