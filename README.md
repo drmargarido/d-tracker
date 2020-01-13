@@ -1,6 +1,6 @@
 # D-Tracker
 
-[![](https://github.com/drmargarido/d-tracker/workflows/Build%20and%20Test/badge.svg)](https://github.com/Immediate-Mode-UI/Nuklear/actions)
+[![](https://github.com/drmargarido/d-tracker/workflows/Build%20and%20Test/badge.svg)](https://github.com/drmargarido/d-tracker/actions)
 
 Lightweight, cross-platform and simple to setup timetracker. Similar to hamster but uses about 10MB of RAM and has a small quantity of dependencies.
 
