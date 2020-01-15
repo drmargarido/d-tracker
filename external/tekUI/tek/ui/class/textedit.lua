@@ -117,7 +117,7 @@ function TextEdit.new(class, self)
 	self.Editing = false
 	self.FileName = self.FileName or ""
 	self.FixedFont = self.FixedFont or false
-	self.FixedFWidth = false 
+	self.FixedFWidth = false
 	self.FollowCursor = false
 	self.FontHandle = false
 	self.FontName = self.FontName or false
@@ -149,7 +149,7 @@ function TextEdit.new(class, self)
 	self.VisualCursorX = 1
 	self.VisibleMargin = self.VisibleMargin or { 0, 0, 0, 0 }
 	-- indicates that Y positions and heights are cached and valid:
--- 	self.YValid = true 
+-- 	self.YValid = true
 	return Sizeable.new(class, self)
 end
 
@@ -250,7 +250,7 @@ function TextEdit:checkInMark(cx, cy)
 			res = true
 		end
 	elseif cy >= my0 and cy <= my1 then
-		if (cy == my0 and cx >= mx0) or (cy == my1 and cx < mx1) or 
+		if (cy == my0 and cx >= mx0) or (cy == my1 and cx < mx1) or
 			(cy > my0 and cy < my1) then
 			res = true
 		end
@@ -289,7 +289,7 @@ end
 function TextEdit:getMark(cx, cy)
 	local m = self.Mark
 	if m then
-		return self:getMarkTopBottom(m[1], m[2], 
+		return self:getMarkTopBottom(m[1], m[2],
 			cx or self.CursorX, cy or self.CursorY)
 	end
 end
@@ -511,7 +511,7 @@ function TextEdit:updateCanvasSize()
 	local c = self.Parent
 	if c then
 		local w, h = self:getRealCanvasSize()
-		c:setValue("CanvasWidth", 
+		c:setValue("CanvasWidth",
 			self.UseFakeCanvasWidth and FAKECANVASWIDTH or w)
 		c:setValue("CanvasHeight", h)
 		c:rethinkLayout()
@@ -566,11 +566,11 @@ end
 -- 		return lnr
 -- 	end
 -- end
--- 
+--
 -- function TextEdit:getLineHead(lnr)
 -- 	return self.Data[self:getHeadLineNumber(lnr)]
 -- end
--- 
+--
 -- function TextEdit:getLinePart(lnr)
 -- 	lnr = lnr or self.CursorY
 -- 	local line = self:getLine(lnr)
@@ -582,7 +582,7 @@ end
 -- 		return line[1], line[3] or 1, line[4] or line[1]:len()
 -- 	end
 -- end
--- 
+--
 -- function TextEdit:mergeLine(lnr)
 -- 	lnr = self:getHeadLineNumber(lnr)
 -- 	local data = self.Data
@@ -592,7 +592,7 @@ end
 -- 	end
 -- 	return lnr - 1
 -- end
--- 
+--
 -- function TextEdit:mergeText()
 -- 	local data = self.Data
 -- 	local lnr = 1
@@ -601,19 +601,19 @@ end
 -- 		lnr = lnr + 1
 -- 	end
 -- end
--- 
+--
 -- function TextEdit:layoutText()
 -- 	local r1, _, r3 = self.Parent:getRect()
 -- 	if r1 and self.DynWrap then
 -- 		local width = r3 - r1 + 1
 -- 		db.warn("layout to width: %s", width)
--- 		
+--
 -- 		local data = self.Data
 -- 		local onl = #data
--- 		
+--
 -- 		self:mergeText()
 -- 		db.warn("text merged: %s -> %s lines", onl, #data)
--- 
+--
 -- 		for lnr = #data, 1, -1 do
 -- 			local line = data[lnr]
 -- 			local lw = line[2]
@@ -622,13 +622,13 @@ end
 -- 				local text = line[1]
 -- 				local nlnr = 0
 -- 				data[lnr][3] = 1
--- 				
+--
 -- 				local x0 = 1
 -- 				while lw > 0 do
 -- 					local x = self:getCursorByX(text, width)
 -- 					assert(x > 1)
 -- 					data[lnr + nlnr][4] = x0 + x - 2
--- 					-- db.warn("%d-%d:\t%s", data[lnr + nlnr][3], 
+-- 					-- db.warn("%d-%d:\t%s", data[lnr + nlnr][3],
 --						data[lnr + nlnr][4], text:sub(1, x - 1))
 -- 					local nlw = self:getTextWidth(text, 0, x - 1)
 -- 					text = text:sub(x)
@@ -705,11 +705,11 @@ function TextEdit:initFont()
 			self.FixedFWidth = fw
 		end
 	end
-	
+
 	if self.Size and self.Parent then
 		self.Parent.MinWidth = fw * self.Size
 	end
-	
+
 	self.LineOffset = floor(self.LineSpacing / 2)
 	self.LineHeight = lh + self.LineSpacing
 	self:initText()
@@ -737,7 +737,7 @@ function TextEdit:setup(app, window)
 	self.FGPens[PENIDX_MARK] = self.FGPens[PENIDX_MARK] or props["findmark-color"] or "list-detail"
 
 	self:initFont()
-	
+
 	self:addNotify("CursorX", ui.NOTIFY_ALWAYS, NOTIFY_CURSORX)
 	self:addNotify("CursorY", ui.NOTIFY_ALWAYS, NOTIFY_CURSORY)
 	self:addNotify("FileName", ui.NOTIFY_ALWAYS, NOTIFY_FILENAME)
@@ -784,9 +784,9 @@ function TextEdit:layout(x0, y0, x1, y1, markdamage)
 			local n4 = y1 - m4
 			local r1, r2, r3, r4 = self:getRect()
 			markdamage = markdamage ~= false
-			if n1 == r1 and n2 == r2 and markdamage and 
+			if n1 == r1 and n2 == r2 and markdamage and
 				self:checkFlags(FL_TRACKDAMAGE) then
-				
+
 				local dw = n3 - r3
 				local dh = n4 - r4
 				if dw ~= 0 and insx and c[1] > insx then
@@ -829,7 +829,7 @@ function TextEdit:drawPatch(r1, r2, r3, r4)
 	local x, y = self:getRect()
 	local lh = self.LineHeight
 	local lo = self.LineOffset
-	local l0, l1 
+	local l0, l1
 	local password = self.PasswordChar
 
 	local bgpen, tx, ty = self:getBG()
@@ -866,7 +866,7 @@ function TextEdit:drawPatch(r1, r2, r3, r4)
 				d:fillRect(x0, y0, x1, y1, bgpen)
 				if password then
 					local slen = snip:len()
-					d:drawText(x0, y0 + lo, x1, y1 - lo, password:rep(slen), 
+					d:drawText(x0, y0 + lo, x1, y1 - lo, password:rep(slen),
 						fgpen)
 				else
 					d:drawText(x0, y0 + lo, x1, y1 - lo, snip:get(), fgpen)
@@ -880,7 +880,7 @@ function TextEdit:drawPatch(r1, r2, r3, r4)
 	end
 
 	r:forEach(d.fillRect, d)
-	
+
 	local c = self.Cursor
 	if c and intersect(r1, r2, r3, r4, c[1], c[2], c[3], c[4]) then
 		if c[6] == 1 then
@@ -946,7 +946,7 @@ function TextEdit:setEditing(onoff)
 end
 
 -------------------------------------------------------------------------------
---	
+--
 -------------------------------------------------------------------------------
 
 function TextEdit:damageLine(l)
@@ -1071,7 +1071,7 @@ end
 -------------------------------------------------------------------------------
 
 function TextEdit:removeLine(lnr, remove_bookmark)
-	
+
 	if self:checkBookmark(lnr) and self:checkBookmark(lnr + 1) then
 		-- bookmark in this and next line, merge:
 		remove_bookmark = true
@@ -1080,7 +1080,7 @@ function TextEdit:removeLine(lnr, remove_bookmark)
 	if remove_bookmark then
 		self:removeBookmark(lnr)
 	end
-	
+
 	local idx, blnr = self:findBookmark(lnr)
 	if idx then
 		local b = self.Bookmarks
@@ -1188,7 +1188,7 @@ function TextEdit:getPens(mode)
 		return props["bookmark-background-color" .. stateextra] or "list-alt",
 			props["bookmark-color" .. stateextra] or "list-detail"
 	elseif mode == "cursorline" then
-		return props["cursor-background-color" .. stateextra] or "list-alt", 
+		return props["cursor-background-color" .. stateextra] or "list-alt",
 			props["cursor-color" .. stateextra] or "list-detail"
 	else
 		return self:getBG(), props["color" .. stateextra] or "list-detail"
@@ -1221,10 +1221,10 @@ function TextEdit:foreachSnippet(lnr, func)
 	local pos0, pos1
 	local pen_bg, pen_fg = self:getLinePens(lnr)
 	local mark_bg, mark_fg = self:getPens("mark")
-	local maxwidth = self.AutoWrap and 
+	local maxwidth = self.AutoWrap and
 		self.Parent.CanvasWidth or FAKECANVASWIDTH
 	local ly = 0 -- intra line nr
-	
+
 	while true do
 		local snipvx, snipgx
 		local fgpen = pen_fg
@@ -1232,7 +1232,7 @@ function TextEdit:foreachSnippet(lnr, func)
 		local char1, meta1 = text:getval(idx + 1)
 		local mark1 = self:checkInMark(idx + 1, lnr)
 		local break_line
-		
+
 		while char1 do
 			idx = idx + 1
 			local char, meta, mark = char1, meta1, mark1
@@ -1270,7 +1270,7 @@ function TextEdit:foreachSnippet(lnr, func)
 				break
 			end
 		end
-		
+
 		if not pos0 then
 			return
 		end
@@ -1280,18 +1280,18 @@ function TextEdit:foreachSnippet(lnr, func)
 		gx = gx + gwidth
 		local ret_pos0 = pos0
 		pos0 = nil
-		
+
 		if func(self, ret_pos0, snip, snipvx, snipgx, snipgx + gwidth - 1,
 			fgpen, bgpen, ly) then
 			break
 		end
-		
+
 		if break_line then
 			gx = 0
 			ly = ly + 1
 		end
 	end
-	
+
 end
 
 -------------------------------------------------------------------------------
@@ -1330,7 +1330,7 @@ end
 -------------------------------------------------------------------------------
 
 function TextEdit:getTextWidth(text, p0, p1)
-	return text:getTextWidth(self.TabSize, p0, p1, 
+	return text:getTextWidth(self.TabSize, p0, p1,
 		self.FixedFWidth or self.getRawTextWidth, self, self.FWidth)
 end
 
@@ -1381,7 +1381,7 @@ end
 
 -------------------------------------------------------------------------------
 --	setCursor(blink, cx, cy, follow) - blink=1 cursor on, blink=0 cursor off,
---	blink=-1 cursor on in next frame, blink=false no change. follow: 
+--	blink=-1 cursor on in next frame, blink=false no change. follow:
 --	false=do not follow cursor, -1=visible area jumps to the cursor
 --	immediately, 1=visible area moves gradually (if enabled)
 -------------------------------------------------------------------------------
@@ -1409,7 +1409,7 @@ function TextEdit:setCursor(bs, cx, cy, follow)
 
 	local nodamage = self.SuspendUpdateNest > 0 or
 		self.CursorMode == "hidden" or self.CursorStyle == "none"
-	
+
 	if cx or cy then
 		if cy and cy ~= ocy then
 			assert(cy <= self:getN())
@@ -1468,10 +1468,10 @@ function TextEdit:setCursor(bs, cx, cy, follow)
 
 		local cs = self.CursorStyle
 		local clchanged = ychanged and (cs == "bar" or cs == "bar+line")
-		
+
 		if c then
 			-- old cursor, and visible?
-			if c[6] and 
+			if c[6] and
 				(c[1] ~= x0 or c[2] ~= y0 or c[3] ~= x1 or c[4] ~= y1) then
 				local x0 = min(x0, c[1])
 				local x1 = max(x1, c[3])
@@ -1501,7 +1501,7 @@ function TextEdit:setCursor(bs, cx, cy, follow)
 		if follow then
 			self.FollowCursor = follow
 		end
-		
+
 		if clchanged then
 			x0 = r1
 			x1 = r3
@@ -1564,7 +1564,7 @@ end
 
 function TextEdit:moveCursor(dx, dy)
 	local cx, cy = self:getCursor()
-	local lockcx 
+	local lockcx
 	cx, cy, self.LockCursorX = self:moveCursorPosition(cx, cy, dx, dy,
 		self.LockCursorX)
 	self:setCursor(-1, cx, cy, 1)
@@ -1657,7 +1657,7 @@ function TextEdit:enter(followcursor)
 	self:resize(0, lh, 0, lh * cy)
 	self:damageLine(cy)
 	cy = cy + 1
-	
+
 	local newcx = 1
 	if cx <= 1 then
 		local newline = self:newString()
@@ -1684,7 +1684,7 @@ function TextEdit:enter(followcursor)
 		-- set userdata in both strings:
 		newline:attachdata(oldline:getdata())
 	end
-	
+
 	self:changeLine(cy - 1)
 	self:changeLine(cy)
 	self:setCursor(-1, newcx, cy, followcursor == nil and 1)
@@ -1898,9 +1898,9 @@ function TextEdit:updateCursorMark(msg, funcname)
 			self:doMark()
 		end
 	end
-	
+
 	self[funcname](self)
-	
+
 	if self.Mark then
 		self:updateMark()
 	end
@@ -1945,7 +1945,8 @@ function TextEdit:handleKeyboard(msg)
 				-- db.warn("ctrl+delete")
 				break
 			end
-			if qual > 3 or code == 27 then -- ctrl, alt, esc, ...
+            -- and qual ~= 256 allows the right numpad to work
+			if (qual > 3 and qual ~= 256) or code == 27 then -- ctrl, alt, esc, ...
 				if ml and (code == 0xf023 or code == 0xf024) then
 					-- relinquish qual+pageup/down
 				else
@@ -1978,7 +1979,7 @@ function TextEdit:handleKeyboard(msg)
 				self:updateCursorMark(msg, "cursorSOL")
 			elseif code == 0xf026 then
 				self:updateCursorMark(msg, "cursorEOL")
-			elseif (code == 9 or (code > 31 and 
+			elseif (code == 9 or (code > 31 and
 				(code < 0xe000 or code > 0xf8ff))) and not ro then
 				self:suspendWindowUpdate()
 				self:insertShiftMark(msg)
@@ -2004,7 +2005,7 @@ function TextEdit:updateInterval(msg)
 	if self.Window.ActivePopup then
 		return msg
 	end
-	
+
 	self:followCursor()
 
 	if self.CursorMode == "still" then
@@ -2014,19 +2015,19 @@ function TextEdit:updateInterval(msg)
 		self:setCursor(0)
 		return msg
 	end
-	
+
 	if not self.BlinkCursor then
 		if self.BlinkState ~= 1 then
 			self:setCursor(1)
 		end
 		return msg
 	end
-	
+
 	local bt = self.BlinkTick
 	bt = bt - 1
 	if bt < 0 then
 		bt = self.BlinkTickInit
-		local bs = not self.BlinkCursor and 1 
+		local bs = not self.BlinkCursor and 1
 			or ((self.BlinkState == 1) and 0) or 1
 		self:setCursor(bs)
 	end
@@ -2090,7 +2091,7 @@ end
 -------------------------------------------------------------------------------
 
 function TextEdit:find(search)
-	local sx, sy = self:moveCursorPosition(self.CursorX, self.CursorY, 1, 0, 
+	local sx, sy = self:moveCursorPosition(self.CursorX, self.CursorY, 1, 0,
 		true)
 	local numl = self:getN()
 	for y = 0, numl - 1 do
@@ -2124,7 +2125,7 @@ function TextEdit:clearMark()
 		if damage then
 			self:damageLine(y)
 		end
-	end	
+	end
 end
 
 function TextEdit:mark(line, lnr, p0, p1)
@@ -2158,7 +2159,7 @@ end
 
 local function isalphanum(v)
 	v = v or 0
-	return (v >= 97 and v <= 122) or (v >= 65 and v <= 90) 
+	return (v >= 97 and v <= 122) or (v >= 65 and v <= 90)
 		or (v >= 48 and v <= 57)
 end
 
@@ -2325,7 +2326,7 @@ function TextEdit:getSelection(which)
 	local s, c = self.Window.Drawable:getAttrs("sc")
 	if (which == 1 and c) or (which == 2 and s) then
 		db.info("denied - would request clipboard/selection from self")
-		return 
+		return
 	end
 	local clip = self.Window.Drawable:getSelection(which)
 	if clip then

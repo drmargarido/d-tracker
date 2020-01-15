@@ -64,7 +64,9 @@ _refresh = function()
 
     local current_activity_text = "No Activity"
     if has_task_in_progress then
-        current_activity_text = utils.trim_text(current_task.description, 54)
+        current_activity_text = utils.trim_text(
+            current_task.description.." - "..current_task.project, 60
+        )
     end
 
     -- Calculate total time
@@ -82,15 +84,13 @@ _refresh = function()
         end
     end
 
-    local total_time_text
+    local total_time_text = "No records today"
     if total_time then
         total_time_text = string.format(
             "Total Time: %02dh %02dmin",
             total_time:spanhours(),
             total_time:getminutes()
         )
-    else
-        total_time_text = "No records today"
     end
 
     -- Set the updated data in the UI elements
@@ -163,7 +163,7 @@ return {
                             Id = "current_activity_text",
                             Class = "caption",
                             Text = "No Activity",
-                            Style = "text-align: left; font: ui-menu:24;/b;"
+                            Style = "text-align: left; font: ui-menu:20;/b;"
                         },
                         ui.Area:new{
                             Width = "fill",
@@ -208,16 +208,27 @@ return {
                                 local project_input = this_window:getById("task-project")
                                 project_input:setValue("Text", task.project)
                                 project_input.Child.Child:setValue("Class", "")
+                            end,
+                            onEnter = function(self)
+                                local start_button = self:getById("start_tracking_button")
+                                start_button:setValue("Pressed", true)
+                                start_button:setValue("Pressed", false)
                             end
                         },
                         InputWithAutocomplete:new{
                             Callback = autocomplete_project,
                             Id = "task-project",
                             Width = "free",
-                            Placeholder = "Project"
+                            Placeholder = "Project",
+                            onEnter = function(self)
+                                local start_button = self:getById("start_tracking_button")
+                                start_button:setValue("Pressed", true)
+                                start_button:setValue("Pressed", false)
+                            end
                         },
                         ui.Button:new{
                             Width = 120,
+                            Id = "start_tracking_button",
                             Style = "margin-left: 5;",
                             Text = "Start Tracking",
                             onPress = function(self)
@@ -288,7 +299,7 @@ return {
                             Width = 120,
                             Text = "Show Overview",
                             onPress = function(self)
-                                stats_window.update(self, date(), date())
+                                stats_window.update(self)
                                 self:getById("stats_window"):setValue("Status", "show")
                             end
                         }

@@ -223,9 +223,28 @@ function InputWithAutocomplete.new(_, self)
     input.Child.Child.onSelect = function(_self)
         _onSelect(_self)
         if _self.Selected then
-            self.beginPopup(_self)
+            if not self.PopupWindow then
+                self.beginPopup(_self)
+            end
         else
-            self.endPopup(_self)
+            if self.PopupWindow then
+                self.endPopup(_self)
+            end
+        end
+    end
+
+    local _onFocus = input.Child.Child.onFocus
+    input.Child.Child.onFocus = function(_self)
+        _onFocus(_self)
+
+        if _self.Focus then
+            _self:setValue("Selected", true)
+            _self:setValue("Focus", true)
+            _self:setValue("Active", true)
+        else
+            _self:setValue("Selected", false)
+            _self:setValue("Focus", false)
+            _self:setValue("Active", false)
         end
     end
 
@@ -249,8 +268,17 @@ function InputWithAutocomplete.new(_, self)
                 end
             elseif code == 13 then -- Enter
                 if self.SelectedLine ~= 0 then
+                    -- Fill input with the autocomplete
                     input.submitSelectedLine(_self)
+                    _self:setValue("Focus", true)
+                    _self:setValue("Active", true)
+                else
+                    _handleKeyboard(_self, msg)
+                    return msg
                 end
+            elseif code == 9 then -- TAB
+                _handleKeyboard(_self, msg)
+                return msg
             else
                 _handleKeyboard(_self, msg)
                 _self:setValue("Focus", true)

@@ -27,6 +27,18 @@ tek.ui.class.display {
 	border-width: 2;
 }
 
+.project:hover {
+    color: #666;
+}
+
+.project:active {
+    color: #666;
+}
+
+.project:focus {
+    color: #666;
+}
+
 .project{
 	color: #666;
 }

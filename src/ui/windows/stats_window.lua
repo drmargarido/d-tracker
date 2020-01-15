@@ -31,8 +31,8 @@ local last_end_date = date()
 
 local _update
 _update = function(self, start_date, end_date, text)
-    last_start_date = start_date
-    last_end_date = end_date
+    last_start_date = start_date or last_start_date
+    last_end_date = end_date or last_end_date
 
     -- Get the new list of tasks
     local filtered_tasks
@@ -49,7 +49,7 @@ _update = function(self, start_date, end_date, text)
             return
         end
     else
-        filtered_tasks = list_tasks(start_date, end_date)
+        filtered_tasks = list_tasks(last_start_date, last_end_date)
     end
 
     -- Prepare the tasks for each day

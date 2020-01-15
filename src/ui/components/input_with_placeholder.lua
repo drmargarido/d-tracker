@@ -31,6 +31,23 @@ function InputWithPlaceholder.new(_, self)
         end
     end
 
+    local _onFocus = input.Child.Child.onFocus
+    input.Child.Child.onFocus = function(_self)
+        if _self.Focus then
+            if _self.Class == "placeholder" then
+                input:setValue("Text", "")
+                _self:setValue("Class", "")
+            end
+        else
+            if #input:getText() == 0 then
+                input:setValue("Text", input.Placeholder)
+                _self:setValue("Class", "placeholder")
+            end
+        end
+
+        return _onFocus(_self)
+    end
+
     return input
 end
 
