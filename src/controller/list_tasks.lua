@@ -1,5 +1,6 @@
 -- Utils
 local validators = require "src.validators.base_validators"
+local date = require "date.date"
 
 -- Decorators
 local decorators = require "src.decorators"
@@ -11,9 +12,9 @@ return check_input(
         {validators.is_date},
         {validators.is_date}
     },
-    use_db(function(db, start_date, end_date)
+    use_db(function(db, start_date, _end_date)
         -- To include the end_date one day is added
-        end_date:adddays(1)
+        local end_date = date(_end_date):adddays(1)
 
         local query = string.format(
             [[

@@ -8,10 +8,8 @@
     + Borders in the totals of the tasks overview window are visible, they should be white like all the other lists.
     + When the application is opened the autocomplete popup appear out of position
     + When changing a task time range to a time that overlaps another task it should not be accepted or should try to fix the given range. Possible solution: Reject the modification and report to the user the failure, so he can handle it manually. Tasks in conflict should be presented to the user.
-    + Exporting of xml in show overview always puts the file name as a range even when just one day is filtered
     + Crash happened in the first export of the xml?
     + Check if memory is leaking in the show overview queries.
-    + When a task is in progress, sometimes the color of the 'Stop Tracking' button turn grey, like if it was disabled.
     + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
     + Missing day time in each day of the project overview like the hamster does
     + Its possible to put the end_time of a task before its start time in the edit time window.

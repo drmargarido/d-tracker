@@ -117,7 +117,7 @@ _update = function(self, start_date, end_date, text)
         })
         for _, task in ipairs(days_tasks[day]) do
             task_list_element:addMember(TaskRow.new(task, function()
-                _update(self, start_date, end_date)
+                _update(self, last_start_date, last_end_date)
                 main_refresh(self)
             end))
         end
@@ -181,10 +181,21 @@ _update = function(self, start_date, end_date, text)
     self:getById("stats_xml_export"):setValue("onPress", function(_self)
         local app = _self.Application
         app:addCoroutine(function()
+            local start_text = last_start_date:fmt("%F")
+            local end_text = last_end_date:fmt("%F")
+
+            local location_path
+            if start_text == end_text then
+                -- If both are the same day just put one day instead of a range
+                location_path = last_start_date:fmt("%F")..".xml"
+            else
+                location_path = last_start_date:fmt("%F").."_"..last_end_date:fmt("%F")..".xml"
+            end
+
             local status, path, select = _self.Application:requestFile{
                 Title = "Select the export path",
                 SelectText = "save",
-                Location = start_date:fmt("%F").."_"..end_date:fmt("%F")..".xml",
+                Location = location_path,
                 Path = conf.xml_path
             }
 

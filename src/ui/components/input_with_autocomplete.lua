@@ -274,6 +274,8 @@ function InputWithAutocomplete.new(_, self)
                     _self:setValue("Active", true)
                 else
                     _handleKeyboard(_self, msg)
+                    _self:setValue("Focus", false)
+                    _self:setValue("Active", false)
                     return msg
                 end
             elseif code == 9 then -- TAB

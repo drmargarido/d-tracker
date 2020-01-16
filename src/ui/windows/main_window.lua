@@ -101,6 +101,8 @@ _refresh = function()
 
     current_activity_element:setValue("Text", current_activity_text)
     stop_tracking_element.Disabled = not has_task_in_progress
+    stop_tracking_element:onDisable() -- Trigger UI update
+
     total_time_element:setValue("Text", total_time_text)
 
     -- Configure export xml callback
