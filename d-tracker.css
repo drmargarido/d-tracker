@@ -102,3 +102,10 @@ tek.ui.class.slider {
 .autocomplete_group {
     background-color: background;
 }
+
+.totals_text {
+    border-width: 0;
+    border-color: background;
+    margin: 0;
+}
+

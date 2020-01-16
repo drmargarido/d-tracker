@@ -54,30 +54,34 @@ _update = function(self, start_date, end_date, text)
 
     -- Prepare the tasks for each day
     local days_tasks = {}
+    local days_time = {}
     local days = {}
 
     local tasks_time = {}
     local projects_time = {}
     for _, task in ipairs(filtered_tasks) do
+        local task_duration = date.diff(date(task.end_time), date(task.start_time))
+
         -- Tasks by Date
         local task_date = date(task.start_time):fmt("%A, %d %B %Y")
         if not days_tasks[task_date] then
             table.insert(days, task_date)
+            days_time[task_date] = task_duration
             days_tasks[task_date] = {}
+        else
+            days_time[task_date] = days_time[task_date] + task_duration
         end
         table.insert(days_tasks[task_date], task)
 
         -- Time By Project
-        local project_duration = date.diff(date(task.end_time), date(task.start_time))
         local project_text = utils.trim_text(task.project, 95)
         if not projects_time[project_text] then
-            projects_time[project_text] = project_duration
+            projects_time[project_text] = task_duration
         else
-            projects_time[project_text] = projects_time[project_text] + project_duration
+            projects_time[project_text] = projects_time[project_text] + task_duration
         end
 
         -- Time By Task
-        local task_duration = date.diff(date(task.end_time), date(task.start_time))
         local task_text = utils.trim_text(task.description, 95)
         if not tasks_time[task_text] then
             tasks_time[task_text] = task_duration
@@ -107,14 +111,38 @@ _update = function(self, start_date, end_date, text)
     -- Update the UI with new data
     for i=#days, 1, -1 do
         local day = days[i]
-        task_list_element:addMember(ui.Text:new{
-            Text = day,
-            Style = [[
-                font: 12/b;
-                text-align: left;
-                border-width: 0;
-            ]]
-        })
+        local duration_text = string.format(
+            "%02dh %02dmin",
+            days_time[day]:spanhours(),
+            days_time[day]:getminutes()
+        )
+
+        task_list_element:addMember(
+            ui.Group:new{
+                Style=[[
+                    padding-top: 3;
+                    background-color: background;
+                ]],
+                Children={
+                    ui.Text:new{
+                        Text = day,
+                        Class = "totals_text",
+                        Style = [[
+                            font: 12/b;
+                            text-align: left;
+                        ]]
+                    },
+                    ui.Text:new{
+                        Text = duration_text,
+                        Class = "totals_text",
+                        Style = [[
+                            font: 12/b;
+                            text-align: right;
+                        ]]
+                    }
+                }
+            }
+        )
         for _, task in ipairs(days_tasks[day]) do
             task_list_element:addMember(TaskRow.new(task, function()
                 _update(self, last_start_date, last_end_date)
@@ -133,15 +161,15 @@ _update = function(self, start_date, end_date, text)
         tasks_times_element:addMember(ui.Group:new{
             Children = {
                 ui.Text:new{
+                    Class = "totals_text",
                     Style = [[
-                        border-width: 0;
                         text-align: left;
                     ]],
                     Text = task
                 },
                 ui.Text:new{
+                    Class = "totals_text",
                     Style = [[
-                        border-width: 0;
                         text-align: right;
                     ]],
                     Text = text_duration
@@ -160,15 +188,15 @@ _update = function(self, start_date, end_date, text)
         projects_times_element:addMember(ui.Group:new{
             Children = {
                 ui.Text:new{
+                    Class = "totals_text",
                     Style = [[
-                        border-width: 0;
                         text-align: left;
                     ]],
                     Text = project
                 },
                 ui.Text:new{
+                    Class = "totals_text",
                     Style = [[
-                        border-width: 0;
                         text-align: right;
                     ]],
                     Text = text_duration

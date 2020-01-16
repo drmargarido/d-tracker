@@ -222,6 +222,7 @@ function InputWithAutocomplete.new(_, self)
     local _onSelect = input.Child.Child.onSelect
     input.Child.Child.onSelect = function(_self)
         _onSelect(_self)
+
         if _self.Selected then
             if not self.PopupWindow then
                 self.beginPopup(_self)
@@ -230,21 +231,6 @@ function InputWithAutocomplete.new(_, self)
             if self.PopupWindow then
                 self.endPopup(_self)
             end
-        end
-    end
-
-    local _onFocus = input.Child.Child.onFocus
-    input.Child.Child.onFocus = function(_self)
-        _onFocus(_self)
-
-        if _self.Focus then
-            _self:setValue("Selected", true)
-            _self:setValue("Focus", true)
-            _self:setValue("Active", true)
-        else
-            _self:setValue("Selected", false)
-            _self:setValue("Focus", false)
-            _self:setValue("Active", false)
         end
     end
 
@@ -274,11 +260,10 @@ function InputWithAutocomplete.new(_, self)
                     _self:setValue("Active", true)
                 else
                     _handleKeyboard(_self, msg)
-                    _self:setValue("Focus", false)
-                    _self:setValue("Active", false)
                     return msg
                 end
             elseif code == 9 then -- TAB
+                _self.tab_pressed = true
                 _handleKeyboard(_self, msg)
                 return msg
             else
@@ -288,6 +273,21 @@ function InputWithAutocomplete.new(_, self)
 
                 _self:setValue("Selected", false) -- Trigger onSelect to hide the popup
                 _self:setValue("Selected", true) -- Trigger onSelect to show the popup refreshed
+            end
+        end
+
+        if msg[2] == ui.MSG_KEYUP then
+            local code = msg[3]
+
+            if code == 9 then -- TAB
+                if _self.tab_pressed then
+                    _self:setValue("Focus", false)
+                    _self:setValue("Selected", false)
+                    _self.tab_pressed = false
+                else
+                    _self:setValue("Selected", true)
+                    _self:setValue("Focus", true)
+                end
             end
         end
 
