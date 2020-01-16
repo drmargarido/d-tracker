@@ -48,6 +48,7 @@ function InputWithAutocomplete.new(_, self)
             local line_text = lines.Children[self.SelectedLine]
             self.onAutocomplete(input, line_text.Text)
             _self:setValue("Selected", false)
+            self.SelectedLine = 0
         end
     end
 
