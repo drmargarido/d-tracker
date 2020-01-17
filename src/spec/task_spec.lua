@@ -6,9 +6,11 @@ local edit_task = require "src.controller.edit_task"
 local list_tasks = require "src.controller.list_tasks"
 local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
+local autocomplete_task = require "src.controller.autocomplete_task"
 local list_tasks_by_text = require "src.controller.list_tasks_by_text"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local set_task_in_progress = require "src.controller.set_task_in_progress"
+local get_task_by_description = require "src.controller.get_task_by_description"
 
 -- Exporters
 local xml_export = require "src.exporter.xml"
@@ -158,6 +160,25 @@ describe("Base Path of Tasks management", function()
 
         -- Clear file from filesystem
         os.remove(filename)
+    end)
+
+    it("Gets a task by its description", function()
+        local description = "Defining Milestones"
+        local task, err = get_task_by_description(description)
+        assert.is_true(err == nil)
+        assert.is_true(task.project == "D-Tracker")
+        assert.is_true(task.description == description)
+    end)
+
+    it("Lists autocompleted tasks by input text", function()
+        local tasks = autocomplete_task("Dev")
+        assert.is_true(#tasks == 2)
+
+        tasks = autocomplete_task("")
+        assert.is_true(#tasks == 5)
+
+        tasks = autocomplete_task("THISSTRINGWILLNOTMATCHANY")
+        assert.is_true(#tasks == 0)
     end)
 end)
 

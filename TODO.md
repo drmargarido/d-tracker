@@ -13,23 +13,10 @@
     + Its possible to put the end_time of a task before its start time in the edit time window.
     + Totals views should have the time of the projects and tasks sorted by duration
     + Autocomplete should also be presented in the edit task window projects field at least.
+    + Show overview filter by name should be kept when the window is closed
 
 * Windows specific bugs
     + Colors and text fonts are a bit messed (Do something or wait for the themes?)
-
-* Validate the success of the database operations in the controllers
-    + Task autocomplete
-    + Project autocomplete
-    + Get task by description
-
-* Implement tests for the new controllers
-    + Task autocomplete
-    + Project autocomplete
-    + Get task by description
-
-* Add error reporting in the new calls to the autocomplete
-    + Error reporting in the UI in the case of the description autocomplete fails
-    + Error reporting in the UI in the case of the default autocomplete fails
 
 * Create alternative styles
     + Dark

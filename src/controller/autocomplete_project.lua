@@ -30,6 +30,6 @@ return check_input(
             table.insert(tasks, row.name)
         end
 
-        return tasks
+        return tasks, nil
     end)
 )
