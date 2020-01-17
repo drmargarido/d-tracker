@@ -30,8 +30,20 @@ local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete
 local stats_window = require "src.ui.windows.stats_window"
 local this_window
 
+local width = 800
+local height = 600
+
 local _refresh
+
+
 _refresh = function()
+    local r1, r2, r3, r4 = this_window:getRect()
+
+    if r1 and r2 and r3 and r4 then
+        width = r3 - r1 + 1
+        height = r4 - r2 + 1
+    end
+
     -- Clear row selection
     TaskRow.clear_selection()
 
@@ -65,7 +77,7 @@ _refresh = function()
     local current_activity_text = "No Activity"
     if has_task_in_progress then
         current_activity_text = utils.trim_text(
-            current_task.description.." - "..current_task.project, 60
+            current_task.description.." - "..current_task.project, width / 11
         )
     end
 
@@ -145,8 +157,8 @@ return {
         this_window = ui.Window:new {
             Title = "D-Tracker",
             Orientation = "vertical",
-            Width = 800,
-            Height = 600,
+            Width = width,
+            Height = height,
             MaxWidth = "none",
             MaxHeight = "none";
             MinWidth = 250,

@@ -14,6 +14,7 @@
     + Totals views should have the time of the projects and tasks sorted by duration
     + Autocomplete should also be presented in the edit task window projects field at least.
     + Show overview filter by name should be kept when the window is closed
+    + Make the trim sizes update when the window is resized
 
 * Windows specific bugs
     + Colors and text fonts are a bit messed (Do something or wait for the themes?)
