@@ -11,10 +11,9 @@
     + Check if memory is leaking in the show overview queries.
     + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
     + Its possible to put the end_time of a task before its start time in the edit time window.
-    + Totals views should have the time of the projects and tasks sorted by duration
     + Autocomplete should also be presented in the edit task window projects field at least.
-    + Show overview filter by name should be kept when the window is closed
     + Make the trim sizes update when the window is resized
+    + Double refresh call is being done in the stats window when the buttons are pressed
 
 * Windows specific bugs
     + Colors and text fonts are a bit messed (Do something or wait for the themes?)

@@ -28,20 +28,22 @@ local persistance = require "src.persistance"
 local main_refresh = nil
 local last_start_date = date()
 local last_end_date = date()
+local last_text = ""
 
 local _update
 _update = function(self, start_date, end_date, text)
     last_start_date = start_date or last_start_date
     last_end_date = end_date or last_end_date
+    last_text = text or last_text
 
     -- Get the new list of tasks
     local filtered_tasks
-    if text then
+    if last_text ~= nil and #last_text > 0 then
         local err
         filtered_tasks, err = ui_utils.report_error(list_tasks_by_text(
-            start_date,
-            end_date,
-            text
+            last_start_date,
+            last_end_date,
+            last_text
         ))
 
         if err ~= nil then
@@ -89,6 +91,10 @@ _update = function(self, start_date, end_date, text)
             tasks_time[task_text] = tasks_time[task_text] + task_duration
         end
     end
+
+    -- Sort totals
+    local sorted_projects_time = utils.sort_duration(projects_time)
+    local sorted_tasks_time = utils.sort_duration(tasks_time)
 
     -- Get UI Widgets
     local task_list_element = self:getById("stats_task_list_group")
@@ -151,7 +157,8 @@ _update = function(self, start_date, end_date, text)
         end
     end
 
-    for task, time in pairs(tasks_time) do
+    for _, task_time in ipairs(sorted_tasks_time) do
+        local task, time = task_time.key, task_time.duration
         local text_duration = string.format(
             "%02dh %02dmin",
             time:spanhours(),
@@ -178,7 +185,8 @@ _update = function(self, start_date, end_date, text)
         })
     end
 
-    for project, time in pairs(projects_time) do
+    for _, project_time in ipairs(sorted_projects_time) do
+        local project, time = project_time.key, project_time.duration
         local text_duration = string.format(
             "%02dh %02dmin",
             time:spanhours(),

@@ -18,7 +18,7 @@ return {
         return os.rename(name,name) and true or false
     end,
 
-    -- Checks if the table contains an entry with the key
+    -- Gets a table with only the keys of the current table
     get_keys = function(_table)
         local keys = {}
 
@@ -27,5 +27,37 @@ return {
         end
 
         return keys
+    end,
+
+    --[[
+        Sorting of tables with duration was not working so here we create a new
+        table as a list but with their values(durations) sorted
+    ]]
+    sort_duration = function(unsorted_table)
+        local already_sorted = {}
+        local sorted = {}
+
+        for _, _ in pairs(unsorted_table) do
+            local max = nil
+
+            for key, duration in pairs(unsorted_table) do
+                if not max then
+                    if not already_sorted[key] then -- Ignore already sorted entries
+                        max = {key=key, duration=duration}
+                    end
+                else
+                    if not already_sorted[key] then -- Ignore already sorted entries
+                        if max.duration:spanhours() < duration:spanhours() then
+                            max = {key=key, duration=duration}
+                        end
+                    end
+                end
+            end
+
+            already_sorted[max.key] = true
+            table.insert(sorted, {key=max.key, duration=max.duration})
+        end
+
+        return sorted
     end
 }
