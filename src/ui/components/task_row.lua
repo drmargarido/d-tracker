@@ -62,7 +62,7 @@ return {
             task_id = selected_task_id
         }
     end,
-    new = function(task, refresh)
+    new = function(task, refresh, width)
         local row_number = task_counter
         task_counter = task_counter + 1
 
@@ -118,7 +118,7 @@ return {
                         "%02d:%02d - %s %s",
                         start_time:gethours(), start_time:getminutes(),
                         end_time_text,
-                        utils.trim_text(task.description, 56)
+                        utils.trim_text(task.description, width / 12.5)
                     ),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
@@ -142,7 +142,7 @@ return {
                         padding-left: 5;
                     ]],
                     Mode = "button",
-                    Text = utils.trim_text(task.project, 22),
+                    Text = utils.trim_text(task.project, width / 38),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
                     end),

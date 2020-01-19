@@ -30,8 +30,20 @@ local last_start_date = date()
 local last_end_date = date()
 local last_text = ""
 
+local width = 800
+local height = 600
+
+local this_window
+
 local _update
 _update = function(self, start_date, end_date, text)
+    local r1, r2, r3, r4 = this_window:getRect()
+
+    if r1 and r2 and r3 and r4 then
+        width = r3 - r1 + 1
+        height = r4 - r2 + 1
+    end
+
     last_start_date = start_date or last_start_date
     last_end_date = end_date or last_end_date
     last_text = text or last_text
@@ -153,7 +165,7 @@ _update = function(self, start_date, end_date, text)
             task_list_element:addMember(TaskRow.new(task, function()
                 _update(self, last_start_date, last_end_date)
                 main_refresh(self)
-            end))
+            end, width - 40))
         end
     end
 
@@ -292,14 +304,14 @@ return {
     update = _update,
     init = function(refresh)
         main_refresh = refresh
-        local window = ui.Window:new{
+        this_window = ui.Window:new{
             Id = "stats_window",
             Title = "Tasks Overview",
             Style = "margin: 15;",
             Orientation = "vertical",
             Status = "hide",
-            Width = 800,
-            Height = 600,
+            Width = width,
+            Height = height,
             Children = {
                 ui.Group:new{
                     Orientation = "horizontal",
@@ -447,7 +459,7 @@ return {
             }
         }
 
-        window:addInputHandler(ui.MSG_KEYDOWN, window, function(self, msg)
+        this_window:addInputHandler(ui.MSG_KEYDOWN, this_window, function(self, msg)
             -- Delete Pressed
             if msg[3] == 127 then
                 local selected_task = TaskRow.get_selection()
@@ -459,6 +471,6 @@ return {
             end
         end)
 
-        return window
+        return this_window
    end
 }

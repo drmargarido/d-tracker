@@ -35,7 +35,6 @@ local height = 600
 
 local _refresh
 
-
 _refresh = function()
     local r1, r2, r3, r4 = this_window:getRect()
 
@@ -108,7 +107,7 @@ _refresh = function()
     -- Set the updated data in the UI elements
     local tasks_rows = {}
     for _, task in ipairs(today_tasks) do
-        table.insert(tasks_rows, TaskRow.new(task, _refresh))
+        table.insert(tasks_rows, TaskRow.new(task, _refresh, width))
     end
 
     current_activity_element:setValue("Text", current_activity_text)
