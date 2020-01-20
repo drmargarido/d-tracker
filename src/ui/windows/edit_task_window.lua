@@ -6,9 +6,11 @@ local validators = require "src.validators.base_validators"
 
 -- Controllers
 local get_task = require "src.controller.get_task"
-local edit_task = require "src.controller.edit_task"
 local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
+local edit_task_time = require "src.controller.edit_task_time"
+local edit_task_project = require "src.controller.edit_task_project"
+local edit_task_description = require "src.controller.edit_task_description"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local set_task_in_progress = require "src.controller.set_task_in_progress"
 
@@ -121,20 +123,20 @@ return {
             local new_in_progress = self:getById("edit_in_progress").Selected
 
             -- Trigger field update when a change is detected
-            if new_start ~= start_time then
-                ui_utils.report_error(edit_task(task.id, "start_time", new_start))
-            end
-
-            if new_end ~= end_time and not new_in_progress then
-                ui_utils.report_error(edit_task(task.id, "end_time", new_end))
+            if new_start ~= start_time and (new_end ~= end_time and not new_in_progress) then
+                ui_utils.report_error(edit_task_time(task.id, new_start, new_end))
+            elseif new_start ~= start_time then
+                ui_utils.report_error(edit_task_time(task.id, new_start, date(task.end_time)))
+            elseif new_end ~= end_time and not new_in_progress then
+                ui_utils.report_error(edit_task_time(task.id, date(task.start_time), new_end))
             end
 
             if new_description ~= task.description then
-                ui_utils.report_error(edit_task(task.id, "description", new_description))
+                ui_utils.report_error(edit_task_description(task.id, new_description))
             end
 
             if new_project ~= task.project then
-                ui_utils.report_error(edit_task(task.id, "project", new_project))
+                ui_utils.report_error(edit_task_project(task.id, new_project))
             end
 
             if in_progress ~= new_in_progress then

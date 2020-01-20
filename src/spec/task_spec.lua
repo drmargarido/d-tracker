@@ -2,14 +2,16 @@
 local add_task = require "src.controller.add_task"
 local get_task = require "src.controller.get_task"
 local stop_task = require "src.controller.stop_task"
-local edit_task = require "src.controller.edit_task"
 local list_tasks = require "src.controller.list_tasks"
 local delete_task = require "src.controller.delete_task"
+local edit_task_time = require "src.controller.edit_task_time"
 local list_today_tasks = require "src.controller.list_today_tasks"
+local edit_task_project = require "src.controller.edit_task_project"
 local autocomplete_task = require "src.controller.autocomplete_task"
 local list_tasks_by_text = require "src.controller.list_tasks_by_text"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local set_task_in_progress = require "src.controller.set_task_in_progress"
+local edit_task_description = require "src.controller.edit_task_description"
 local get_task_by_description = require "src.controller.get_task_by_description"
 
 -- Exporters
@@ -51,11 +53,13 @@ describe("Base Path of Tasks management", function()
     end)
 
     it("Creates a task", function()
-        local before_tasks = list_tasks(date(1970, 1, 1), date())
+        local future = date():addhours(1)
+        local before_tasks = list_tasks(date(1970, 1, 1), future)
 
-        add_task("A new task", "D-Tracker")
+        result, err = add_task("A new task", "D-Tracker")
 
-        local after_tasks = list_tasks(date(1970, 1, 1), date())
+        local after_tasks = list_tasks(date(1970, 1, 1), future)
+
         assert.is_true(#before_tasks + 1 == #after_tasks)
     end)
 
@@ -76,7 +80,7 @@ describe("Base Path of Tasks management", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        edit_task(last_task.id, "description", "Testing Edit Description")
+        edit_task_description(last_task.id, "Testing Edit Description")
         local edited_task = get_task(last_task.id)
 
         assert.is_true(last_task.description ~= edited_task.description)
@@ -86,29 +90,20 @@ describe("Base Path of Tasks management", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        edit_task(last_task.id, "project", "New Random Project")
+        edit_task_project(last_task.id, "New Random Project")
         local edited_task = get_task(last_task.id)
 
         assert.is_true(last_task.project ~= edited_task.project)
     end)
 
-    it("Changes the task start date", function()
+    it("Changes the task date", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        edit_task(last_task.id, "start_time", date(2019,10,05,22,14,32))
+        edit_task_time(last_task.id, date(2019,09,05,22,14,32), date(2019,10,05,22,14,32))
         local edited_task = get_task(last_task.id)
 
         assert.is_true(last_task.start_time ~= edited_task.start_time)
-    end)
-
-    it("Changes the task end date", function()
-        local tasks = list_tasks(date(1970, 1, 1), date())
-        local last_task = tasks[#tasks]
-
-        edit_task(last_task.id, "end_time", date(2019,10,05,22,14,32))
-        local edited_task = get_task(last_task.id)
-
         assert.is_true(last_task.end_time ~= edited_task.end_time)
     end)
 
@@ -129,13 +124,14 @@ describe("Base Path of Tasks management", function()
     it("Stops running task", function()
        add_task("A new task", "D-Tracker")
 
-       local tasks = list_tasks(date(1970, 1, 1), date())
+       local future = date():addhours(1)
+       local tasks = list_tasks(date(1970, 1, 1), future)
        local last_task = tasks[#tasks]
        assert.is_true(last_task.end_time == nil)
 
        stop_task()
 
-       tasks = list_tasks(date(1970, 1, 1), date())
+       tasks = list_tasks(date(1970, 1, 1), future)
        last_task = tasks[#tasks]
        assert.is_false(last_task.end_time == nil)
     end)
@@ -224,13 +220,13 @@ describe("Invalid input types in tasks management", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        local _, err = edit_task(last_task.id, "description", 123)
+        local _, err = edit_task_description(last_task.id, 123)
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "description", nil)
+        _, err = edit_task_description(last_task.id, nil)
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "description", {})
+        _, err = edit_task_description(last_task.id, {})
         assert.is_false(err == nil)
 
         local edited_task = get_task(last_task.id)
@@ -241,59 +237,44 @@ describe("Invalid input types in tasks management", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        local _,err = edit_task(last_task.id, "project", 123)
+        local _,err = edit_task_project(last_task.id, 123)
         assert.is_false(err == nil)
 
-        _,err = edit_task(last_task.id, "project", nil)
+        _,err = edit_task_project(last_task.id, nil)
         assert.is_false(err == nil)
 
-        _,err = edit_task(last_task.id, "project", {})
+        _,err = edit_task_project(last_task.id, {})
         assert.is_false(err == nil)
 
         local edited_task = get_task(last_task.id)
         assert.is_true(last_task.project == edited_task.project)
     end)
 
-    it("Tries to change the task start date with invalid data", function()
+    it("Tries to change the task dates with invalid data", function()
         local tasks = list_tasks(date(1970, 1, 1), date())
         local last_task = tasks[#tasks]
 
-        local _, err = edit_task(last_task.id, "start_time", "2019/11/27T22:45:27")
+        local _, err = edit_task_time(last_task.id, "2019/11/26T22:45:27", "2019/11/27T22:45:27")
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "start_time", "Random Text")
+        _, err = edit_task_time(last_task.id, "Random Text", "Random Text")
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "start_time", 123)
+        _, err = edit_task_time(last_task.id, 123, 123)
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "start_time", {})
+        _, err = edit_task_time(last_task.id, {}, {})
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "start_time", nil)
+        _, err = edit_task_time(last_task.id, nil, nil)
         assert.is_false(err == nil)
 
-        local edited_task = get_task(last_task.id)
-        assert.is_true(last_task.start_time == edited_task.start_time)
-    end)
-
-    it("Tries to change the task end date with invalid data", function()
-        local tasks = list_tasks(date(1970, 1, 1), date())
-        local last_task = tasks[#tasks]
-
-        local _, err = edit_task(last_task.id, "end_time", "2019/11/27T22:45:27")
+        -- Start date after end date
+        _, err = edit_task_time(last_task.id, date(2019,10,05,22,14,32), date(2019,09,05,22,14,32))
         assert.is_false(err == nil)
 
-        _, err = edit_task(last_task.id, "end_time", "Random Text")
-        assert.is_false(err == nil)
-
-        _, err = edit_task(last_task.id, "end_time", 123)
-        assert.is_false(err == nil)
-
-        _, err = edit_task(last_task.id, "end_time", {})
-        assert.is_false(err == nil)
-
-        _, err = edit_task(last_task.id, "end_time", nil)
+        -- Date overlaps with another task
+        _, err = edit_task_time(last_task.id, date(2019,11,23,11,23,32), date(2019,11,23,13,14,32))
         assert.is_false(err == nil)
 
         local edited_task = get_task(last_task.id)
