@@ -2,12 +2,12 @@
 local add_task = require "src.controller.add_task"
 local get_task = require "src.controller.get_task"
 local stop_task = require "src.controller.stop_task"
-local edit_task = require "src.controller.edit_task"
 local list_tasks = require "src.controller.list_tasks"
 local delete_task = require "src.controller.delete_task"
 local list_today_tasks = require "src.controller.list_today_tasks"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local set_task_in_progress = require "src.controller.set_task_in_progress"
+local edit_task_description = require "src.controller.edit_task_description"
 
 -- Utils
 local date = require "date.date"
@@ -33,7 +33,7 @@ describe("Operations without database", function()
         _, err = stop_task()
         assert.is_true(err ~= nil)
 
-        _, err = edit_task(1, "description", "New Description")
+        _, err = edit_task_description(1, "New Description")
         assert.is_true(err ~= nil)
 
         _, err = list_tasks(date(), date())

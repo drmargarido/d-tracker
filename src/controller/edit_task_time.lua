@@ -8,7 +8,6 @@ local use_db = decorators.use_db
 local check_input = decorators.check_input
 
 -- Controllers
-local get_task = require "src.controller.get_task"
 local list_tasks = require "src.controller.list_tasks"
 
 return check_input(
