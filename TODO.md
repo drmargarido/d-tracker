@@ -5,7 +5,7 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + When the application is opened the autocomplete popup appear out of position
     + Crash happened in the first export of the xml?
-    + Check if memory is leaking in the show overview queries.
+    + Check if memory is leaking in the show overview queries. (May be a good idea to manually call collectgarbage to force the cleaning of released data)
     + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
     + Autocomplete should also be presented in the edit task window projects field at least.
     + Double refresh call is being done in the stats window when the buttons are pressed
