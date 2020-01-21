@@ -35,3 +35,6 @@
         - Create a MAKEPKG
         - Register in the AUR platform
     + DEB package?
+
+* Improvements
+    + Refactor the ui windows code in multiple partials in order to be easier to track the dependencies of each part and to be able to make simple unit tests to check at least the base path.

@@ -76,7 +76,7 @@ _refresh = function()
     local current_activity_text = "No Activity"
     if has_task_in_progress then
         current_activity_text = utils.trim_text(
-            current_task.description.." - "..current_task.project, width / 11
+            current_task.description.." - "..current_task.project, width / 12.5
         )
     end
 
@@ -155,8 +155,9 @@ return {
     init = function()
         this_window = ui.Window:new {
             Title = "D-Tracker",
-            Center = true,
             Orientation = "vertical",
+            Top = 100,
+            Left = 100,
             Width = width,
             Height = height,
             MaxWidth = "none",
@@ -315,7 +316,14 @@ return {
                             Text = "Show Overview",
                             onPress = function(self)
                                 stats_window.update(self)
-                                self:getById("stats_window"):setValue("Status", "show")
+                                local _, _, x, y = self.Window.Drawable:getAttrs()
+
+                                -- Archor to the main window position
+                                local opening_window = self:getById("stats_window")
+                                opening_window:setValue("Top", y)
+                                opening_window:setValue("Left", x)
+
+                                opening_window:setValue("Status", "show")
                             end
                         }
                     }

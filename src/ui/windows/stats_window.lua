@@ -322,7 +322,6 @@ return {
         this_window = ui.Window:new{
             Id = "stats_window",
             Title = "Tasks Overview",
-            Center = true,
             Style = "margin: 15;",
             Orientation = "vertical",
             Status = "hide",

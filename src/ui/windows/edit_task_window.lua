@@ -157,7 +157,6 @@ return {
         return ui.Window:new {
             Title = "Edit Task",
             Id = "edit_task_window",
-            Center = true,
             Style = "margin: 15;",
             Status = "hide",
             Orientation = "vertical",

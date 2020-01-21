@@ -118,7 +118,7 @@ return {
                         "%02d:%02d - %s %s",
                         start_time:gethours(), start_time:getminutes(),
                         end_time_text,
-                        utils.trim_text(task.description, width / 12.5)
+                        utils.trim_text(task.description, width / 14)
                     ),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
@@ -142,7 +142,7 @@ return {
                         padding-left: 5;
                     ]],
                     Mode = "button",
-                    Text = utils.trim_text(task.project, width / 38),
+                    Text = utils.trim_text(task.project, width / 40),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)
                     end),
@@ -187,7 +187,19 @@ return {
                     Image = pencil_image,
                     onPress = function(self)
                         edit_task_window.set_task_to_edit(self, task.id, refresh)
-                        self:getById("edit_task_window"):setValue(
+
+                        local _, _, x, y = self.Window.Drawable:getAttrs()
+                        local r1, _, _, r4 = self:getRect()
+                        x =	x + r1
+                        y = y + r4
+
+                        local edit_window = self:getById("edit_task_window")
+
+                        -- Will anchor to the first position where it is opened
+                        edit_window:setValue("Left", x - edit_window.Width)
+                        edit_window:setValue("Top", y + edit_window.Height / 2)
+
+                        edit_window:setValue(
                             "Status", "show"
                         )
                     end

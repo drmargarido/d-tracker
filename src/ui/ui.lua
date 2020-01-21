@@ -11,7 +11,6 @@ local function init()
     ui.ThemeName = "d-tracker"
     local base_window = main_window.init()
     local application = ui.Application:new{
-        RootWindow = true,
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),
