@@ -79,8 +79,8 @@ function InputWithAutocomplete.new(_, self)
     input.Child.Child.calcPopup = function(_self)
         local _, _, x, y = _self.Window.Drawable:getAttrs()
         local w
-        local r1, r2, r3, r4 = input:getRect()
 
+        local r1, r2, r3, r4 = input:getRect()
         x =	x + r1
         y = y + r4
         w = r3 - r1 + 1

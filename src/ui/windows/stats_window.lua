@@ -26,8 +26,23 @@ local xml_export = require "src.exporter.xml"
 local persistance = require "src.persistance"
 
 local main_refresh = nil
-local last_start_date = date()
-local last_end_date = date()
+local now = date()
+local last_start_date = date(
+    now:getyear(),
+    now:getmonth(),
+    now:getday(),
+    0,
+    0,
+    0
+)
+local last_end_date = date(
+    now:getyear(),
+    now:getmonth(),
+    now:getday(),
+    23,
+    59,
+    59
+)
 local last_text = ""
 
 local width = 800
@@ -307,6 +322,7 @@ return {
         this_window = ui.Window:new{
             Id = "stats_window",
             Title = "Tasks Overview",
+            Center = true,
             Style = "margin: 15;",
             Orientation = "vertical",
             Status = "hide",

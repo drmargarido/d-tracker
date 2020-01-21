@@ -155,6 +155,7 @@ return {
     init = function()
         this_window = ui.Window:new {
             Title = "D-Tracker",
+            Center = true,
             Orientation = "vertical",
             Width = width,
             Height = height,
@@ -166,6 +167,7 @@ return {
             SizeButton = true,
             Style = "margin: 15;",
             Id = "main_ui_window",
+            RootWindow = true,
             Children = {
                 ui.Group:new{
                     Width = "free",

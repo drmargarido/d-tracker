@@ -19,6 +19,7 @@ local function init()
             notification_window.init()
         }
     }
+
     main_window.refresh(base_window)
     application:run()
 end

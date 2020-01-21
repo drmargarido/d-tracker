@@ -10,6 +10,7 @@ return {
         _window = ui.Window:new {
             Title = "Error Notification",
             Id = "notification_window",
+            Center = true,
             Style = "margin: 15;",
             Status = "hide",
             Orientation = "vertical",

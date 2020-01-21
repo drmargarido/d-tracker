@@ -1,9 +1,7 @@
 # TODO
 
 * Bugfix
-    + When openning the edit task popup it appears in another window in the corner. It should appear above the current window.
     + Fix sometimes fields not rerendering when moving and minimizing the window.
-    + When the application is opened the autocomplete popup appear out of position
     + Crash happened in the first export of the xml?
     + Check if memory is leaking in the show overview queries. (May be a good idea to manually call collectgarbage to force the cleaning of released data)
     + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"

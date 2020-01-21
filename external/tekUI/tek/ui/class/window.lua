@@ -143,7 +143,7 @@ function Window.addClassNotifications(proto)
 	return Group.addClassNotifications(proto)
 end
 
-Window.ClassNotifications = 
+Window.ClassNotifications =
 	Window.addClassNotifications { Notifications = { } }
 
 -------------------------------------------------------------------------------
@@ -218,7 +218,7 @@ DragButton.getPseudoClass = getpseudoclass
 --	SizeButton
 -------------------------------------------------------------------------------
 
-local SizeButton = 
+local SizeButton =
 	ui.ImageWidget:newClass { _NAME = "_window-decoration-sizebutton" }
 
 function SizeButton.new(class, self)
@@ -276,14 +276,14 @@ end
 SizeButton.getPseudoClass = getpseudoclass
 
 
-local SizeBottom = 
+local SizeBottom =
 	ui.Widget:newClass { _NAME = "_window-decoration-sizebottom" }
 
 function SizeBottom.new(class, self)
 	self = self or { }
 	self.Width = "free"
-	self.Height = "fill" 
-	self.Mode = "button" 
+	self.Height = "fill"
+	self.Mode = "button"
 	self.NoFocus = true
 	self.Style = "border-width: 0; margin: 0"
 	return ui.Widget.new(class, self)
@@ -337,7 +337,7 @@ function Window.new(class, self)
 	self.EventMask = ui.MSG_ALL
 	self.Flags = ui.bor(self.Flags or 0, FL_ISWINDOW)
 	self.FocusElement = false
-	
+
 	self.PopupWindow = self.PopupWindow or false
 	if self.PopupWindow then
 		self.CloseButton = false
@@ -351,9 +351,9 @@ function Window.new(class, self)
 		self.RootWindow = self.RootWindow or false
 	end
 
-	self.FullScreen = self.FullScreen or 
+	self.FullScreen = self.FullScreen or
 		(self.RootWindow and ui.FullScreen == "true")
-	
+
 	self.HideOnEscape = self.HideOnEscape or false
 	self.HiliteElement = false
 	-- Active hold tick counter - number of ticks left to next hold event:
@@ -433,51 +433,51 @@ function Window.new(class, self)
 	self.WindowFocus = false
 	self.WindowMinMax = { }
 	self.WinRect = false
-	
+
 	if not (self.CloseButton or self.DragButton or self.SizeButton)
 		or self.RootWindow
-		or self.PopupWindow or self.Borderless or ui.Mode ~= "workbench" 
+		or self.PopupWindow or self.Borderless or ui.Mode ~= "workbench"
 		or Display.getDisplayAttrs("M") then
 		return Group.new(class, self)
 	end
 
 	-- add window decorations.
-	
+
 	local children = self.Children or { }
 	self.Children = false
-	
+
 	local sizebutton = self.SizeButton
 	local dragbutton = self.DragButton
 	local closebutton = self.CloseButton
-	
-	local wgroup = Group:new 
+
+	local wgroup = Group:new
 	{
 		Orientation = self.Orientation or "horizontal",
 		Style = self.Style,
 		Columns = self.Columns,
 		Legend = self.Legend,
 		Class = "window-decoration-group",
-		Children = children 
+		Children = children
 	}
-	
+
 	self.Orientation = "vertical"
 	self.Columns = nil
 	self.Style = nil
 	self.Legend = nil
 	self.Class = "window-decoration"
 	self.Children = { }
-	
+
 	self = Group.new(class, self)
-		
+
 	local topgroup = Group:new { Width = "fill" }
-	
+
 	if dragbutton then
 		dragbutton = DragButton:new { Width = "fill", Height = "fill",
 			Text = self.Title, Draggable = dragbutton }
 		dragbutton:addStyleClass("window-decoration-button")
 		topgroup:addMember(dragbutton)
 	end
-	
+
 	if closebutton then
 		closebutton = CloseButton:new {
 			onClick = function(self)
@@ -492,14 +492,14 @@ function Window.new(class, self)
 	self:addMember(wgroup)
 
 	local sizebottom
-	
+
 	if sizebutton then
 		sizebutton = SizeButton:new()
 		sizebutton:addStyleClass("window-decoration-button")
 		sizebottom = SizeBottom:new { }
 		sizebottom:addStyleClass("window-decoration-button")
 		self:addMember(Group:new
-		{ 
+		{
 			Height = "auto",
 			Children =
 			{
@@ -508,7 +508,7 @@ function Window.new(class, self)
 			}
 		})
 	end
-	
+
 	self:addNotify("WindowFocus", ui.NOTIFY_ALWAYS,
 		{ ui.NOTIFY_SELF, ui.NOTIFY_FUNCTION, function()
 		if dragbutton then
@@ -526,7 +526,7 @@ function Window.new(class, self)
 	end })
 
 	return self
-	
+
 end
 
 -------------------------------------------------------------------------------
@@ -617,6 +617,11 @@ function Window:show()
 		self.Application:openWindow(self)
 		Group.show(self, d)
 		self:layout()
+
+        -- Makes the window have the correct placement of popups at the start
+        local _, _, dx, dy = self.Drawable:getAttrs()
+        self.Drawable:setAttrs { Left = dx+1, Top = dy }
+        self.Drawable:setAttrs { Left = dx, Top = dy }
 	end
 end
 
@@ -751,20 +756,20 @@ function Window:askMinMax()
 
 	local mw, mh = self.MinWidth, self.MinHeight
 	self.MinWidth, self.MinHeight = 0, 0
-	
+
 	local w = self:getAttr("Width")
 	local h = self:getAttr("Height")
 	local minw = self:getAttr("MinWidth")
 	local minh = self:getAttr("MinHeight")
 	local maxw = self:getAttr("MaxWidth")
 	local maxh = self:getAttr("MaxHeight")
-	
+
 	local m1, m2, m3, m4 = Group.askMinMax(self, 0, 0, maxw, maxh)
 	self.MinWidth, self.MinHeight = mw, mh
-	
+
 	mw = minw
 	mh = minh
-	
+
 	m1, m2 = max(mw, m1), max(mh, m2)
 	local x, y, w, h = self.Left, self.Top, self.Width, self.Height
 	if w == "fill" then
@@ -779,7 +784,7 @@ function Window:askMinMax()
 	m4 = self.FullScreen and ui.HUGE or (m4 and m4 > 0 and m4 < HUGE) and m4
 	w = w or maxw == 0 and m1 or w
 	h = h or maxh == 0 and m2 or h
-	
+
 	local wr = self.WinRect
 	if wr then
 		return m1, m2, m3, m4, wr[1] or x, wr[2] or y, wr[3] or w, wr[4] or h
@@ -875,7 +880,7 @@ local MsgHandlers =
 		return msg
 	end,
 	[ui.MSG_FOCUS] = function(self, msg)
-		local has_focus = msg[3] == 1 or 
+		local has_focus = msg[3] == 1 or
 			(self:checkFlags(FL_ACTIVATERMB) and msg[3] == 4)
 		self:setValue("WindowFocus", has_focus)
 		self:setHiliteElement()
@@ -908,7 +913,7 @@ local MsgHandlers =
 			-- release Hold state:
 			if ae and ae.Active and ae.Hold and self.HoldTickActive > 0 then
 				ae:setValue("Hold", false)
-			end   
+			end
 			if not ae and he and he:checkFocus() then
 				-- support releasing a button over a popup item that wasn't
 				-- activated before, i.e. button was pressed all the time:
@@ -1109,7 +1114,7 @@ end
 -------------------------------------------------------------------------------
 
 function Window:update()
-	
+
 	if self.Status == "show" then
 
 		if #self.Relayouts > 0 then
@@ -1229,7 +1234,7 @@ function Window:relayout(e, x0, y0, x1, y1, markdamage)
 		j = j + 1
 	end
 	assert(j == n)
-	
+
 	return res
 end
 
@@ -1567,7 +1572,7 @@ function Window:addBlit(x0, y0, x1, y1, dx, dy, c1, c2, c3, c4)
 			if ca[key] then
 				ca[key][3]:orRect(x0, y0, x1, y1)
 			else
-				ca[key] = { dx, dy, 
+				ca[key] = { dx, dy,
 					Region.new(x0, y0, x1, y1), c1, c2, c3, c4 }
 			end
 		else
