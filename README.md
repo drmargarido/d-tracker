@@ -39,13 +39,13 @@ Release 1.2:
 
 
 ## Install
-To run the application use the most recent release, which right now is the [0.11-beta](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [0.12-beta](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v0.11-beta).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v0.12-beta).
 
 The application is self-contained in the folder so if you just want to run it there execute the `run.sh` file.
 
@@ -78,7 +78,7 @@ sudo make uninstall
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v0.11-beta).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v0.12-beta).
 
 The application is self-contained in the folder so you just need to run the `d-tracker.exe` file.
 
