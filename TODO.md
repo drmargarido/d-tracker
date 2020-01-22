@@ -8,6 +8,7 @@
     + Autocomplete should also be presented in the edit task window projects field at least.
     + Double refresh call is being done in the stats window when the buttons are pressed
     + When changing a task from done to in-progress the date range can collide with other tasks. This should be checked and in case of collision stopped.
+    + When edited the time of a task it is always put out of progress
 
 * Windows specific bugs
     + Colors and text fonts are a bit messed (Do something or wait for the themes?)
