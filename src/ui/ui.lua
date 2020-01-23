@@ -9,8 +9,16 @@ local notification_window = require "src.ui.windows.notification_window"
 
 local function init()
     ui.ThemeName = "d-tracker"
+    local display = ui.Display:new{}
+
+    -- Change the font on windows to be legible
+    if package.config:sub(1,1) == "\\" then -- Check if its running in Windows
+        display.Style = "font-main: helvetica,Vera:16;"
+    end
+
     local base_window = main_window.init()
     local application = ui.Application:new{
+        Display = display,
         Children = {
             base_window,
             edit_task_window.init(main_window.refresh),

@@ -10,9 +10,6 @@
     + When changing a task from done to in-progress the date range can collide with other tasks. This should be checked and in case of collision stopped.
     + When edited the time of a task it is always put out of progress
 
-* Windows specific bugs
-    + Colors and text fonts are a bit messed (Do something or wait for the themes?)
-
 * Create alternative styles
     + Dark
     + Stain
