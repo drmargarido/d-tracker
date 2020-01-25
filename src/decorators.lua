@@ -29,10 +29,6 @@ return {
         return function(...)
             local fields = {...}
 
-            if #validations ~= #fields then
-                return nil, "Missing expected fields"
-            end
-
             for i, validation_list in ipairs(validations) do
                 for _, validation in ipairs(validation_list) do
                     local success, err = validation(fields[i])

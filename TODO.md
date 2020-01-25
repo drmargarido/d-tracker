@@ -4,11 +4,9 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Crash happened in the first export of the xml?
     + Check if memory is leaking in the show overview queries. (May be a good idea to manually call collectgarbage to force the cleaning of released data)
-    + When closing the d-tracker an error it thrown with the message - "Lua error: ./tek/class/object.lua:126: attempt to get length of local 'n' (a function value)"
     + Autocomplete should also be presented in the edit task window projects field at least.
     + Double refresh call is being done in the stats window when the buttons are pressed
-    + When changing a task from done to in-progress the date range can collide with other tasks. This should be checked and in case of collision stopped.
-    + When edited the time of a task it is always put out of progress
+    + Check for limit collision when putting a task in progress
 
 * Create alternative styles
     + Dark

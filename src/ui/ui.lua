@@ -11,8 +11,8 @@ local function init()
     ui.ThemeName = "d-tracker"
     local display = ui.Display:new{}
 
-    -- Change the font on windows to be legible
     if package.config:sub(1,1) == "\\" then -- Check if its running in Windows
+        -- Change the font on windows to be legible
         display.Style = "font-main: helvetica,Vera:16;"
     end
 

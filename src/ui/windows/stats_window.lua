@@ -295,7 +295,17 @@ local date_search = function(self)
         return
     end
 
-    _update(self, date(start_date), date(end_date))
+    -- Make the end date finish at the end of the day
+    local final_end_date = date(end_date)
+    final_end_date = date(
+        final_end_date:getyear(),
+        final_end_date:getmonth(),
+        final_end_date:getday(),
+        23,
+        59,
+        59
+    )
+    _update(self, date(start_date), final_end_date)
 end
 
 local text_search = function(self)

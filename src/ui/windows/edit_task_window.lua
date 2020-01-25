@@ -126,7 +126,11 @@ return {
             if new_start ~= start_time and (new_end ~= end_time and not new_in_progress) then
                 ui_utils.report_error(edit_task_time(task.id, new_start, new_end))
             elseif new_start ~= start_time then
-                ui_utils.report_error(edit_task_time(task.id, new_start, date(task.end_time)))
+                if task.end_time == nil then
+                    ui_utils.report_error(edit_task_time(task.id, new_start, nil))
+                else
+                    ui_utils.report_error(edit_task_time(task.id, new_start, date(task.end_time)))
+                end
             elseif new_end ~= end_time and not new_in_progress then
                 ui_utils.report_error(edit_task_time(task.id, date(task.start_time), new_end))
             end
@@ -141,7 +145,9 @@ return {
 
             if in_progress ~= new_in_progress then
                 if new_in_progress then
-                    ui_utils.report_error(set_task_in_progress(task.id))
+                    -- This way the possible overlaping with other tasks is checked
+                    ui_utils.report_error(stop_task())
+                    ui_utils.report_error(edit_task_time(task.id, date(task.start_time), nil))
                 else
                     ui_utils.report_error(stop_task())
                 end
