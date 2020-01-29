@@ -3,7 +3,6 @@
 * Bugfix
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Crash happened in the first export of the xml?
-    + Autocomplete should also be presented in the edit task window projects field at least.
 
 * Create alternative styles
     + Dark

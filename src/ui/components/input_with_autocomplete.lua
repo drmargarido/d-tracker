@@ -196,9 +196,15 @@ function InputWithAutocomplete.new(_, self)
         app:addMember(self.PopupWindow)
         self.PopupWindow:setValue("Status", "show")
 
-        _self.Window:addNotify("Status", "hide", function(__self)
-            _self:setValue("Selected", false)
-        end)
+
+        _self.Window:addNotify("Status", "hide", {
+            ui.NOTIFY_SELF,
+            ui.NOTIFY_FUNCTION,
+            function(__self, hide)
+                _self:setValue("Selected", false)
+            end,
+            ui.NOTIFY_VALUE
+        })
 
         Children[1].Clicked = false
         Children[1]:setValue("Focus", true)
