@@ -12,19 +12,21 @@ return check_input(
         {validators.is_date}
     },
     use_db(function(db, start_date, end_date)
-        local query = string.format(
-            [[
-                SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
-                FROM task as t
-                LEFT JOIN project p ON p.id = t.project_id
-                WHERE (
-                    t.start_time > '%s' AND t.start_time < '%s'
-                    OR t.end_time > '%s' AND t.end_time < '%s'
-                    OR t.start_time > '%s' AND t.end_time < '%s'
-                    OR t.start_time < '%s' AND t.end_time > '%s'
-                )
-                ORDER BY t.start_time
-            ]],
+        local query = [[
+            SELECT p.name as project, t.id, t.start_time, t.end_time, t.description
+            FROM task as t
+            LEFT JOIN project p ON p.id = t.project_id
+            WHERE (
+                t.start_time > ? AND t.start_time < ?
+                OR t.end_time > ? AND t.end_time < ?
+                OR t.start_time > ? AND t.end_time < ?
+                OR t.start_time < ? AND t.end_time > ?
+            )
+            ORDER BY t.start_time
+        ]]
+
+        local query_stmt = db:prepare(query)
+        query_stmt:bind_values(
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),
             start_date:fmt("${iso}"), end_date:fmt("${iso}"),
@@ -32,7 +34,7 @@ return check_input(
         )
 
         local tasks = {}
-        for row in db:nrows(query) do
+        for row in query_stmt:nrows(query) do
             table.insert(tasks, {
                 id=row.id,
                 project=row.project,

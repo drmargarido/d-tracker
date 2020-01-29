@@ -37,8 +37,13 @@ return check_input(
         local tasks = list_tasks(start_time, _end_time)
         for _, task in ipairs(tasks) do
             if task.id ~= task_id then
+                local task_end = date(task.end_time)
                 local description = task.description
-                return false, "The defined date range overlaps with the task - '"..description.."'"
+
+                -- Ignore collision when difference is less than one minute
+                if math.abs((start_time - task_end):spanseconds()) > 60 then
+                    return false, "The defined date range overlaps with the task - '"..description.."'"
+                end
             end
         end
 
