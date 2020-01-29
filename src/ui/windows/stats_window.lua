@@ -274,6 +274,10 @@ _update = function(self, start_date, end_date, text)
 end
 
 local date_search = function(self)
+    if not self.Pressed then
+        return
+    end
+
     local start_date = string.format(
         "%sT00:00:00",
         self:getById("range_start_date"):getText()

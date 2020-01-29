@@ -3,9 +3,7 @@
 * Bugfix
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Crash happened in the first export of the xml?
-    + Check if memory is leaking in the show overview queries. (May be a good idea to manually call collectgarbage to force the cleaning of released data)
     + Autocomplete should also be presented in the edit task window projects field at least.
-    + Double refresh call is being done in the stats window when the buttons are pressed
 
 * Create alternative styles
     + Dark
