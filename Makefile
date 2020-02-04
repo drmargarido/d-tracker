@@ -5,6 +5,8 @@ LUA_FOLDER=external/LuaJIT
 LSQLITE_FOLDER=external/lsqlite
 LSQLITE_CFLAGS=-O2
 
+INSTALLDIR?=/usr
+
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	CC=gcc
@@ -74,7 +76,7 @@ timetracker: luajit
 	chmod +x $(DEPLOY_FOLDER)/UNINSTALL.sh
 
 install:
-	cd $(DEPLOY_FOLDER) && sh INSTALL.sh
+	cd $(DEPLOY_FOLDER) && sh INSTALL.sh ${INSTALLDIR}
 
 uninstall:
 	cd $(DEPLOY_FOLDER) && sh UNINSTALL.sh

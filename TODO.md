@@ -29,6 +29,5 @@
     + DEB package?
 
 * Improvements
-    + Refactor the ui windows code in multiple partials in order to be easier to track the dependencies of each part and to be able to make simple unit tests to check at least the base path.
     + minimize to tray
     + show overview: week, month defaults besides range selector. (improvement over hamster) add possibility to define other default ranges?
