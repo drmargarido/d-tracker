@@ -43,6 +43,10 @@ To run the application use the most recent release, which right now is the [0.12
 
 ### Linux
 
+#### Package Manager
+
+* Archlinux AUR - [https://aur.archlinux.org/packages/d-tracker/](https://aur.archlinux.org/packages/d-tracker/)
+
 #### Binary Release
 
 You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v0.12-beta).
