@@ -1,4 +1,7 @@
 local utils = require "src.utils"
+local themes = require "src.themes"
+
+local THEME = "default"
 
 local xml_path_file = "xml_save_path"
 
@@ -9,9 +12,9 @@ end
 
 local pencil_icon
 if utils.is_windows() then
-    pencil_icon = "images\\pencil_icon_stain.PPM"
+    pencil_icon = "images\\"..themes[THEME].pencil_icon
 else
-    pencil_icon = "images/pencil_icon_stain.PPM"
+    pencil_icon = "images/"..themes[THEME].pencil_icon
 end
 
 return {
@@ -20,6 +23,6 @@ return {
     xml_path_file = xml_path_file,
     xml_path = xml_path,
 
-    theme = "d-tracker-stain",
+    theme = themes[THEME].name,
     pencil_icon = pencil_icon
 }

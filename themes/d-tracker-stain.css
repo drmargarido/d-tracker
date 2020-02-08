@@ -39,6 +39,7 @@ tek.ui.class.display {
 	rgb-caption-detail: #b2b0ad;
 	rgb-hover-detail: #dfdedb;
 	rgb-detail: #dfdedb;
+    rgb-select: #dfdedb;
 }
 
 _editinput {
@@ -184,7 +185,7 @@ tek.ui.class.slider {
 
 .autocomplete_row:active {
     background-color: background;
-    border-color: detail;
+    border-color: select;
 }
 
 .autocomplete_row {

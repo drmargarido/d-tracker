@@ -71,7 +71,7 @@ function InputWithAutocomplete.new(_, self)
             local line = lines_group.Children[_self.SelectedLine]
             line:setValue("Selected", true)
             line:setValue("Style", [[
-                border-color: detail;
+                border-color: select;
             ]])
         end
     end

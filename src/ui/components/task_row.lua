@@ -44,7 +44,7 @@ local select_list_row = function(self, id, task_id)
    self:getById("row-"..selected_id):setValue(
       "Style", [[
           border-width: 1;
-          border-color: detail;
+          border-color: select;
       ]]
    )
 end
