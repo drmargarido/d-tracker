@@ -110,8 +110,7 @@ release_windows: structure date
 	cp external/tekUI/config_windows external/tekUI/config
 	cd external/tekUI && make all
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
-	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
-	cp d-tracker-stain.css $(DEPLOY_FOLDER)/tek/ui/style/
+	cp themes/* $(DEPLOY_FOLDER)/tek/ui/style/
 
 	# luafilesystem
 	cd external/luafilesystem && make -f Makefile.crosswin
