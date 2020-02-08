@@ -47,7 +47,7 @@
 --			a pair of mouse clicks to be accepted as a double click. The
 --			default is {{70}}. Large touchscreens may require a much larger
 --			value.
---		- {{DBLCLICKTIME}} 
+--		- {{DBLCLICKTIME}}
 --			- Maximum number of microseconds between mouse clicks to be
 --			recognized as a double click. Default: {{32000}}. Use a larger
 --			value for touchscreens.
@@ -94,7 +94,7 @@
 --		- {{NOTIFY_SELF}} - see [[Object][#tek.class.object]]
 --		- {{NOTIFY_OLDVALUE}} - see [[Object][#tek.class.object]]
 --		- {{NOTIFY_FUNCTION}} - see [[Object][#tek.class.object]]
---		- {{NOTIFY_WINDOW}} - see [[Object][#tek.class.object]], 
+--		- {{NOTIFY_WINDOW}} - see [[Object][#tek.class.object]],
 --		defined in [[Element][#tek.ui.class.element]]
 --		- {{NOTIFY_APPLICATION}} - see [[Object][#tek.class.object]],
 --		defined in [[Element][#tek.ui.class.element]]
@@ -145,7 +145,7 @@ package.loaded["tek.ui"] = ui
 ui._VERSION = "tekUI 54.1" -- module version string
 
 ui.VERSION = 112 -- overall package version number
-ui.VERSIONSTRING = 
+ui.VERSIONSTRING =
 	("%d.%02d"):format(floor(ui.VERSION / 100), ui.VERSION % 100)
 
 -------------------------------------------------------------------------------
@@ -522,7 +522,7 @@ end
 -------------------------------------------------------------------------------
 --	catalog = ui.getLocale(appid[, vendordomain[, deflang[, language]]]):
 --	Returns a table of locale strings for the given application Id and vendor
---	domain. {{deflang}} (default: {{"en"}}) is used as the default language 
+--	domain. {{deflang}} (default: {{"en"}}) is used as the default language
 --	code if a catalog for the requested language is unavailable. If no
 --	{{language}} code is specified, then the preferred language will be
 --	obtained from the operating system or desktop environment. If no catalog
@@ -608,9 +608,9 @@ local matchkeys =
 {
 	["background-image"] =
 	{
-		{ "^url%b()", function(p, k, r, a) 
+		{ "^url%b()", function(p, k, r, a)
 			p[r] = a end, "background-color" },
-		{ "^gradient%b()", function(p, k, r, a) 
+		{ "^gradient%b()", function(p, k, r, a)
 			p[r] = a end, "background-color" },
 	},
 	["padding"] =
@@ -634,7 +634,7 @@ local matchkeys =
 		{ "^(%d+)%s+(%d+)%s+(%d+)$", adddirkeys3, "border-%s-width" },
 		{ "^(%d+)%s+(%d+)%s+(%d+)%s+(%d+)$", adddirkeys4, "border-%s-width" }
 	},
-	
+
 	["border-color"] =
 	{
 		{ "^(%S+)$", adddirkeys1, "border-%s-color" },
@@ -690,7 +690,13 @@ function ui.loadStyleSheet(file)
 	local fh, msg
 	db.info("loadstylesheet: '%s'", file)
 	if type(file) == "string" then
-		fh, msg = openUIPath(("tek/ui/style/%s.css"):format(file))
+         -- Check if its running in Windows
+		if package.config:sub(1,1) == "\\" then
+            fh, msg = openUIPath(("tek\\ui\\style\\%s.css"):format(file))
+        else
+            fh, msg = openUIPath(("tek/ui/style/%s.css"):format(file))
+        end
+
 		if not fh then
 			return nil, msg
 		end
@@ -923,21 +929,21 @@ local function getpaths(key, default)
 	return rawget(ui, key) or default
 end
 
-local accessors = 
+local accessors =
 {
 	arg = function()
-		return _G.arg 
+		return _G.arg
 	end,
 	ProgDir = function()
 		return getpaths("ProgDir", "")
 	end,
-	ProgName = function() 
+	ProgName = function()
 		return getpaths("ProgName", "")
 	end,
-	LocalPath = function() 
+	LocalPath = function()
 		return getpaths("LocalPath", ui.OldPath)
 	end,
-	LocalCPath = function() 
+	LocalCPath = function()
 		return getpaths("LocalCPath", ui.OldCPath)
 	end,
 }
@@ -1018,7 +1024,7 @@ local function addqual(key, quals, s)
 	if a then
 		if a[1] ~= 0 then
 			key = String.encodeutf8(a[1])
-			
+
 		end
 		local n = #quals
 		for i = 3, #a do
@@ -1069,7 +1075,7 @@ function ui.extractKeyCode(s, m)
 end
 
 -------------------------------------------------------------------------------
---	Constants: 
+--	Constants:
 -------------------------------------------------------------------------------
 
 ui.DEBUG = false

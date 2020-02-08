@@ -7,11 +7,19 @@ if utils.file_exists(xml_path_file..".lua") then
     xml_path = require(xml_path_file)
 end
 
+local pencil_icon
+if utils.is_windows() then
+    pencil_icon = "images\\pencil_icon_stain.PPM"
+else
+    pencil_icon = "images/pencil_icon_stain.PPM"
+end
+
 return {
     db = "d-tracker.sqlite3",
 
     xml_path_file = xml_path_file,
     xml_path = xml_path,
 
-    pencil_icon = "images/pencil_icon.PPM"
+    theme = "d-tracker-stain",
+    pencil_icon = pencil_icon
 }

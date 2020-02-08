@@ -39,6 +39,7 @@ tekui: freetype2 luajit
 	cd external/tekUI && make all
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
 	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
+	cp d-tracker-stain.css $(DEPLOY_FOLDER)/tek/ui/style/
 
 lsqlite: sqlite.o luajit
 	$(CC) -shared -fPIC $(LSQLITE_CFLAGS) -o $(DEPLOY_FOLDER)/lsqlite3.so $(LSQLITE_FOLDER)/lsqlite3.c $(LSQLITE_FOLDER)/sqlite3.o -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -ldl -lpthread
@@ -111,6 +112,7 @@ release_windows: structure date
 	cd external/tekUI && make all
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
 	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
+	cp d-tracker-stain.css $(DEPLOY_FOLDER)/tek/ui/style/
 
 	# luafilesystem
 	cd external/luafilesystem && make -f Makefile.crosswin

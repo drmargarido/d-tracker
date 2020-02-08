@@ -1,6 +1,12 @@
 -- Tekui
 local ui = require "tek.ui"
 
+-- Configuration
+local conf = require "src.conf"
+
+-- utils
+local utils = require "src.utils"
+
 -- Windows
 local main_window = require "src.ui.windows.main_window"
 local edit_task_window = require "src.ui.windows.edit_task_window"
@@ -8,10 +14,10 @@ local stats_window = require "src.ui.windows.stats_window"
 local notification_window = require "src.ui.windows.notification_window"
 
 local function init()
-    ui.ThemeName = "d-tracker"
+    ui.ThemeName = conf.theme
     local display = ui.Display:new{}
 
-    if package.config:sub(1,1) == "\\" then -- Check if its running in Windows
+    if utils.is_windows() then
         -- Change the font on windows to be legible
         display.Style = "font-main: helvetica,Vera:16;"
     end

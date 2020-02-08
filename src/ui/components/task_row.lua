@@ -33,7 +33,7 @@ local select_list_row = function(self, id, task_id)
       self:getById("row-"..selected_id):setValue(
          "Style", [[
               border-width: 1;
-              border-color: #fff;
+              border-color: background;
          ]]
       )
    end
@@ -44,7 +44,7 @@ local select_list_row = function(self, id, task_id)
    self:getById("row-"..selected_id):setValue(
       "Style", [[
           border-width: 1;
-          border-color: #55b;
+          border-color: detail;
       ]]
    )
 end
@@ -102,7 +102,7 @@ return {
             Orientation = "horizontal",
             Style = [[
             border-width: 1;
-            border-color: #fff;
+            border-color: background;
             ]],
             Children = {
                 ui.Text:new{

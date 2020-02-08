@@ -4,10 +4,9 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Crash happened in the first export of the xml?
     + Present the tasks in the autocomplete ordered by the most recent one. Right now the removal of similar tasks is done first, so the ordering only considers diferent tasks.
+    + Clicked around for a bit in the edit and show overview windows then come to the main window and press the rows -> Lua error: ./tek/ui/class/border.lua:26: bad argument #1 to 'setRect' (number expected, got nil)
 
 * Create alternative styles
-    + Dark
-    + Stain
     + Klinik
     + Monochrome
     + Gradient
@@ -24,9 +23,6 @@
 * Build releases
     + Macos Binary Release
         - Create an app file
-    + AUR package
-        - Create a MAKEPKG
-        - Register in the AUR platform
     + DEB package?
 
 * Sugestions
