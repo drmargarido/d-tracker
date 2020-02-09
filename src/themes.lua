@@ -10,5 +10,9 @@ return {
     klinik={
         name="d-tracker-klinik",
         pencil_icon="pencil_icon_klinik.PPM"
+    },
+    monochrome={
+        name="d-tracker-monochrome",
+        pencil_icon="pencil_icon_monochrome.PPM"
     }
 }
