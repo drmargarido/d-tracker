@@ -1,0 +1,146 @@
+
+/*
+**	tek/ui/style/gradient.css - Gradient effect on windows and buttons
+**	Version: 1.3
+*/
+
+tek.ui.class.display {
+    rgb-select: #666;
+}
+
+tek.ui.class.window {
+	background-color: gradient(0,0,tint(background,bright,30%),30,200,tint(background,dark,30%));
+}
+
+tek.ui.class.widget {
+	background-color: transparent;
+}
+tek.ui.class.widget:hover {
+	background-color: transparent;
+}
+tek.ui.class.widget:active {
+	background-color: transparent;
+}
+tek.ui.class.widget:focus {
+	background-color: transparent;
+}
+tek.ui.class.widget:disabled {
+	background-color: transparent;
+}
+
+tek.ui.class.group {
+	background-color: transparent;
+}
+
+tek.ui.class.canvas {
+/* 	background-color: transparent; */ /* better not! */
+}
+
+tek.ui.class.floattext {
+	background-color: transparent;
+}
+
+.button {
+	background-color: gradient(0,0,tint(background,border-shadow,50%),0,30,tint(background,border-shine,50%));
+}
+.button:hover {
+	background-color: gradient(0,0,tint(hover,border-shadow,50%),0,30,tint(hover,border-shine,50%));
+}
+.button:focus {
+	background-color: gradient(0,0,tint(focus,border-shadow,50%),0,30,tint(focus,border-shine,50%));
+}
+.button:active {
+	background-color: gradient(0,0,tint(active,border-shadow,50%),0,30,tint(active,border-shine,50%));
+}
+.button:disabled {
+	background-color: gradient(0,0,tint(disabled,border-shadow,50%),0,30,tint(disabled,border-shine,50%));
+}
+
+.menubar {
+	background-color: gradient(0,0,tint(background,border-shine,70%),0,20,tint(background,border-shadow,50%));
+}
+.menuitem {
+	background-color: transparent;
+}
+
+.project:hover {
+    color: #666;
+}
+
+.project:active {
+    color: #666;
+}
+
+.project:focus {
+    color: #666;
+}
+
+.project{
+	color: #666;
+}
+
+tek.ui.class.input {
+	border-width: 1;
+}
+
+tek.ui.class.canvas.inputfield {
+	border-width: 0;
+}
+
+tek.ui.class.frame {
+	border-width: 1;
+}
+
+tek.ui.class.slider {
+	border-width: 0;
+}
+
+.task_list {
+	background-color: background;
+}
+
+.task_data {
+	border-color: background;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.task_data:hover {
+	background-color: background;
+}
+
+.task_data:active {
+	background-color: background;
+}
+
+.task_row {
+	background-color: background;
+}
+
+.placeholder {
+    color: #666;
+}
+
+.autocomplete_row:active {
+    background-color: background;
+    border-color: select;
+}
+
+.autocomplete_row {
+    background-color: background;
+    text-align: left;
+    border-width: 2;
+    margin: 0;
+    padding: 0;
+}
+
+.autocomplete_group {
+    background-color: background;
+}
+
+.totals_text {
+    border-width: 0;
+    border-color: background;
+    margin: 0;
+}

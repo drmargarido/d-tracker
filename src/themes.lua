@@ -14,5 +14,9 @@ return {
     monochrome={
         name="d-tracker-monochrome",
         pencil_icon="pencil_icon_monochrome.PPM"
+    },
+    gradient={
+        name="d-tracker-gradient",
+        pencil_icon="pencil_icon_gradient.PPM"
     }
 }

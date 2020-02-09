@@ -7,8 +7,8 @@
     + Clicked around for a bit in the edit and show overview windows then come to the main window and press the rows -> Lua error: ./tek/ui/class/border.lua:26: bad argument #1 to 'setRect' (number expected, got nil)
 
 * Create alternative styles
-    + Monochrome
-    + Gradient
+    + Create a way to implement plugins into the application
+    + Implement a theme switcher plugin to switch between the existing themes
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received
