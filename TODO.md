@@ -5,6 +5,7 @@
     + Crash happened in the first export of the xml?
     + Present the tasks in the autocomplete ordered by the most recent one. Right now the removal of similar tasks is done first, so the ordering only considers diferent tasks.
     + Clicked around for a bit in the edit and show overview windows then come to the main window and press the rows -> Lua error: ./tek/ui/class/border.lua:26: bad argument #1 to 'setRect' (number expected, got nil)
+    + Add autocomplete in the task edit description field
 
 * Create alternative styles
     + Create a way to implement plugins into the application

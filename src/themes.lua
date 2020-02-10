@@ -18,5 +18,9 @@ return {
     gradient={
         name="d-tracker-gradient",
         pencil_icon="pencil_icon_gradient.PPM"
+    },
+    mint={
+        name="d-tracker-mint",
+        pencil_icon="pencil_icon_mint.PPM"
     }
 }
