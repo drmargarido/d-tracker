@@ -38,7 +38,8 @@ cp images/d-tracker_512x512.png ${INSTALLDIR}/share/pixmaps/d-tracker.png
 
 # Read only data
 mkdir -p ${INSTALLDIR}/share/d-tracker
-cp -R images ${INSTALLDIR}/share/d-tracker/images
+mkdir -p ${INSTALLDIR}/share/d-tracker/images
+cp -R images/* ${INSTALLDIR}/share/d-tracker/images/
 cp platform/linux/d-tracker ${INSTALLDIR}/share/d-tracker/d-tracker
 
 echo "D-Tracker successfully installed!"

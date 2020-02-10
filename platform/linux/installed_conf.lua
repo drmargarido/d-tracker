@@ -1,5 +1,9 @@
 local utils = require "src.utils"
+local themes = require "src.themes"
+
 local lfs = require "lfs"
+
+local THEME = "default"
 
 --[[
     Create the folder $(HOME)/.local/share/d-tracker
@@ -36,5 +40,6 @@ return {
     xml_path_file = xml_path_file,
     xml_path = xml_path,
 
-    pencil_icon = "/usr/share/d-tracker/images/pencil_icon.PPM"
+    theme = themes[THEME].name,
+    pencil_icon = "/usr/share/d-tracker/images/"..themes[THEME].pencil_icon
 }
