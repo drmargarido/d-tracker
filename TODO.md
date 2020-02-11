@@ -11,8 +11,12 @@
     + Create a way to implement plugins into the application
     + Implement a theme switcher plugin to switch between the existing themes
     + Create a description in the readme on how to create new plugins
+        - Possible configurations
+        - Main behaviour
     + Create a simple style to be used as base for new themes
     + Add instructions in the README on how to create new themes
+    + Test plugin registration
+    + Test event firying
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received

@@ -24,6 +24,7 @@ structure:
 	mkdir -p $(DEPLOY_FOLDER)
 	cp -R src $(DEPLOY_FOLDER)/
 	cp -R images $(DEPLOY_FOLDER)/
+	cp -R plugins $(DEPLOY_FOLDER)/
 
 linux_platform:
 	mkdir -p $(DEPLOY_FOLDER)/platform
