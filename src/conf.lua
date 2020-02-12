@@ -11,10 +11,13 @@ if utils.file_exists(xml_path_file..".lua") then
 end
 
 local pencil_icon
+local app_image
 if utils.is_windows() then
     pencil_icon = "images\\"..themes[THEME].pencil_icon
+    app_image = "images\\d-tracker_128x128.ppm"
 else
     pencil_icon = "images/"..themes[THEME].pencil_icon
+    app_image = "images/d-tracker_128x128.ppm"
 end
 
 return {
@@ -24,5 +27,6 @@ return {
     xml_path = xml_path,
 
     theme = themes[THEME].name,
-    pencil_icon = pencil_icon
+    pencil_icon = pencil_icon,
+    app_image = app_image
 }

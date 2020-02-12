@@ -26,6 +26,9 @@ structure:
 	cp -R images $(DEPLOY_FOLDER)/
 	cp -R plugins $(DEPLOY_FOLDER)/
 
+	# Generate a VERSION file using the git tags
+	printf "return \"%s\"\n" `git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/^v//'` > $(DEPLOY_FOLDER)/VERSION.lua
+
 linux_platform:
 	mkdir -p $(DEPLOY_FOLDER)/platform
 	cp -R platform/linux $(DEPLOY_FOLDER)/platform/

@@ -41,5 +41,6 @@ return {
     xml_path = xml_path,
 
     theme = themes[THEME].name,
-    pencil_icon = "/usr/share/d-tracker/images/"..themes[THEME].pencil_icon
+    pencil_icon = "/usr/share/d-tracker/images/"..themes[THEME].pencil_icon,
+    app_image = "images/d-tracker_128x128.ppm"
 }
