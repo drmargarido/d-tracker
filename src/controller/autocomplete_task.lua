@@ -14,8 +14,9 @@ return check_input(
         local query_stmt
         if #description > 0 then
             local query = [[
-                SELECT DISTINCT description FROM task
+                SELECT description FROM task
                 WHERE description LIKE ?
+                GROUP BY description HAVING max(start_time)
                 ORDER BY start_time DESC
                 LIMIT 7
             ]]
@@ -23,7 +24,8 @@ return check_input(
             query_stmt:bind_values("%"..description.."%")
         else
             local query = [[
-                SELECT DISTINCT description FROM task
+                SELECT description FROM task
+                GROUP BY description HAVING max(start_time)
                 ORDER BY start_time DESC
                 LIMIT 7
             ]]

@@ -28,25 +28,28 @@ end
 
 
 local select_list_row = function(self, id, task_id)
-   -- Clean old selected task style
-   if selected_id then
-      self:getById("row-"..selected_id):setValue(
-         "Style", [[
-              border-width: 1;
-              border-color: background;
-         ]]
-      )
-   end
+    -- Clean old selected task style
+    if selected_id then
+        local old_task = self:getById("row-"..selected_id)
+        if old_task then
+            old_task:setValue(
+                "Style", [[
+                    border-width: 1;
+                    border-color: background;
+                ]]
+            )
+        end
+    end
 
-   -- Mark the now select one as selected
-   selected_id = id
-   selected_task_id = task_id
-   self:getById("row-"..selected_id):setValue(
-      "Style", [[
-          border-width: 1;
-          border-color: select;
-      ]]
-   )
+    -- Mark the now select one as selected
+    selected_id = id
+    selected_task_id = task_id
+    self:getById("row-"..selected_id):setValue(
+        "Style", [[
+            border-width: 1;
+            border-color: select;
+        ]]
+    )
 end
 
 
