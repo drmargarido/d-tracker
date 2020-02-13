@@ -72,7 +72,7 @@ return {
                     Orientation = "vertical",
                     Children = {
                         ui.Text:new{
-                            Text = "Credits",
+                            Text = "Used Libraries",
                             Style = "font: ui-menu: 18;/b;",
                             Class = "caption"
                         },

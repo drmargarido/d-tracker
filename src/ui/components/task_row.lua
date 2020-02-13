@@ -13,7 +13,7 @@ local add_task = require "src.controller.add_task"
 local edit_task_window = require "src.ui.windows.edit_task_window"
 
 -- Globals
-local pencil_image = ui.loadImage(conf.pencil_icon)
+local pencil_image = nil
 local selected_id = nil
 local selected_task_id = nil
 
@@ -66,6 +66,10 @@ return {
         }
     end,
     new = function(task, refresh, width)
+        if pencil_image == nil then
+            pencil_image = ui.loadImage(conf.pencil_icon)
+        end
+
         local row_number = task_counter
         task_counter = task_counter + 1
 

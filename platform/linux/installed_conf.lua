@@ -34,13 +34,17 @@ if utils.file_exists(xml_path_file..".lua") then
     xml_path = dofile(xml_path_file..".lua")
 end
 
+local images_folder = "/usr/share/d-tracker/images"
 return {
     db = dtracker_folder.."/d-tracker.sqlite3",
+    storage_folder = dtracker_folder,
+    images_folder = images_folder,
 
     xml_path_file = xml_path_file,
     xml_path = xml_path,
 
+    current_theme = THEME,
     theme = themes[THEME].name,
-    pencil_icon = "/usr/share/d-tracker/images/"..themes[THEME].pencil_icon,
-    app_image = "images/d-tracker_128x128.ppm"
+    pencil_icon = images_folder.."/"..themes[THEME].pencil_icon,
+    app_image = images_folder.."/d-tracker_128x128.ppm"
 }

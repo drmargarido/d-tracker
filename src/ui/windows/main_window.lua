@@ -202,7 +202,13 @@ return {
                                     Style = "text-align: center;",
                                     Text = "About",
 									onClick = function(self)
-										self:getById("about-window"):setValue("Status", "show")
+                                        local _, _, x, y = self.Window.Drawable:getAttrs()
+
+                                        -- Archor to the main window position
+                                        local about_window = self:getById("about-window")
+                                        about_window:setValue("Top", y)
+                                        about_window:setValue("Left", x)
+                                        about_window:setValue("Status", "show")
 									end
 								},
                                 ui.MenuItem:new{
@@ -372,7 +378,6 @@ return {
                                     Width = 120,
                                     Text = "Show Overview",
                                     onPress = function(self)
-                                        stats_window.update(self)
                                         local _, _, x, y = self.Window.Drawable:getAttrs()
 
                                         -- Archor to the main window position

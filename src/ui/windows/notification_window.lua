@@ -8,7 +8,7 @@ return {
     end,
     init = function()
         _window = ui.Window:new {
-            Title = "Error Notification",
+            Title = "Notification",
             Id = "notification_window",
             Center = true,
             Style = "margin: 15;",

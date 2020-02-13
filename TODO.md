@@ -6,12 +6,9 @@
     + Fix selection with arrows + shift of text in the input fields
 
 * Create alternative styles
-    + Create a way to implement plugins into the application
-    + Implement a theme switcher plugin to switch between the existing themes
     + Create a description in the readme on how to create new plugins
         - Possible configurations
         - Main behaviour
-    + Create a simple style to be used as base for new themes
     + Add instructions in the README on how to create new themes
     + Test plugin registration
     + Test event firying
