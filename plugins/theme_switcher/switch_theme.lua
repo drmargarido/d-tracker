@@ -3,7 +3,7 @@ local RESTART_MESSAGE = "Please restart the application to reload the changes."
 
 return function(storage_folder, new_theme)
     -- Change default theme
-    local f = io.open(storage_folder.."active_theme.lua", "w")
+    local f = io.open(storage_folder.."/active_theme.lua", "w")
     if not f then
         print("Failed to edit the active_theme file")
         return false, "Failed to edit the active_theme file"

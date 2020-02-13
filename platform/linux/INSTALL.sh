@@ -16,6 +16,7 @@ cp -R src ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R date ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R tek ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R plugins ${INSTALLDIR}/share/lua/5.1/d-tracker/
+cp -R VERSION.lua ${INSTALLDIR}/share/lua/5.1/d-tracker/
 
 # Override local lua configuration with the linux one
 cp platform/linux/installed_conf.lua ${INSTALLDIR}/share/lua/5.1/d-tracker/src/conf.lua

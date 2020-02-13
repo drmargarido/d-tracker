@@ -30,7 +30,7 @@ return {
             local file_path = storage_folder.."/"..active_theme_file..".lua"
 
             if utils.file_exists(file_path) then
-                current_theme = require(active_theme_file)
+                current_theme = dofile(file_path)
                 data.conf.theme = themes[current_theme].name
 
                 local img_folder = data.conf.images_folder

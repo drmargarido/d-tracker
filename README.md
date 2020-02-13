@@ -28,7 +28,7 @@ Release 1.0:
 * [x] Autocomplete in task creation
 
 Release 1.1:
-* [ ] Select themes
+* [x] Select themes
 
 Release 1.2:
 * [ ] Command line client
