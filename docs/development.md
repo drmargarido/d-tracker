@@ -74,7 +74,7 @@ Each plugin can register listeners for each of the following event types:
 * PLUGIN_SELECT - The current plugin was selected in the plugins list in the top menubar
 
 ### Example
-You can check the [theme_switcher](plugins/theme_switcher/main.lua) plugin as a starting point.
+You can check the [theme_switcher](../plugins/theme_switcher/main.lua) plugin as a starting point.
 
 
 ## Themes
@@ -83,7 +83,7 @@ To add new themes check the following instructions.
 
 ### Steps to create a new theme
 1. Make a copy of the `d-tracker.css` theme in the `/themes/` folder and change the name of your theme.
-2. Write the rules you want in the css file, be careful the supported rules are not compliant with the latests CSS standards. You can check the other d-tracker themes and also the ones in the `external/TekUI/tek/ui/style/` folder for extra reference.
+2. Write the rules you want in the css file, be careful the supported rules are not compliant with the latests CSS standards. You can check the other d-tracker themes and also the ones in the `/external/TekUI/tek/ui/style/` folder for extra reference.
 3. Copy the `pencil_icon.PPM` icon in the `/images/` folder and put the name you want (Only the ppm format is supported for the icons).
 4. Edit the new icon to your taste.
 5. Register the theme in the themes lookup file `/src/themes.lua`, the name field is the name of the theme file without the css extension.
