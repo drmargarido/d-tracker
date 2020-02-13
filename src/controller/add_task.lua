@@ -10,6 +10,10 @@ local decorators = require "src.decorators"
 local use_db = decorators.use_db
 local check_input = decorators.check_input
 
+-- Plugins
+local event_manager = require "src.plugin_manager.event_manager"
+local events = require "src.plugin_manager.events"
+
 -- Controllers
 local stop_task = require "src.controller.stop_task"
 local create_project = require "src.controller.create_project"
@@ -41,15 +45,22 @@ return check_input(
             VALUES ((SELECT id FROM project WHERE name=?), ?, ?)
         ]]
         local task_stmt = db:prepare(sql_create)
+        local current_date = date():fmt("${iso}")
         task_stmt:bind_values(
             project,
-            date():fmt("${iso}"),
+            current_date,
             description
         )
         task_stmt:step()
         if not db_validators.operation_ok(db) then
             return false, "Failed to create the new task"
         end
+
+        event_manager.fire_event(events.TASK_CREATED, {
+            description=description,
+            project=project,
+            date=current_date
+        })
 
         return true, nil
     end)

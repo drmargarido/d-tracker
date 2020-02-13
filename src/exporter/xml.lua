@@ -1,5 +1,9 @@
 local date = require "date.date"
 
+-- Plugins
+local event_manager = require "src.plugin_manager.event_manager"
+local events = require "src.plugin_manager.events"
+
 local xml_template = [[<?xml version="1.0" ?>
 <activities>
     %s
@@ -65,6 +69,7 @@ return function(tasks, file_path)
         file:write(final_xml)
         file:close()
 
+        event_manager.fire_event(events.XML_EXPORT, {filename=file_path})
         return true, nil
     end
 

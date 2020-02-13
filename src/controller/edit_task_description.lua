@@ -2,6 +2,10 @@
 local validators = require "src.validators.base_validators"
 local db_validators = require "src.validators.db_validators"
 
+-- Plugins
+local event_manager = require "src.plugin_manager.event_manager"
+local events = require "src.plugin_manager.events"
+
 -- Decorators
 local decorators = require "src.decorators"
 local use_db = decorators.use_db
@@ -32,6 +36,7 @@ return check_input(
             return false, "Failed to edit the task description"
         end
 
+        event_manager.fire_event(events.TASK_EDIT, {id=task_id, description=new_value})
         return true, nil
     end)
 )

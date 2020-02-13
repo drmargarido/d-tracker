@@ -12,7 +12,7 @@ return {
 
     -- Fire event to all the event associated listeners
     fire_event = function(event, data)
-        for _, callback in ipairs(event_listeners[event]) do
+        for _, callback in ipairs(event_listeners[event] or {}) do
             callback(data)
         end
     end

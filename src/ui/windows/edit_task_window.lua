@@ -22,7 +22,7 @@ local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete
 local date = require "date.date"
 local ui_utils = require "src.ui.utils"
 
--- Constats
+-- Constants
 local row_space = 5
 
 return {

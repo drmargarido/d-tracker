@@ -12,7 +12,6 @@
     + Add instructions in the README on how to create new themes
     + Test plugin registration
     + Test event firying
-    + Fire all the known events at their moment
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received

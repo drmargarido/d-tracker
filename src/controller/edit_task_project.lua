@@ -7,6 +7,10 @@ local decorators = require "src.decorators"
 local use_db = decorators.use_db
 local check_input = decorators.check_input
 
+-- Plugins
+local event_manager = require "src.plugin_manager.event_manager"
+local events = require "src.plugin_manager.events"
+
 -- Controllers
 local create_project = require "src.controller.create_project"
 
@@ -45,6 +49,7 @@ return check_input(
             return false, "Failed to edit the task project"
         end
 
+        event_manager.fire_event(events.TASK_EDIT, {id=task_id, project=new_value})
         return true, nil
     end)
 )
