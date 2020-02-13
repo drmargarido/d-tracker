@@ -69,7 +69,10 @@ return function(tasks, file_path)
         file:write(final_xml)
         file:close()
 
-        event_manager.fire_event(events.XML_EXPORT, {filename=file_path})
+        event_manager.fire_event(events.XML_EXPORT, {
+            tasks=tasks,
+            filename=file_path
+        })
         return true, nil
     end
 
