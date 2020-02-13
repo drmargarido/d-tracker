@@ -7,6 +7,10 @@ local decorators = require "src.decorators"
 local use_db = decorators.use_db
 local check_input = decorators.check_input
 
+-- Plugins
+local event_manager = require "src.plugin_manager.event_manager"
+local events = require "src.plugin_manager.events"
+
 -- Utils
 local date = require "date.date"
 
@@ -73,6 +77,12 @@ return check_input(
         if not db_validators.operation_ok(db) then
             return false, "Failed to edit the time of the task"
         end
+
+        event_manager.fire_event(events.TASK_EDIT, {
+            id = task_id,
+            start_time = start_time,
+            end_time = end_time
+        })
 
         return true, nil
     end)

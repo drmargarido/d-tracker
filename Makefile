@@ -20,10 +20,18 @@ CFLAGS=-O2
 
 base: structure linux_platform luajit date freetype2 tekui lsqlite luafilesystem timetracker
 
+# reload used to refresh the build folder while in development
+reload: structure
+	cp -R themes/* $(DEPLOY_FOLDER)/tek/ui/style/
+
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
 	cp -R src $(DEPLOY_FOLDER)/
 	cp -R images $(DEPLOY_FOLDER)/
+	cp -R plugins $(DEPLOY_FOLDER)/
+
+	# Generate a VERSION file using the git tags
+	printf "return \"%s\"\n" `git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/^v//'` > $(DEPLOY_FOLDER)/VERSION.lua
 
 linux_platform:
 	mkdir -p $(DEPLOY_FOLDER)/platform
@@ -38,7 +46,7 @@ tekui: freetype2 luajit
 	cp external/tekUI/config_linux external/tekUI/config
 	cd external/tekUI && make all
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
-	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
+	cp themes/* $(DEPLOY_FOLDER)/tek/ui/style/
 
 lsqlite: sqlite.o luajit
 	$(CC) -shared -fPIC $(LSQLITE_CFLAGS) -o $(DEPLOY_FOLDER)/lsqlite3.so $(LSQLITE_FOLDER)/lsqlite3.c $(LSQLITE_FOLDER)/sqlite3.o -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -ldl -lpthread
@@ -110,7 +118,7 @@ release_windows: structure date
 	cp external/tekUI/config_windows external/tekUI/config
 	cd external/tekUI && make all
 	cp -R external/tekUI/tek $(DEPLOY_FOLDER)/
-	cp d-tracker.css $(DEPLOY_FOLDER)/tek/ui/style/
+	cp themes/* $(DEPLOY_FOLDER)/tek/ui/style/
 
 	# luafilesystem
 	cd external/luafilesystem && make -f Makefile.crosswin

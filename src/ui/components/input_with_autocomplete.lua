@@ -60,7 +60,7 @@ function InputWithAutocomplete.new(_, self)
             line:setValue("Selected", true) -- Force redraw of all the lines
             line:setValue("Selected", false)
             line:setValue("Style", [[
-                border-color: #fff;
+                border-color: background;
             ]])
         end
 
@@ -71,7 +71,7 @@ function InputWithAutocomplete.new(_, self)
             local line = lines_group.Children[_self.SelectedLine]
             line:setValue("Selected", true)
             line:setValue("Style", [[
-                border-color: #55b;
+                border-color: select;
             ]])
         end
     end
@@ -109,7 +109,7 @@ function InputWithAutocomplete.new(_, self)
                 Width = winw - 10,
                 Height = "auto",
                 Style = [[
-                    border-color: #fff;
+                    border-color: background;
                 ]]
             })
         end

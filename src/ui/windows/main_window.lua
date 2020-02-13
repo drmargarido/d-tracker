@@ -26,6 +26,9 @@ local TaskRow = require "src.ui.components.task_row"
 local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete"
 
+-- Plugins
+local events = require "src.plugin_manager.events"
+
 -- Windows
 local stats_window = require "src.ui.windows.stats_window"
 local this_window
@@ -152,7 +155,24 @@ return {
     -- Update the UI with data according to the current db state
     refresh = _refresh,
 
-    init = function()
+    init = function(plugins)
+
+        -- Register plugins in the menubar
+        local plugin_entries = {}
+        for _, plugin in ipairs(plugins) do
+            if plugin.conf and plugin.conf.in_menu then
+                table.insert(
+                    plugin_entries,
+                    ui.MenuItem:new{
+                        Width = 70,
+                        Style = "text-align: center;",
+                        Text = plugin.conf.description or "Unnamed",
+                        onClick = plugin.event_listeners[events.PLUGIN_SELECT] or function()end
+                    }
+                )
+            end
+        end
+
         this_window = ui.Window:new {
             Title = "D-Tracker",
             Orientation = "vertical",
@@ -166,165 +186,209 @@ return {
             MinHeight = 250;
             HideOnEscape = true,
             SizeButton = true,
-            Style = "margin: 15;",
             Id = "main_ui_window",
             RootWindow = true,
             Children = {
                 ui.Group:new{
-                    Width = "free",
-                    Orientation = "horizontal",
-                    Style = "margin-bottom: 10;",
+                    Class = "menubar",
                     Children = {
-                        ui.Text:new{
-                            Id = "current_activity_text",
-                            Class = "caption",
-                            Text = "No Activity",
-                            Style = "text-align: left; font: ui-menu:20;/b;"
+                        ui.MenuItem:new {
+                            Width = 70,
+							Text = "File",
+                            Style = "text-align: center;",
+							Children ={
+								ui.MenuItem:new{
+                                    Width = 70,
+                                    Style = "text-align: center;",
+                                    Text = "About",
+									onClick = function(self)
+                                        local _, _, x, y = self.Window.Drawable:getAttrs()
+
+                                        -- Archor to the main window position
+                                        local about_window = self:getById("about-window")
+                                        about_window:setValue("Top", y)
+                                        about_window:setValue("Left", x)
+                                        about_window:setValue("Status", "show")
+									end
+								},
+                                ui.MenuItem:new{
+                                    Width = 70,
+                                    Style = "text-align: center;",
+									Text = "Quit",
+									onClick = function(self)
+										self.Application:setValue("Status", "quit")
+									end
+								}
+                            }
                         },
-                        ui.Area:new{
-                            Width = "fill",
-                            Height = "auto"
-                        },
-                        ui.Button:new{
-                            Id = "stop_tracking_button",
-                            Width = 120,
-                            Disabled = true,
-                            Text = "Stop Tracking",
-                            onPress = function(self)
-                                if not self.Pressed then
-                                    return
-                                end
-
-                                ui_utils.report_error(stop_task())
-                                _refresh()
-                            end
-                        }
-                    }
-                },
-                ui.Text:new{
-                    Width = 120,
-                    Class = "caption",
-                    Text = "Start new activity",
-                    Style = "font: 24/b;"
-                },
-                ui.Group:new{
-                    Orientation = "horizontal",
-                    Style = "margin-bottom: 10;",
-                    Children = {
-                        InputWithAutocomplete:new{
-                            Callback = autocomplete_task,
-                            Id = "task-description",
-                            Width = "free",
-                            MinWidth = 240,
-                            Placeholder = "Description",
-                            onAutocomplete = function(self, text)
-                                self:setValue("Text", text)
-
-                                local task = get_task_by_description(text)
-                                local project_input = this_window:getById("task-project")
-                                project_input:setValue("Text", task.project)
-                                project_input.Child.Child:setValue("Class", "")
-                            end,
-                            onEnter = function(self)
-                                local start_button = self:getById("start_tracking_button")
-                                start_button:setValue("Pressed", true)
-                                start_button:setValue("Pressed", false)
-                            end
-                        },
-                        InputWithAutocomplete:new{
-                            Callback = autocomplete_project,
-                            Id = "task-project",
-                            Width = "free",
-                            Placeholder = "Project",
-                            onEnter = function(self)
-                                local start_button = self:getById("start_tracking_button")
-                                start_button:setValue("Pressed", true)
-                                start_button:setValue("Pressed", false)
-                            end
-                        },
-                        ui.Button:new{
-                            Width = 120,
-                            Id = "start_tracking_button",
-                            Style = "margin-left: 5;",
-                            Text = "Start Tracking",
-                            onPress = function(self)
-                                if not self.Pressed then
-                                    return
-                                end
-
-                                local description_element = self:getById("task-description")
-                                local description = description_element:getText()
-
-                                local project_element = self:getById("task-project")
-                                local project = project_element:getText()
-
-                                ui_utils.report_error(add_task(description, project))
-
-                                -- Clear inputs and refresh UI
-
-                                InputWithPlaceholder.reset(description_element)
-                                InputWithPlaceholder.reset(project_element)
-
-                                _refresh()
-                            end
-                        }
-                    }
-                },
-                ui.Text:new{
-                    Width = 60,
-                    Class = "caption",
-                    Text = "Today",
-                    Style = "font: 24/b;"
-                },
-                ui.ScrollGroup:new{
-                    Width = "fill",
-                    --HSliderMode = "auto",
-                    VSliderMode = "auto",
-                    Style = "margin-bottom: 20;",
-                    Child = ui.Canvas:new{
-                        AutoWidth = true,
-                        AutoHeight = true,
-                        Child = ui.Group:new{
-                            Id = "task_list_group",
-                            Class = "task_list",
-                            Orientation = "vertical",
-                            Children = {}
+                        ui.MenuItem:new {
+                            Width = 70,
+							Text = "Plugins",
+                            Style = "text-align: center;",
+							Children = plugin_entries
                         }
                     }
                 },
                 ui.Group:new{
-                    Orientation = "horizontal",
-                    Width = "free",
+                    Style = "margin: 15;",
+                    Orientation = "vertical",
                     Children = {
+                        ui.Group:new{
+                            Width = "free",
+                            Orientation = "horizontal",
+                            Style = "margin-bottom: 10;",
+                            Children = {
+                                ui.Text:new{
+                                    Id = "current_activity_text",
+                                    Class = "caption",
+                                    Text = "No Activity",
+                                    Style = "text-align: left; font: ui-menu:20;/b;"
+                                },
+                                ui.Area:new{
+                                    Width = "fill",
+                                    Height = "auto"
+                                },
+                                ui.Button:new{
+                                    Id = "stop_tracking_button",
+                                    Width = 120,
+                                    Disabled = true,
+                                    Text = "Stop Tracking",
+                                    onPress = function(self)
+                                        if not self.Pressed then
+                                            return
+                                        end
+
+                                        ui_utils.report_error(stop_task())
+                                        _refresh()
+                                    end
+                                }
+                            }
+                        },
                         ui.Text:new{
-                            Id = "total_time_text",
-                            Width = 100,
+                            Width = 120,
                             Class = "caption",
-                            Text = "No Records Today"
+                            Text = "Start new activity",
+                            Style = "font: 24/b;"
                         },
-                        ui.Area:new{
+                        ui.Group:new{
+                            Orientation = "horizontal",
+                            Style = "margin-bottom: 10;",
+                            Children = {
+                                InputWithAutocomplete:new{
+                                    Callback = autocomplete_task,
+                                    Id = "task-description",
+                                    Width = "free",
+                                    MinWidth = 240,
+                                    Placeholder = "Description",
+                                    onAutocomplete = function(self, text)
+                                        self:setValue("Text", text)
+
+                                        local task = get_task_by_description(text)
+                                        local project_input = this_window:getById("task-project")
+                                        project_input:setValue("Text", task.project)
+                                        project_input.Child.Child:setValue("Class", "")
+                                    end,
+                                    onEnter = function(self)
+                                        local start_button = self:getById("start_tracking_button")
+                                        start_button:setValue("Pressed", true)
+                                        start_button:setValue("Pressed", false)
+                                    end
+                                },
+                                InputWithAutocomplete:new{
+                                    Callback = autocomplete_project,
+                                    Id = "task-project",
+                                    Width = "free",
+                                    Placeholder = "Project",
+                                    onEnter = function(self)
+                                        local start_button = self:getById("start_tracking_button")
+                                        start_button:setValue("Pressed", true)
+                                        start_button:setValue("Pressed", false)
+                                    end
+                                },
+                                ui.Button:new{
+                                    Width = 120,
+                                    Id = "start_tracking_button",
+                                    Style = "margin-left: 5;",
+                                    Text = "Start Tracking",
+                                    onPress = function(self)
+                                        if not self.Pressed then
+                                            return
+                                        end
+
+                                        local description_element = self:getById("task-description")
+                                        local description = description_element:getText()
+
+                                        local project_element = self:getById("task-project")
+                                        local project = project_element:getText()
+
+                                        ui_utils.report_error(add_task(description, project))
+
+                                        -- Clear inputs and refresh UI
+
+                                        InputWithPlaceholder.reset(description_element)
+                                        InputWithPlaceholder.reset(project_element)
+
+                                        _refresh()
+                                    end
+                                }
+                            }
+                        },
+                        ui.Text:new{
+                            Width = 60,
+                            Class = "caption",
+                            Text = "Today",
+                            Style = "font: 24/b;"
+                        },
+                        ui.ScrollGroup:new{
                             Width = "fill",
-                            Height = "auto"
+                            --HSliderMode = "auto",
+                            VSliderMode = "auto",
+                            Style = "margin-bottom: 20;",
+                            Child = ui.Canvas:new{
+                                AutoWidth = true,
+                                AutoHeight = true,
+                                Child = ui.Group:new{
+                                    Id = "task_list_group",
+                                    Class = "task_list",
+                                    Orientation = "vertical",
+                                    Children = {}
+                                }
+                            }
                         },
-                        ui.Button:new{
-                            Id = "export_xml_btn",
-                            Width = 120,
-                            Text = "XML Export"
-                        },
-                        ui.Button:new{
-                            Width = 120,
-                            Text = "Show Overview",
-                            onPress = function(self)
-                                stats_window.update(self)
-                                local _, _, x, y = self.Window.Drawable:getAttrs()
+                        ui.Group:new{
+                            Orientation = "horizontal",
+                            Width = "free",
+                            Children = {
+                                ui.Text:new{
+                                    Id = "total_time_text",
+                                    Width = 100,
+                                    Class = "caption",
+                                    Text = "No Records Today"
+                                },
+                                ui.Area:new{
+                                    Width = "fill",
+                                    Height = "auto"
+                                },
+                                ui.Button:new{
+                                    Id = "export_xml_btn",
+                                    Width = 120,
+                                    Text = "XML Export"
+                                },
+                                ui.Button:new{
+                                    Width = 120,
+                                    Text = "Show Overview",
+                                    onPress = function(self)
+                                        local _, _, x, y = self.Window.Drawable:getAttrs()
 
-                                -- Archor to the main window position
-                                local opening_window = self:getById("stats_window")
-                                opening_window:setValue("Top", y)
-                                opening_window:setValue("Left", x)
+                                        -- Archor to the main window position
+                                        local opening_window = self:getById("stats_window")
+                                        opening_window:setValue("Top", y)
+                                        opening_window:setValue("Left", x)
 
-                                opening_window:setValue("Status", "show")
-                            end
+                                        opening_window:setValue("Status", "show")
+                                    end
+                                }
+                            }
                         }
                     }
                 }

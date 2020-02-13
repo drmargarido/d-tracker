@@ -13,7 +13,7 @@ local add_task = require "src.controller.add_task"
 local edit_task_window = require "src.ui.windows.edit_task_window"
 
 -- Globals
-local pencil_image = ui.loadImage(conf.pencil_icon)
+local pencil_image = nil
 local selected_id = nil
 local selected_task_id = nil
 
@@ -28,25 +28,28 @@ end
 
 
 local select_list_row = function(self, id, task_id)
-   -- Clean old selected task style
-   if selected_id then
-      self:getById("row-"..selected_id):setValue(
-         "Style", [[
-              border-width: 1;
-              border-color: #fff;
-         ]]
-      )
-   end
+    -- Clean old selected task style
+    if selected_id then
+        local old_task = self:getById("row-"..selected_id)
+        if old_task then
+            old_task:setValue(
+                "Style", [[
+                    border-width: 1;
+                    border-color: background;
+                ]]
+            )
+        end
+    end
 
-   -- Mark the now select one as selected
-   selected_id = id
-   selected_task_id = task_id
-   self:getById("row-"..selected_id):setValue(
-      "Style", [[
-          border-width: 1;
-          border-color: #55b;
-      ]]
-   )
+    -- Mark the now select one as selected
+    selected_id = id
+    selected_task_id = task_id
+    self:getById("row-"..selected_id):setValue(
+        "Style", [[
+            border-width: 1;
+            border-color: select;
+        ]]
+    )
 end
 
 
@@ -63,6 +66,10 @@ return {
         }
     end,
     new = function(task, refresh, width)
+        if pencil_image == nil then
+            pencil_image = ui.loadImage(conf.pencil_icon)
+        end
+
         local row_number = task_counter
         task_counter = task_counter + 1
 
@@ -102,7 +109,7 @@ return {
             Orientation = "horizontal",
             Style = [[
             border-width: 1;
-            border-color: #fff;
+            border-color: background;
             ]],
             Children = {
                 ui.Text:new{

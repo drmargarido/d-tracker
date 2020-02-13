@@ -28,7 +28,7 @@ Release 1.0:
 * [x] Autocomplete in task creation
 
 Release 1.1:
-* [ ] Select themes
+* [x] Select themes
 
 Release 1.2:
 * [ ] Command line client
@@ -98,21 +98,8 @@ make release_windows
 
 After running the command, the self contained version of the software will be built in the `build/` folder.
 
-## Project Structure
-
-```
-|src/               - Implementation of the application
-|---/ui/            - Application user interface
-|---/controllers/   - Logic which present the main system actions and interacts with the database
-|---/validators/    - Validators for data
-|---/exporter/      - Exporte tasks lists to files in specific formats
-|---/spec/          - Tests to validate the correct behavior of the system
-|---/migrations/    - Scripts for to create and update the database model
-|platform/          - Platforms specific settings files, like the mac .app and windows .rc
-|external/          - Dependencies repositories
-|images/            - Images of the application
-|main.c             - Used to create the application embeded with the lua execution
-```
+## Development
+If you are interested in improving d-tracker by improving stability, adding new functionalities, plugins, themes or other things check the [development](docs/development.md) section.
 
 
 ## Testing

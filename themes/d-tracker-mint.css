@@ -1,0 +1,94 @@
+/*
+**	tek/ui/style/d-tracker-minimal.css
+**
+**	Version: 1.0
+*/
+
+tek.ui.class.display {
+    rgb-group: #2c3d55;
+
+	rgb-background: #3e4c5e;
+
+    rgb-caption-detail: #d3d2d8;
+    rgb-text-color: #d3d2d8;
+
+    rgb-background-button: #3db58b;
+    rgb-button-color: #0d1521;
+
+	rgb-border-shine: #d3d2d8;
+
+    rgb-placeholder: #767b91;
+
+    rgb-select: #536271;
+}
+
+.button{
+	background-color: background-button;
+    color: button-color;
+}
+
+tek.ui.class.frame {
+	border-width: 1;
+}
+
+_editinput {
+	color: text-color;
+	cursor-color: text-color;
+}
+
+/*Task list data*/
+.task_list {
+    color: text-color;
+	background-color: background;
+}
+
+.task_data:active {
+    color: text-color;
+	background-color: background;
+}
+
+.task_data:focus {
+    color: text-color;
+	background-color: background;
+}
+
+.task_data:hover {
+    color: text-color;
+	background-color: background;
+}
+
+.task_data {
+    color: caption-detail;
+	border-color: background;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+}
+
+/*Placeholder in input fields*/
+.placeholder {
+    color: placeholder;
+}
+
+/*Autocomplete in the input fields*/
+.autocomplete_row:active {
+    background-color: background;
+    border-color: select;
+}
+
+.autocomplete_row {
+    color: text-color;
+    background-color: background;
+    text-align: left;
+    border-width: 2;
+    margin: 0;
+    padding: 0;
+}
+
+/*Total time rows in the show overview*/
+.totals_text {
+    color: text-color;
+    border-width: 0;
+    border-color: background;
+    margin: 0;
+}

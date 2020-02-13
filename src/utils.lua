@@ -59,5 +59,10 @@ return {
         end
 
         return sorted
+    end,
+
+    -- Check if the application is running in windows
+    is_windows = function()
+        return package.config:sub(1,1) == "\\"
     end
 }

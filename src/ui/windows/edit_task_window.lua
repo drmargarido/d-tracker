@@ -10,6 +10,7 @@ local stop_task = require "src.controller.stop_task"
 local delete_task = require "src.controller.delete_task"
 local edit_task_time = require "src.controller.edit_task_time"
 local edit_task_project = require "src.controller.edit_task_project"
+local autocomplete_task = require "src.controller.autocomplete_task"
 local autocomplete_project = require "src.controller.autocomplete_project"
 local get_task_in_progress = require "src.controller.get_task_in_progress"
 local edit_task_description = require "src.controller.edit_task_description"
@@ -21,7 +22,7 @@ local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete
 local date = require "date.date"
 local ui_utils = require "src.ui.utils"
 
--- Constats
+-- Constants
 local row_space = 5
 
 return {
@@ -244,7 +245,8 @@ return {
                             Text = "Description:",
                             Class = "caption"
                         },
-                        ui.Input:new{
+                        InputWithAutocomplete:new{
+                            Callback = autocomplete_task,
                             Id = "edit_description",
                             Width = "fill"
                         }
