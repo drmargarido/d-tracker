@@ -4,14 +4,7 @@
     + Fix sometimes fields not rerendering when moving and minimizing the window.
     + Crash happened in the first export of the xml?
     + Fix selection with arrows + shift of text in the input fields
-
-* Create alternative styles
-    + Create a description in the readme on how to create new plugins
-        - Possible configurations
-        - Main behaviour
-    + Add instructions in the README on how to create new themes
-    + Test plugin registration
-    + Test event firying
+    + Input key is consumed after a special char put in the autocomplete fields
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received

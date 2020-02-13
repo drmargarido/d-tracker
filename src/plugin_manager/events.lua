@@ -8,5 +8,5 @@ return {
     TASK_DELETE = 7, -- A task was deleted
     PROJECT_CREATED = 8, -- A new project was created
     XML_EXPORT = 9, -- Tasks were exported to a xml file
-    PLUGIN_SELECT = 10 -- The current plugin was selected in the plugins list in the top menu
+    PLUGIN_SELECT = 10 -- The current plugin was selected in the plugins list in the top menubar
 }

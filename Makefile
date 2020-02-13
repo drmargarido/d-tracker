@@ -20,6 +20,10 @@ CFLAGS=-O2
 
 base: structure linux_platform luajit date freetype2 tekui lsqlite luafilesystem timetracker
 
+# reload used to refresh the build folder while in development
+reload: structure
+	cp -R themes/* $(DEPLOY_FOLDER)/tek/ui/style/
+
 structure:
 	mkdir -p $(DEPLOY_FOLDER)
 	cp -R src $(DEPLOY_FOLDER)/
