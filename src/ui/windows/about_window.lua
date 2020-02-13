@@ -62,7 +62,7 @@ return {
                             Class = "caption"
                         },
                         ui.Text:new{
-                            Text = "https://github/drmargarido/d-tracker",
+                            Text = "https://github.com/drmargarido/d-tracker",
                             Class = "caption"
                         }
                     }
