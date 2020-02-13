@@ -35,11 +35,12 @@ Release 1.2:
 
 ## Screenshots
 
-![UI with Base Theme](/screenshots/d-tracker_v0,09-alpha.jpg)
-
+![D-Tracker UI with Default Theme](/screenshots/d-tracker_v1,1-default.jpg)
+![D-Tracker UI with Stain Theme](/screenshots/d-tracker_v1,1-stain.jpg)
+![D-Tracker UI with Klinik Theme](/screenshots/d-tracker_v1,1-klinik.jpg)
 
 ## Install
-To run the application use the most recent release, which right now is the [1.0](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [1.1](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
@@ -49,7 +50,7 @@ To run the application use the most recent release, which right now is the [1.0]
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.0).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.1).
 
 The application is self-contained in the folder so if you just want to run it there execute the `run.sh` file.
 
@@ -82,7 +83,7 @@ sudo make uninstall
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.0).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.1).
 
 The application is self-contained in the folder so you just need to run the `d-tracker.exe` file.
 
