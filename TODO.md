@@ -5,6 +5,10 @@
     + Crash happened in the first export of the xml?
     + Fix selection with arrows + shift of text in the input fields
     + Input key is consumed after a special char put in the autocomplete fields
+    + The project autocomplete is still not ordered like the tasks one
+    + When a task is autocompleted the project that is filled is the first associated with a task with same name, should be the one associated with the specific task or at least the most recent one
+    + Do not accept start tracking click if the description or the project fields are not filled
+    + Show overview window starts empty when opened, it should present the current day tasks
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received
