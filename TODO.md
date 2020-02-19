@@ -9,6 +9,7 @@
     + When a task is autocompleted the project that is filled is the first associated with a task with same name, should be the one associated with the specific task or at least the most recent one
     + Do not accept start tracking click if the description or the project fields are not filled
     + Show overview window starts empty when opened, it should present the current day tasks
+    + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received
@@ -29,12 +30,6 @@
     + Update the timers of the main window every minute? (Does it matter?)
         1. Coroutine in lua running time counting and triggering the update every minute or thread in C running a refresh method received from lua
         2. Cross platform sleep - https://stackoverflow.com/a/10928585/5555837
-    + Do not allow to open multiple windows of the d-tracker?
-        1. Create a file when d-tracker is running
-        2. Check if the file exists before starting a new d-tracker instance
-        3. If a new d-tracker instance is started and another one is already running exit the new one and put the main one in focus
-            1. Comunicate from the second one to the first one (Signals in Unix, shared memory file for windows with a thread for monitoring - https://docs.microsoft.com/en-us/windows/win32/ipc/interprocess-communications)
-            2. After receiving the signal make the main window focused (Probably can be done directly using the tekui code from lua).
 
 * Improvements
     + show overview: week, month defaults besides range selector. (improvement over hamster) add possibility to define other default ranges?

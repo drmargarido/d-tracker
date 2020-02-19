@@ -33,6 +33,9 @@ Release 1.1:
 Release 1.2:
 * [ ] Command line client
 
+Release 1.3:
+* [ ] Remember last filtering range in overview window
+
 ## Screenshots
 
 ![D-Tracker UI with Default Theme](/screenshots/d-tracker_v1,1-default.jpg)
@@ -40,7 +43,7 @@ Release 1.2:
 ![D-Tracker UI with Klinik Theme](/screenshots/d-tracker_v1,1-klinik.jpg)
 
 ## Install
-To run the application use the most recent release, which right now is the [1.1](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [v1.1](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
