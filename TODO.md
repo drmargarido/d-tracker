@@ -10,6 +10,7 @@
     + Do not accept start tracking click if the description or the project fields are not filled
     + Show overview window starts empty when opened, it should present the current day tasks
     + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
+    + D-tracker is growing a little bit each time something changes and the task description at top is bigger than the current space available
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received
