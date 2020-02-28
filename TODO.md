@@ -11,6 +11,8 @@
     + Show overview window starts empty when opened, it should present the current day tasks
     + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
     + D-tracker is growing a little bit each time something changes and the task description at top is bigger than the current space available
+    + If the task description autocomplete appears and the down and up arrow are pressed, the file and plugin menus are focused. Fix focus management of the autocomplete.
+    + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
 
 * Implement a command line interface to interact with D-tracker
     + Present help text when no arguments are received
