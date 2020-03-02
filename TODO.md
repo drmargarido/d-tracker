@@ -38,3 +38,12 @@
     + show overview: week, month defaults besides range selector. (improvement over hamster) add possibility to define other default ranges?
         - Can be implemented in a simple way by storing the last search range and by providing two arrows on the side of the date range.
     + Support Latin1 input text in input fields.
+    + Add plugin which allow the scheduling of desktop notifications saying the current active task every group of minutes.
+        - Example -> https://github.com/gaborcsardi/notifier
+        - Example -> https://www.devdungeon.com/content/windows-desktop-notifications-python
+        - Example Go cross-platform notifications -> https://github.com/gen2brain/beeep
+        - List of linux notification tools -> https://wiki.archlinux.org/index.php/Desktop_notifications#C
+        - Gnome Notification spec -> https://people.gnome.org/~mccann/docs/notification-spec/notification-spec-latest.html
+        - Using DBus in C (Can be used to connect to the gnome notifications) -> https://linoxide.com/how-tos/d-bus-ipc-mechanism-linux/
+        - Windows-10-Toast-Notifications -> https://github.com/jithurjacob/Windows-10-Toast-Notifications
+        - Notification daemons for i3 -> https://faq.i3wm.org/question/121/whats-a-good-notification-daemon-for-i3.1.html
