@@ -31,6 +31,7 @@ local events = require "src.plugin_manager.events"
 
 -- Windows
 local stats_window = require "src.ui.windows.stats_window"
+local notification_window = require "src.ui.windows.notification_window"
 local this_window
 
 local width = 800
@@ -315,10 +316,26 @@ return {
                                             return
                                         end
 
-                                        local description_element = self:getById("task-description")
+                                        local description_element = self:getById(
+                                            "task-description"
+                                        )
+                                        if description_element.Child.Child.Class == "placeholder" then
+                                            -- Report error and abort
+                                            notification_window.display(
+                                                "Cannot create task: Description field is empty"
+                                            )
+                                            return
+                                        end
                                         local description = description_element:getText()
 
                                         local project_element = self:getById("task-project")
+                                        if project_element.Child.Child.Class == "placeholder" then
+                                            -- Report error and abort
+                                            notification_window.display(
+                                                "Cannot create task: Project field is empty"
+                                            )
+                                            return
+                                        end
                                         local project = project_element:getText()
 
                                         ui_utils.report_error(add_task(description, project))

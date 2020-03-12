@@ -20,8 +20,8 @@ local create_project = require "src.controller.create_project"
 
 return check_input(
     {
-        {validators.is_text, validators.max_length(512)},
-        {validators.is_text, validators.max_length(255)},
+        {validators.is_text, validators.max_length(512), validators.min_length(1)},
+        {validators.is_text, validators.max_length(255), validators.min_length(1)},
     },
     use_db(function(db, description, project)
         -- Create a new project if it doesn't exists

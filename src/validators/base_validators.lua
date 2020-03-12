@@ -46,6 +46,17 @@ return {
         end
     end,
 
+    min_length = function(min_len)
+        return function(data)
+            if #data < min_len then
+                return false, "Text exceeded the minimum allowed size"
+            else
+                return true, nil
+            end
+        end
+    end,
+
+
     one_of = function(list)
         return function(data)
             for _, element in ipairs(list) do

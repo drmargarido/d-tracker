@@ -212,6 +212,9 @@ describe("Invalid input types in tasks management", function()
         _, err = add_task("A good description", 123)
         assert.is_false(err == nil)
 
+        _, err = add_task("", "")
+        assert.is_false(err == nil)
+
         local after_tasks = list_tasks(date(1970, 1, 1), date())
         assert.is_true(#before_tasks == #after_tasks)
     end)

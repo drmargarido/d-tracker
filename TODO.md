@@ -6,7 +6,6 @@
     + Fix selection with arrows + shift of text in the input fields(Not consistent in allowing of selection)
     + Input key is consumed after a special char put in the autocomplete fields
     + The project autocomplete is still not ordered like the tasks one
-    + Do not accept start tracking click if the description or the project fields are not filled
     + Show overview window starts empty when opened, it should present the current day tasks
     + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
     + D-tracker is growing a little bit each time something changes and the task description at top is bigger than the current space available
