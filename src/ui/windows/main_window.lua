@@ -403,6 +403,7 @@ return {
                                         opening_window:setValue("Left", x)
 
                                         opening_window:setValue("Status", "show")
+                                        stats_window.update(self)
                                     end
                                 }
                             }
