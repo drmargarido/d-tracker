@@ -80,7 +80,7 @@ _refresh = function()
     local current_activity_text = "No Activity"
     if has_task_in_progress then
         current_activity_text = utils.trim_text(
-            current_task.description.." - "..current_task.project, width / 12.5
+            current_task.description.." - "..current_task.project, width / 14
         )
     end
 
