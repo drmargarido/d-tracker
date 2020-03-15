@@ -14,7 +14,7 @@ local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 local conf = require "src.conf"
 local date = require "date.date"
 local utils = require "src.utils"
-local ui_utils = require "src.ui.utils"
+local report_error = require "src.ui.utils".report_error
 
 -- Validators
 local validators = require "src.validators.base_validators"
@@ -67,7 +67,7 @@ _update = function(self, start_date, end_date, text)
     local filtered_tasks
     if last_text ~= nil and #last_text > 0 then
         local err
-        filtered_tasks, err = ui_utils.report_error(list_tasks_by_text(
+        filtered_tasks, err = report_error(list_tasks_by_text(
             last_start_date,
             last_end_date,
             last_text
@@ -267,7 +267,7 @@ _update = function(self, start_date, end_date, text)
                 persistance.update_xml_save_path(path)
 
                 local fname = path.. "/" .. select[1]
-                ui_utils.report_error(xml_export(filtered_tasks, fname))
+                report_error(xml_export(filtered_tasks, fname))
             end
         end)
     end)
@@ -287,13 +287,13 @@ local date_search = function(self)
         self:getById("range_end_date"):getText()
     )
 
-    local _, err = ui_utils.report_error(validators.is_iso8601(start_date))
+    local _, err = report_error(validators.is_iso8601(start_date))
     if err ~= nil then
         print(err)
         return
     end
 
-    _, err = ui_utils.report_error(validators.is_iso8601(end_date))
+    _, err = report_error(validators.is_iso8601(end_date))
     if err ~= nil then
         print(err)
         return
@@ -493,7 +493,7 @@ return {
             if msg[3] == 127 then
                 local selected_task = TaskRow.get_selection()
                 if selected_task.task_id then
-                    ui_utils.report_error(delete_task(selected_task.task_id))
+                    report_error(delete_task(selected_task.task_id))
                     refresh()
                     _update(self, last_start_date, last_end_date)
                 end

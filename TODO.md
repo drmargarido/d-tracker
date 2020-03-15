@@ -5,7 +5,6 @@
     + Crash happened in the first export of the xml?
     + Fix selection with arrows + shift of text in the input fields(Not consistent in allowing of selection)
     + Input key is consumed after a special char put in the autocomplete fields
-    + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
     + If the task description autocomplete appears and the down and up arrow are pressed, the file and plugin menus are focused. Fix focus management of the autocomplete.
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
 

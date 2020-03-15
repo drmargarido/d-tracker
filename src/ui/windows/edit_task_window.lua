@@ -20,14 +20,14 @@ local InputWithAutocomplete = require "src.ui.components.input_with_autocomplete
 
 -- Utils
 local date = require "date.date"
-local ui_utils = require "src.ui.utils"
+local report_error = require "src.ui.utils".report_error
 
 -- Constants
 local row_space = 5
 
 return {
     set_task_to_edit = function(self, task_id, refresh)
-        local task, _ = ui_utils.report_error(get_task(task_id))
+        local task, _ = report_error(get_task(task_id))
         local task_in_progress, _ = get_task_in_progress()
 
         local in_progress = false
@@ -80,7 +80,7 @@ return {
         self:getById("edit_in_progress"):setValue("Selected", in_progress)
 
         self:getById("delete_task_btn"):setValue("onPress", function(_self)
-            ui_utils.report_error(delete_task(task_id))
+            report_error(delete_task(task_id))
             _self:getById("edit_task_window"):setValue(
                 "Status", "hide"
             )
@@ -91,7 +91,7 @@ return {
             -- Read new values from edit fields
             local new_start_date = self:getById("edit_start_date"):getText()
             local new_start_time = self:getById("edit_start_time"):getText()
-            local _, err = ui_utils.report_error(
+            local _, err = report_error(
                 validators.is_iso8601(
                     string.format("%sT%s:00", new_start_date, new_start_time)
                 )
@@ -107,7 +107,7 @@ return {
 
             local new_end_date = self:getById("edit_end_date"):getText()
             local new_end_time = self:getById("edit_end_time"):getText()
-            _, err = ui_utils.report_error(
+            _, err = report_error(
                 validators.is_iso8601(
                     string.format("%sT%s:00", new_end_date, new_end_time)
                 )
@@ -127,33 +127,60 @@ return {
             local new_in_progress = self:getById("edit_in_progress").Selected
 
             -- Trigger field update when a change is detected
-            if new_start ~= start_time and (new_end ~= end_time and not new_in_progress) then
-                ui_utils.report_error(edit_task_time(task.id, new_start, new_end))
+            if new_start ~= start_time and
+                (new_end ~= end_time and not new_in_progress)
+            then
+                report_error(
+                    edit_task_time(task.id, new_start, new_end)
+                )
             elseif new_start ~= start_time then
                 if task.end_time == nil then
-                    ui_utils.report_error(edit_task_time(task.id, new_start, nil))
+                    report_error(edit_task_time(task.id, new_start, nil))
                 else
-                    ui_utils.report_error(edit_task_time(task.id, new_start, date(task.end_time)))
+                    report_error(
+                        edit_task_time(
+                            task.id,
+                            new_start,
+                            date(task.end_time)
+                        )
+                    )
                 end
             elseif new_end ~= end_time and not new_in_progress then
-                ui_utils.report_error(edit_task_time(task.id, date(task.start_time), new_end))
+                report_error(
+                    edit_task_time(
+                        task.id,
+                        date(task.start_time),
+                        new_end
+                    )
+                )
             end
 
             if new_description ~= task.description then
-                ui_utils.report_error(edit_task_description(task.id, new_description))
+                report_error(
+                    edit_task_description(
+                        task.id,
+                        new_description
+                    )
+                )
             end
 
             if new_project ~= task.project then
-                ui_utils.report_error(edit_task_project(task.id, new_project))
+                report_error(edit_task_project(task.id, new_project))
             end
 
             if in_progress ~= new_in_progress then
                 if new_in_progress then
                     -- This way the possible overlaping with other tasks is checked
-                    ui_utils.report_error(stop_task())
-                    ui_utils.report_error(edit_task_time(task.id, date(task.start_time), nil))
+                    report_error(stop_task())
+                    report_error(
+                        edit_task_time(
+                            task.id,
+                            date(task.start_time),
+                            nil
+                        )
+                    )
                 else
-                    ui_utils.report_error(stop_task())
+                    report_error(stop_task())
                 end
             end
 

@@ -30,7 +30,7 @@ return check_input(
         if not project_exists then
             local _, err = create_project(new_value)
             if err ~= nil then
-                return false, "Failed to create the project"
+                return false, new_value.." - Failed to create the project"
             end
         end
 
@@ -46,7 +46,7 @@ return check_input(
         )
         project_stmt:step()
         if not db_validators.operation_ok(db) then
-            return false, "Failed to edit the task project"
+            return false, new_value.." - Failed to edit the task project"
         end
 
         event_manager.fire_event(events.TASK_EDIT, {id=task_id, project=new_value})

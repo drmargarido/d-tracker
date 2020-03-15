@@ -18,7 +18,7 @@ local persistance = require "src.persistance"
 -- Utils
 local date = require "date.date"
 local utils = require "src.utils"
-local ui_utils = require "src.ui.utils"
+local report_error = require "src.ui.utils".report_error
 
 -- UI components
 local ui = require "tek.ui"
@@ -136,7 +136,7 @@ _refresh = function()
                 persistance.update_xml_save_path(path)
 
                 local fname = path .. "/" .. select[1]
-                ui_utils.report_error(xml_export(today_tasks, fname))
+                report_error(xml_export(today_tasks, fname))
             end
         end)
     end)
@@ -259,7 +259,7 @@ return {
                                             return
                                         end
 
-                                        ui_utils.report_error(stop_task())
+                                        report_error(stop_task())
                                         _refresh()
                                     end
                                 }
@@ -338,7 +338,7 @@ return {
                                         end
                                         local project = project_element:getText()
 
-                                        ui_utils.report_error(add_task(description, project))
+                                        report_error(add_task(description, project))
 
                                         -- Clear inputs and refresh UI
 
@@ -418,7 +418,7 @@ return {
             if msg[3] == 127 then
                 local selected_task = TaskRow.get_selection()
                 if selected_task.task_id then
-                    ui_utils.report_error(delete_task(selected_task.task_id))
+                    report_error(delete_task(selected_task.task_id))
                     _refresh()
                 end
             end
