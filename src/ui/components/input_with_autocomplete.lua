@@ -181,8 +181,10 @@ function InputWithAutocomplete.new(_, self)
                 end
             elseif msg[2] == ui.MSG_KEYDOWN and msg[3] ~= 0 then
                 --[[
-                    On windows the focus is set in the popup instead of the input so here
-                     the generated key press is passed to the text edit of the input field
+                    On windows the focus is set in the popup
+                    instead of the input so here the generated
+                    key press is passed to the text edit of
+                    the input field
                 ]]
                 input.Child.Child.handleKeyboard(_self, msg)
             end
@@ -251,14 +253,28 @@ function InputWithAutocomplete.new(_, self)
                 _self:setValue("Focus", false)
                 _self:setValue("Active", false)
                 return false
-            elseif code == 61458 then -- Up
+            elseif code == 61458 then -- Up arrow
                 if self.PopupWindow then
-                    input.toggleActiveLine(self, math.max(self.SelectedLine - 1, 0))
+                    input.toggleActiveLine(
+                        self,
+                        math.max(self.SelectedLine - 1, 0)
+                    )
                 end
-            elseif code == 61459 then -- Down
+                return nil
+            elseif code == 61459 then -- Down arrow
                 if self.PopupWindow then
-                    input.toggleActiveLine(self, math.min(self.SelectedLine + 1, self.TotalLines))
+                    input.toggleActiveLine(
+                        self,
+                        math.min(self.SelectedLine + 1, self.TotalLines)
+                    )
                 end
+                return nil
+            elseif code == 61456 then -- Left arrow
+                _handleKeyboard(_self, msg)
+                return nil
+            elseif code == 61457 then -- Right arrow
+                _handleKeyboard(_self, msg)
+                return nil
             elseif code == 13 then -- Enter
                 if self.SelectedLine ~= 0 then
                     -- Fill input with the autocomplete
@@ -271,6 +287,11 @@ function InputWithAutocomplete.new(_, self)
                 end
             elseif code == 9 then -- TAB
                 _self.tab_pressed = true
+                if self.PopupWindow then
+                    self.endPopup(_self)
+                    _self:setValue("Focus", true)
+                end
+
                 _handleKeyboard(_self, msg)
                 return msg
             else
@@ -278,8 +299,11 @@ function InputWithAutocomplete.new(_, self)
                 _self:setValue("Focus", true)
                 _self:setValue("Active", true)
 
-                _self:setValue("Selected", false) -- Trigger onSelect to hide the popup
-                _self:setValue("Selected", true) -- Trigger onSelect to show the popup refreshed
+                -- Trigger onSelect to hide the popup
+                _self:setValue("Selected", false)
+
+                -- Trigger onSelect to show the popup refreshed
+                _self:setValue("Selected", true)
             end
         end
 
