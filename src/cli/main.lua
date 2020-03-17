@@ -63,10 +63,7 @@ list_tasks_command
 list_tasks_command:action(function(args, name)
     local tasks, err
     if not args.before and (not args.from or not args.to) then
-        print([[
-Use the before option[b] to list the tasks in the last days
-or create a date range using the from[f] and to[t] options.]]
-        )
+        print(list_tasks_command:get_usage())
         return
     end
 
