@@ -2,8 +2,12 @@
 local list_today_tasks = require "src.controller.list_today_tasks"
 local list_tasks = require "src.controller.list_tasks"
 
+-- Database
+local migrations = require "src.migrations.migrations"
+
 -- Utils
 local print_task = require "src.utils".print_task
+local date = require "date.date"
 
 -- Arguments parsing
 local argparse = require "argparse.argparse"
@@ -12,6 +16,15 @@ local parser = argparse(
     "d-tracker-cli",
     "Command line interface to interact with the d-tracker"
 )
+
+local todate = function(datestr)
+    local status, result = pcall(date, datestr)
+    if status then
+        return result
+    end
+
+    return nil
+end
 
 parser
     :command("list-today-tasks")
@@ -30,26 +43,54 @@ parser
         end
     end)
 
-parser
-    :command("list-tasks")
-    :summary("List tasks between a time range")
-    :action(function(args, name)
+local list_tasks_command = parser:command("list-tasks")
+list_tasks_command:summary("List tasks between a time range")
+list_tasks_command
+    :option("-b --before", "Starting a number of days before today")
+    :convert(tonumber)
+    :count("0-1")
 
-        --[[
-        local tasks, err = list_tasks()
-        if err then
-            print(err)
-            return 1
-        end
+list_tasks_command
+    :option("-f --from", "From the given date")
+    :convert(todate)
+    :count("0-1")
 
-        print("id|project|start_time|end_time|description")
-        print("------------------------------------------")
+list_tasks_command
+    :option("-t --to", "To the given date")
+    :convert(todate)
+    :count("0-1")
 
-        for _, task in ipairs(tasks) do
-            print_task(task)
-        end
-        ]]
-    end)
+list_tasks_command:action(function(args, name)
+    local tasks, err
+    if not args.before and (not args.from or not args.to) then
+        print([[
+Use the before option[b] to list the tasks in the last days
+or create a date range using the from[f] and to[t] options.]]
+        )
+        return
+    end
+
+    if args.before then
+        local start_date = date():adddays(-args.before)
+        tasks, err = list_tasks(start_date, date())
+    end
+
+    if args.from and args.to then
+        tasks, err = list_tasks(args.from, args.to)
+    end
+
+    if err then
+        print(err)
+        return 1
+    end
+
+    print("id|project|start_time|end_time|description")
+    print("------------------------------------------")
+
+    for _, task in ipairs(tasks) do
+        print_task(task)
+    end
+end)
 
 parser
     :command("delete-task")
@@ -107,5 +148,9 @@ parser
 
     end)
 
+-- Ensure database exist and is updated
+migrations()
+
+-- Parse commands
 parser:parse()
 return 0
