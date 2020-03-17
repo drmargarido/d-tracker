@@ -44,3 +44,4 @@
         - Notification Spec (used by notify-send) -> http://www.galago-project.org/specs/notification/0.9/x81.html
         - Macos notification rust lib -> https://github.com/h4llow3En/mac-notification-sys
         - Lib with swift and actionscript works on mac and windows -> https://github.com/tuarua/DesktopToastANE
+    + Allow the copy to clipboard or exporting of the totals in the show overview window

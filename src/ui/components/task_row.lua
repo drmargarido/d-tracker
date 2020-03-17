@@ -125,7 +125,7 @@ return {
                         "%02d:%02d - %s %s",
                         start_time:gethours(), start_time:getminutes(),
                         end_time_text,
-                        utils.trim_text(task.description, width / 14)
+                        utils.trim_text(task.description, width / 15)
                     ),
                     onPress = id_closure(row_number, function(self, id)
                         select_list_row(self, id, task.id)

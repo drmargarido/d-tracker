@@ -18,7 +18,7 @@ endif
 CFLAGS=-O2
 
 
-base: structure linux_platform luajit date freetype2 tekui lsqlite luafilesystem timetracker
+base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem timetracker
 
 # reload used to refresh the build folder while in development
 reload: structure
@@ -57,6 +57,10 @@ sqlite.o:
 date:
 	mkdir -p $(DEPLOY_FOLDER)/date
 	cp -R external/date/src/date.lua $(DEPLOY_FOLDER)/date/
+
+argparse:
+	mkdir -p $(DEPLOY_FOLDER)/argparse
+	cp -R external/argparse/src/argparse.lua $(DEPLOY_FOLDER)/argparse/
 
 luafilesystem: luajit
 	cd external/luafilesystem && make

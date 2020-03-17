@@ -64,5 +64,17 @@ return {
     -- Check if the application is running in windows
     is_windows = function()
         return package.config:sub(1,1) == "\\"
+    end,
+
+    -- Standard task printing
+    print_task = function(task)
+        print(string.format(
+            "%d|%s|%s|%s|%s",
+            task.id,
+            task.project,
+            task.start_time,
+            task.end_time or "---",
+            task.description
+        ))
     end
 }

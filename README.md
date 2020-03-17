@@ -128,3 +128,4 @@ The dependencies are in the external folder.
 * [tekui](http://tekui.neoscientists.org/) - Used to implement the whole UI.
 * [LuaFileSystem](https://keplerproject.github.io/luafilesystem/manual.html) - Used to list the folders when exporting the tasks to XML.
 * [freetype2](https://www.freetype.org/) - (Only for X11) Used in the render of text and fonts in the tekui lib.
+* [argparse](https://github.com/luarocks/argparse) - (For the cli) Used to parse the command line options.
