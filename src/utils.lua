@@ -1,3 +1,5 @@
+local date = "date.date"
+
 return {
     -- Trims text and adds '...' in the end of the text if trimmed
     trim_text = function(text, max_chars)
@@ -76,5 +78,15 @@ return {
             task.end_time or "---",
             task.description
         ))
+    end,
+
+    -- Transform string to date while handling error cases
+    todate = function(datestr)
+        local status, result = pcall(date, datestr)
+        if status then
+            return result
+        end
+
+        return nil
     end
 }
