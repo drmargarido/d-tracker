@@ -1,6 +1,3 @@
--- Validators
-local validators = require "src.validators.base_validators"
-
 -- Decorators
 local decorators = require "src.decorators"
 local use_db = decorators.use_db
