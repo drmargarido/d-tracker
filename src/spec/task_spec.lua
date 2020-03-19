@@ -151,7 +151,7 @@ describe("Base Path of Tasks management", function()
 
         assert.is_false(utils.file_exists(filename))
 
-        xml_export(tasks, filename)
+        xml_export.write_xml_to_file(tasks, filename)
         assert.is_true(utils.file_exists(filename))
 
         -- Clear file from filesystem

@@ -267,7 +267,7 @@ _update = function(self, start_date, end_date, text)
                 persistance.update_xml_save_path(path)
 
                 local fname = path.. "/" .. select[1]
-                report_error(xml_export(filtered_tasks, fname))
+                report_error(xml_export.write_xml_to_file(filtered_tasks, fname))
             end
         end)
     end)
