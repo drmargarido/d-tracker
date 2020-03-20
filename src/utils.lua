@@ -1,4 +1,4 @@
-local date = "date.date"
+local date = require "date.date"
 
 return {
     -- Trims text and adds '...' in the end of the text if trimmed
