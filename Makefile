@@ -77,6 +77,8 @@ timetracker: luajit
 	cp $(DEPLOY_FOLDER)/platform/linux/local_run.sh $(DEPLOY_FOLDER)/run.sh
 	chmod +x $(DEPLOY_FOLDER)/run.sh
 
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE)-cli main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DCLI
+
 	# Compile executable version with global system paths instead of the local ones
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DLINUX_INSTALL
 
