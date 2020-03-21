@@ -8,14 +8,7 @@
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
 
 * Implement a command line interface to interact with D-tracker
-    + Command line arguments parsing in pure lua -> https://github.com/ncopa/lua-optarg | https://github.com/luarocks/argparse
-    + Present help text when no arguments are received
-    + Starting of a new task
-    + Stop of the running task
-    + Listing of the today tasks
-    + Listing of the tasks by range of dates
-    + Listing of the tasks by text
-    + Exporting to XML
+    + Add some documentation of the cli in the README
 
 * Build releases
     + Macos Binary Release
