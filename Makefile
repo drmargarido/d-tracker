@@ -115,7 +115,7 @@ clean:
 	cd external/luafilesystem/ && make clean
 	cd external/tekUI/ && make clean
 
-release_windows: structure date
+release_windows: structure date argparse
 	# Luajit
 	cd external/LuaJIT/src && make HOST_CC="gcc" CROSS=x86_64-w64-mingw32- TARGET_SYS=Windows
 	cp $(LUA_FOLDER)/src/lua51.dll $(DEPLOY_FOLDER)/
@@ -137,6 +137,7 @@ release_windows: structure date
 	# D-tracker with icon
 	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
 	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res
+	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE)-cli.exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 -DCLI
 
 release_mac: structure date freetype2 tekui lsqlite luafilesystem timetracker
 	# Luajit
