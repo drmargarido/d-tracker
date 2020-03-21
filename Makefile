@@ -84,6 +84,8 @@ timetracker: luajit
 	# Compile executable version with global system paths instead of the local ones
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DLINUX_INSTALL
 
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE)-cli main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DCLI -DLINUX_INSTALL
+
 	# Put INSTALL and UNINSTALL scripts in the base path
 	cp $(DEPLOY_FOLDER)/platform/linux/INSTALL.sh $(DEPLOY_FOLDER)/
 	chmod +x $(DEPLOY_FOLDER)/INSTALL.sh

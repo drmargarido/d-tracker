@@ -9,7 +9,7 @@ int main(int argc, char ** argv){
     lua_State *L = luaL_newstate();
     luaL_openlibs(L);
 
-    #ifdef LINUX_INSTALL
+    #if defined(LINUX_INSTALL) && !defined(CLI)
         luaL_dostring(L, "package.path = package.path .. ';/usr/share/lua/5.1/d-tracker/?.lua'");
         luaL_dostring(L, "package.cpath = package.cpath .. ';/usr/lib/d-tracker/?.so'");
         luaL_loadfile(L, "/usr/share/lua/5.1/d-tracker/src/main.lua");
@@ -26,8 +26,13 @@ int main(int argc, char ** argv){
 
         lua_setglobal(L,"arg");
 
-        /* Run cli */
-        luaL_loadfile(L, "src/cli/main.lua");
+        #ifdef LINUX_INSTALL
+            luaL_dostring(L, "package.path = package.path .. ';/usr/share/lua/5.1/d-tracker/?.lua'");
+            luaL_dostring(L, "package.cpath = package.cpath .. ';/usr/lib/d-tracker/?.so'");
+            luaL_loadfile(L, "/usr/share/lua/5.1/d-tracker/src/cli/main.lua");
+        #else
+            luaL_loadfile(L, "src/cli/main.lua");
+        #endif
     #else
         luaL_loadfile(L, "src/main.lua");
     #endif
