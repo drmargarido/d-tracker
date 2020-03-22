@@ -16,6 +16,7 @@ return check_input(
             FROM task as t
             LEFT JOIN project p ON p.id = t.project_id
             WHERE t.description=?
+            ORDER BY t.start_time DESC
         ]])
         local task_stmt = db:prepare(task_query)
         task_stmt:bind_values(description)

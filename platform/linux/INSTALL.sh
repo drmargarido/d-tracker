@@ -8,7 +8,9 @@ fi
 # Executable
 mkdir -p ${INSTALLDIR}/bin
 cp platform/linux/system_run.sh ${INSTALLDIR}/bin/d-tracker
+cp platform/linux/system_cli_run.sh ${INSTALLDIR}/bin/d-tracker-cli
 chmod +x ${INSTALLDIR}/bin/d-tracker
+chmod +x ${INSTALLDIR}/bin/d-tracker-cli
 
 # Main lua code and lua libraries
 mkdir -p ${INSTALLDIR}/share/lua/5.1/d-tracker
@@ -16,6 +18,7 @@ cp -R src ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R date ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R tek ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R plugins ${INSTALLDIR}/share/lua/5.1/d-tracker/
+cp -R argparse ${INSTALLDIR}/share/lua/5.1/d-tracker/
 cp -R VERSION.lua ${INSTALLDIR}/share/lua/5.1/d-tracker/
 
 # Override local lua configuration with the linux one
@@ -43,6 +46,6 @@ mkdir -p ${INSTALLDIR}/share/d-tracker
 mkdir -p ${INSTALLDIR}/share/d-tracker/images
 cp -R images/* ${INSTALLDIR}/share/d-tracker/images/
 cp platform/linux/d-tracker ${INSTALLDIR}/share/d-tracker/d-tracker
-
+cp platform/linux/d-tracker-cli ${INSTALLDIR}/share/d-tracker/d-tracker-cli
 echo "D-Tracker successfully installed!"
 exit 0

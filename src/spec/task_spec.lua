@@ -151,7 +151,7 @@ describe("Base Path of Tasks management", function()
 
         assert.is_false(utils.file_exists(filename))
 
-        xml_export(tasks, filename)
+        xml_export.write_xml_to_file(tasks, filename)
         assert.is_true(utils.file_exists(filename))
 
         -- Clear file from filesystem
@@ -210,6 +210,9 @@ describe("Invalid input types in tasks management", function()
         assert.is_false(err == nil)
 
         _, err = add_task("A good description", 123)
+        assert.is_false(err == nil)
+
+        _, err = add_task("", "")
         assert.is_false(err == nil)
 
         local after_tasks = list_tasks(date(1970, 1, 1), date())

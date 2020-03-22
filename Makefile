@@ -18,7 +18,7 @@ endif
 CFLAGS=-O2
 
 
-base: structure linux_platform luajit date freetype2 tekui lsqlite luafilesystem timetracker
+base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem timetracker
 
 # reload used to refresh the build folder while in development
 reload: structure
@@ -58,6 +58,10 @@ date:
 	mkdir -p $(DEPLOY_FOLDER)/date
 	cp -R external/date/src/date.lua $(DEPLOY_FOLDER)/date/
 
+argparse:
+	mkdir -p $(DEPLOY_FOLDER)/argparse
+	cp -R external/argparse/src/argparse.lua $(DEPLOY_FOLDER)/argparse/
+
 luafilesystem: luajit
 	cd external/luafilesystem && make
 	cp external/luafilesystem/src/lfs.so $(DEPLOY_FOLDER)/
@@ -73,8 +77,14 @@ timetracker: luajit
 	cp $(DEPLOY_FOLDER)/platform/linux/local_run.sh $(DEPLOY_FOLDER)/run.sh
 	chmod +x $(DEPLOY_FOLDER)/run.sh
 
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE)-cli main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DCLI
+	cp $(DEPLOY_FOLDER)/platform/linux/local_cli_run.sh $(DEPLOY_FOLDER)/cli_run.sh
+	chmod +x $(DEPLOY_FOLDER)/cli_run.sh
+
 	# Compile executable version with global system paths instead of the local ones
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DLINUX_INSTALL
+
+	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/platform/linux/$(EXECUTABLE)-cli main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit -DCLI -DLINUX_INSTALL
 
 	# Put INSTALL and UNINSTALL scripts in the base path
 	cp $(DEPLOY_FOLDER)/platform/linux/INSTALL.sh $(DEPLOY_FOLDER)/
@@ -105,7 +115,7 @@ clean:
 	cd external/luafilesystem/ && make clean
 	cd external/tekUI/ && make clean
 
-release_windows: structure date
+release_windows: structure date argparse
 	# Luajit
 	cd external/LuaJIT/src && make HOST_CC="gcc" CROSS=x86_64-w64-mingw32- TARGET_SYS=Windows
 	cp $(LUA_FOLDER)/src/lua51.dll $(DEPLOY_FOLDER)/
@@ -127,6 +137,7 @@ release_windows: structure date
 	# D-tracker with icon
 	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
 	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res
+	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE)-cli.exe main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 -DCLI
 
 release_mac: structure date freetype2 tekui lsqlite luafilesystem timetracker
 	# Luajit

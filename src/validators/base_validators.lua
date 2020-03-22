@@ -46,6 +46,17 @@ return {
         end
     end,
 
+    min_length = function(min_len)
+        return function(data)
+            if #data < min_len then
+                return false, "Text exceeded the minimum allowed size"
+            else
+                return true, nil
+            end
+        end
+    end,
+
+
     one_of = function(list)
         return function(data)
             for _, element in ipairs(list) do
@@ -73,7 +84,7 @@ return {
         local y,m,d,h,M,s = data:match("(%d%d%d%d)/(%d?%d)/(%d?%d)[T ](%d?%d):(%d?%d):(%d?%d)$")
 
         if not y or not m or not d or not h or not M or not s then
-            return false, "Invalid date format received"
+            return false, data.." - Invalid date format received"
         end
 
         return true, nil

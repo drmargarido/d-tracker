@@ -41,7 +41,7 @@ local escape = function(attribute)
     return escaped_attribute
 end
 
-return function(tasks, file_path)
+local generate_xml = function(tasks)
     local tasks_activities = ""
 
     for _, task in ipairs(tasks) do
@@ -64,6 +64,12 @@ return function(tasks, file_path)
         tasks_activities
     )
 
+    return final_xml
+end
+
+local write_xml_to_file = function(tasks, file_path)
+    local final_xml = generate_xml(tasks)
+
     local file = io.open(file_path, "w")
     if file then
         file:write(final_xml)
@@ -78,3 +84,9 @@ return function(tasks, file_path)
 
     return false, "Failed to create the xml file "..file_path.." : "..final_xml
 end
+
+return {
+    write_xml_to_file = write_xml_to_file,
+    generate_xml = generate_xml
+}
+

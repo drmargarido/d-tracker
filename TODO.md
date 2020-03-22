@@ -5,24 +5,7 @@
     + Crash happened in the first export of the xml?
     + Fix selection with arrows + shift of text in the input fields(Not consistent in allowing of selection)
     + Input key is consumed after a special char put in the autocomplete fields
-    + The project autocomplete is still not ordered like the tasks one
-    + When a task is autocompleted the project that is filled is the first associated with a task with same name, should be the one associated with the specific task or at least the most recent one
-    + Do not accept start tracking click if the description or the project fields are not filled
-    + Show overview window starts empty when opened, it should present the current day tasks
-    + Add values in the task edited field to the error report so it is more obvious to the user what the problem is, an example of the expected format may also be a good help
-    + D-tracker is growing a little bit each time something changes and the task description at top is bigger than the current space available
-    + If the task description autocomplete appears and the down and up arrow are pressed, the file and plugin menus are focused. Fix focus management of the autocomplete.
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
-
-* Implement a command line interface to interact with D-tracker
-    + Command line arguments parsing in pure lua -> https://github.com/ncopa/lua-optarg | https://github.com/luarocks/argparse
-    + Present help text when no arguments are received
-    + Starting of a new task
-    + Stop of the running task
-    + Listing of the today tasks
-    + Listing of the tasks by range of dates
-    + Listing of the tasks by text
-    + Exporting to XML
 
 * Build releases
     + Macos Binary Release
@@ -51,3 +34,4 @@
         - Notification Spec (used by notify-send) -> http://www.galago-project.org/specs/notification/0.9/x81.html
         - Macos notification rust lib -> https://github.com/h4llow3En/mac-notification-sys
         - Lib with swift and actionscript works on mac and windows -> https://github.com/tuarua/DesktopToastANE
+    + Allow the copy to clipboard or exporting of the totals in the show overview window

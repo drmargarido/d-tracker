@@ -14,14 +14,25 @@ return check_input(
         local query_stmt
         if #name > 0 then
             local query = [[
-                SELECT name FROM project
+                SELECT name
+                FROM project as p
+                LEFT JOIN task t ON p.id = t.project_id
                 WHERE name LIKE ?
-                LIMIT 8
+                GROUP BY name HAVING max(t.start_time) OR t.start_time is NULL
+                ORDER BY t.start_time DESC
+                LIMIT 7
             ]]
             query_stmt = db:prepare(query)
             query_stmt:bind_values("%"..name.."%")
         else
-            local query = "SELECT name FROM project LIMIT 8"
+            local query = [[
+                SELECT name
+                FROM project as p
+                LEFT JOIN task t ON p.id = t.project_id
+                GROUP BY name HAVING max(t.start_time) OR t.start_time is NULL
+                ORDER BY t.start_time DESC
+                LIMIT 7
+            ]]
             query_stmt = db:prepare(query)
         end
 

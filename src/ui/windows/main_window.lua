@@ -18,7 +18,7 @@ local persistance = require "src.persistance"
 -- Utils
 local date = require "date.date"
 local utils = require "src.utils"
-local ui_utils = require "src.ui.utils"
+local report_error = require "src.ui.utils".report_error
 
 -- UI components
 local ui = require "tek.ui"
@@ -31,6 +31,7 @@ local events = require "src.plugin_manager.events"
 
 -- Windows
 local stats_window = require "src.ui.windows.stats_window"
+local notification_window = require "src.ui.windows.notification_window"
 local this_window
 
 local width = 800
@@ -79,7 +80,7 @@ _refresh = function()
     local current_activity_text = "No Activity"
     if has_task_in_progress then
         current_activity_text = utils.trim_text(
-            current_task.description.." - "..current_task.project, width / 12.5
+            current_task.description.." - "..current_task.project, width / 14
         )
     end
 
@@ -135,7 +136,7 @@ _refresh = function()
                 persistance.update_xml_save_path(path)
 
                 local fname = path .. "/" .. select[1]
-                ui_utils.report_error(xml_export(today_tasks, fname))
+                report_error(xml_export.write_xml_to_file(today_tasks, fname))
             end
         end)
     end)
@@ -258,7 +259,7 @@ return {
                                             return
                                         end
 
-                                        ui_utils.report_error(stop_task())
+                                        report_error(stop_task())
                                         _refresh()
                                     end
                                 }
@@ -315,13 +316,29 @@ return {
                                             return
                                         end
 
-                                        local description_element = self:getById("task-description")
+                                        local description_element = self:getById(
+                                            "task-description"
+                                        )
+                                        if description_element.Child.Child.Class == "placeholder" then
+                                            -- Report error and abort
+                                            notification_window.display(
+                                                "Cannot create task: Description field is empty"
+                                            )
+                                            return
+                                        end
                                         local description = description_element:getText()
 
                                         local project_element = self:getById("task-project")
+                                        if project_element.Child.Child.Class == "placeholder" then
+                                            -- Report error and abort
+                                            notification_window.display(
+                                                "Cannot create task: Project field is empty"
+                                            )
+                                            return
+                                        end
                                         local project = project_element:getText()
 
-                                        ui_utils.report_error(add_task(description, project))
+                                        report_error(add_task(description, project))
 
                                         -- Clear inputs and refresh UI
 
@@ -386,6 +403,7 @@ return {
                                         opening_window:setValue("Left", x)
 
                                         opening_window:setValue("Status", "show")
+                                        stats_window.update(self)
                                     end
                                 }
                             }
@@ -400,7 +418,7 @@ return {
             if msg[3] == 127 then
                 local selected_task = TaskRow.get_selection()
                 if selected_task.task_id then
-                    ui_utils.report_error(delete_task(selected_task.task_id))
+                    report_error(delete_task(selected_task.task_id))
                     _refresh()
                 end
             end

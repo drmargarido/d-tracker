@@ -31,7 +31,7 @@ Release 1.1:
 * [x] Select themes
 
 Release 1.2:
-* [ ] Command line client
+* [x] Command line client
 
 Release 1.3:
 * [ ] Remember last filtering range in overview window
@@ -107,13 +107,34 @@ make release_windows
 
 After running the command, the self contained version of the software will be built in the `build/` folder.
 
+## Cli
+D-tracker has a cli, `d-tracker-cli` that provides the following commands:
+
+```txt
+list-today-tasks      List today tasks
+list-tasks            List tasks between a time range
+list-projects         Lists the projects available in the database
+delete-task           Delete a specific task
+add-task              Add a new task
+edit-task-time        Edit the time of a specific time
+edit-task-description Edit the description of a specific task
+edit-task-project     Edit the project of a specific task
+export-today-xml      Export today tasks to a xml file
+export-xml            Export tasks in a time range to a xml file
+stop-in-progress      Stop the current task in progress
+```
+
 ## Development
 If you are interested in improving d-tracker by improving stability, adding new functionalities, plugins, themes or other things check the [development](docs/development.md) section.
 
 
 ## Testing
 
-To run the tests you will need [busted](http://olivinelabs.com/busted/). With that just run:
+To run the tests you will need [busted](http://olivinelabs.com/busted/).
+
+**Note**: The tests will create and remove the database inside the build folder, be carefull to not run the tests with important data there.
+
+With that just run:
 ```sh
 make test
 ```
@@ -128,3 +149,4 @@ The dependencies are in the external folder.
 * [tekui](http://tekui.neoscientists.org/) - Used to implement the whole UI.
 * [LuaFileSystem](https://keplerproject.github.io/luafilesystem/manual.html) - Used to list the folders when exporting the tasks to XML.
 * [freetype2](https://www.freetype.org/) - (Only for X11) Used in the render of text and fonts in the tekui lib.
+* [argparse](https://github.com/luarocks/argparse) - (For the cli) Used to parse the command line options.

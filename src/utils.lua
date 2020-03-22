@@ -1,3 +1,5 @@
+local date = require "date.date"
+
 return {
     -- Trims text and adds '...' in the end of the text if trimmed
     trim_text = function(text, max_chars)
@@ -64,5 +66,27 @@ return {
     -- Check if the application is running in windows
     is_windows = function()
         return package.config:sub(1,1) == "\\"
+    end,
+
+    -- Standard task printing
+    print_task = function(task)
+        print(string.format(
+            "%d|%s|%s|%s|%s",
+            task.id,
+            task.project,
+            task.start_time,
+            task.end_time or "---",
+            task.description
+        ))
+    end,
+
+    -- Transform string to date while handling error cases
+    todate = function(datestr)
+        local status, result = pcall(date, datestr)
+        if status then
+            return result
+        end
+
+        return nil
     end
 }

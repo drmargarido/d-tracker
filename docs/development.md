@@ -21,7 +21,9 @@ When developing for D-Tracker the following points must be taken care:
 |---/exporter/       - Export tasks lists to files in specific formats
 |---/spec/           - Tests to validate the correct behavior of the system
 |---/migrations/     - Scripts for to create and update the database model
-|---/plugin_manager/ - Implementation of the plugins management and events management
+|---/cli/            - Cli interface commands registration
+|---/plugin_manager/ - Implementation of the plugins management and events
+management
 |docs/               - Documentation of the application
 |plugins/            - Application plugins
 |themes/             - Available CSS themes of the application
