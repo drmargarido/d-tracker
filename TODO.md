@@ -7,9 +7,6 @@
     + Input key is consumed after a special char put in the autocomplete fields
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
 
-* Implement a command line interface to interact with D-tracker
-    + Add some documentation of the cli in the README
-
 * Build releases
     + Macos Binary Release
         - Create an app file

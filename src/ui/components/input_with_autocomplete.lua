@@ -215,8 +215,6 @@ function InputWithAutocomplete.new(_, self)
     end
 
     self.endPopup = function(_self)
-        _self:setValue("Focus", false)
-
         _self:setState()
         if self.PopupWindow then
             self.PopupWindow:setValue("Status", "hide")
@@ -289,8 +287,10 @@ function InputWithAutocomplete.new(_, self)
                 _self.tab_pressed = true
                 if self.PopupWindow then
                     self.endPopup(_self)
-                    _self:setValue("Focus", true)
                 end
+
+                _self:setValue("Focus", true)
+                _self:setValue("Active", true)
 
                 _handleKeyboard(_self, msg)
                 return msg
