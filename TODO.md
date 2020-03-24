@@ -11,6 +11,7 @@
     + Macos Binary Release
         - Create an app file
     + DEB package?
+    + PPA for ubuntu auto update.
 
 * Sugestions
     + Minimize to tray
@@ -35,3 +36,4 @@
         - Macos notification rust lib -> https://github.com/h4llow3En/mac-notification-sys
         - Lib with swift and actionscript works on mac and windows -> https://github.com/tuarua/DesktopToastANE
     + Allow the copy to clipboard or exporting of the totals in the show overview window
+        - C cross-platform simple lib that allows interation with clipboard - https://github.com/jtanx/libclipboard

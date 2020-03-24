@@ -40,6 +40,8 @@ Release 1.3:
 Release 1.4:
 * [ ] Periodically remember the currently active task
 
+Release 1.5:
+* [ ] Allow the copy of the tasks in the totals window to the clipboard
 
 ## Screenshots
 
