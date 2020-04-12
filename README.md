@@ -35,7 +35,7 @@ Release 1.2:
 
 Release 1.3:
 * [ ] Remember last filtering range in overview window
-* [ ] Simpler date range navigation in the overview window
+* [x] Simpler date range navigation in the overview window
 
 Release 1.4:
 * [ ] Periodically remember the currently active task
