@@ -34,7 +34,7 @@ Release 1.2:
 * [x] Command line client
 
 Release 1.3:
-* [ ] Remember last filtering range in overview window
+* [x] Remember last filtering range in overview window
 * [x] Simpler date range navigation in the overview window
 
 Release 1.4:
@@ -42,6 +42,9 @@ Release 1.4:
 
 Release 1.5:
 * [ ] Allow the copy of the tasks in the totals window to the clipboard
+
+Release 1.6:
+* [ ] Keybindings to speed up the workflow of advanced users
 
 ## Screenshots
 

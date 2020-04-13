@@ -25,23 +25,13 @@ if not utils.file_exists(dtracker_folder) then
     lfs.mkdir(dtracker_folder)
 end
 
--- Set the configurations
-local xml_path_file = dtracker_folder.."/xml_save_path"
-
-local xml_path = ""
-if utils.file_exists(xml_path_file..".lua") then
-    -- Use dofile because of the '.' in the import path
-    xml_path = dofile(xml_path_file..".lua")
-end
-
+local storage_path = dtracker_folder.."/storage_data.lua"
 local images_folder = "/usr/share/d-tracker/images"
+
 return {
     db = dtracker_folder.."/d-tracker.sqlite3",
-    storage_folder = dtracker_folder,
+    storage_path = storage_path,
     images_folder = images_folder,
-
-    xml_path_file = xml_path_file,
-    xml_path = xml_path,
 
     current_theme = THEME,
     theme = themes[THEME].name,

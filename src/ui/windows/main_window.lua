@@ -13,7 +13,7 @@ local xml_export = require "src.exporter.xml"
 
 -- Settings
 local conf = require "src.conf"
-local persistance = require "src.persistance"
+local storage = require "src.storage"
 
 -- Utils
 local date = require "date.date"
@@ -128,12 +128,12 @@ _refresh = function()
                 Title = "Select the export path",
                 SelectText = "save",
                 Location = date():fmt("%F")..".xml",
-                Path = conf.xml_path
+                Path = storage.data.xml_save_path
             }
 
             if status == "selected" then
-                conf.xml_path = path
-                persistance.update_xml_save_path(path)
+                storage.data.xml_save_path = path
+                storage:save()
 
                 local fname = path .. "/" .. select[1]
                 report_error(xml_export.write_xml_to_file(today_tasks, fname))

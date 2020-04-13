@@ -1,5 +1,3 @@
-
-
 -- Tekui
 local ui = require "tek.ui"
 
@@ -24,8 +22,8 @@ local validators = require "src.validators.base_validators"
 -- Exporters
 local xml_export = require "src.exporter.xml"
 
--- Persistance
-local persistance = require "src.persistance"
+-- Storage
+local storage = require "src.storage"
 
 local main_refresh = nil
 local now = date()
@@ -45,7 +43,8 @@ local last_end_date = date(
     59,
     59
 )
-local days_scope = 1
+print(storage.data.days_scope)
+local days_scope = storage.data.days_scope or 1
 -- Set the start date acording with the defined scope
 last_start_date = last_start_date:adddays(-(days_scope - 1))
 
@@ -265,12 +264,12 @@ _update = function(self, start_date, end_date, text)
                 Title = "Select the export path",
                 SelectText = "save",
                 Location = location_path,
-                Path = conf.xml_path
+                Path = storage.xml_save_path
             }
 
             if status == "selected" then
-                conf.xml_path = path
-                persistance.update_xml_save_path(path)
+                storage.data.xml_save_path = path
+                storage:save()
 
                 local fname = path.. "/" .. select[1]
                 report_error(xml_export.write_xml_to_file(filtered_tasks, fname))
@@ -318,6 +317,8 @@ local date_search = function(self)
     local final_start_date = date(start_date)
     local diff = date.diff(final_end_date, final_start_date)
     days_scope = math.ceil(diff:spandays())
+    storage.data.days_scope = days_scope
+    storage:save()
 
     _update(self, final_start_date, final_end_date)
 end

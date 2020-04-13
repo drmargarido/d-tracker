@@ -12,8 +12,7 @@ local utils = require "src.utils"
 local themes = require "src.themes"
 
 -- Data
-local current_theme
-local storage_folder
+local storage = require "src.storage"
 local app
 
 return {
@@ -25,25 +24,22 @@ return {
     event_listeners = {
         [events.INIT] = function(data)
             -- Load last used theme and set it as the current one
-            local active_theme_file = "active_theme"
-            storage_folder = data.conf.storage_folder
-            local file_path = storage_folder.."/"..active_theme_file..".lua"
-
-            if utils.file_exists(file_path) then
-                current_theme = dofile(file_path)
-                data.conf.theme = themes[current_theme].name
-
+            if storage.data.current_theme then
+                local current_theme = storage.data.current_theme
+                local icon = themes[current_theme].pencil_icon
                 local img_folder = data.conf.images_folder
-                data.conf.pencil_icon = img_folder.."/"..themes[current_theme].pencil_icon
+                data.conf.theme = themes[current_theme].name
+                data.conf.pencil_icon = img_folder.."/"..icon
             else
-                current_theme = data.conf.current_theme
+                storage.data.current_theme = data.conf.current_theme
+                storage:save()
             end
         end,
 
         [events.UI_STARTED] = function(data)
             -- Register the window in the application
             app = data.app
-            local window = plugin_window(storage_folder, current_theme)
+            local window = plugin_window(storage.data.current_theme)
 
             ui.Application.connect(window)
             data.app:addMember(window)
