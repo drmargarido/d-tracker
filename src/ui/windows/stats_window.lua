@@ -22,8 +22,8 @@ local validators = require "src.validators.base_validators"
 -- Exporters
 local xml_export = require "src.exporter.xml"
 
--- Persistance
-local persistance = require "src.persistance"
+-- Storage
+local storage = require "src.storage"
 
 local main_refresh = nil
 local now = date()
@@ -43,6 +43,11 @@ local last_end_date = date(
     59,
     59
 )
+print(storage.data.days_scope)
+local days_scope = storage.data.days_scope or 1
+-- Set the start date acording with the defined scope
+last_start_date = last_start_date:adddays(-(days_scope - 1))
+
 local last_text = ""
 
 local width = 800
@@ -259,12 +264,12 @@ _update = function(self, start_date, end_date, text)
                 Title = "Select the export path",
                 SelectText = "save",
                 Location = location_path,
-                Path = conf.xml_path
+                Path = storage.xml_save_path
             }
 
             if status == "selected" then
-                conf.xml_path = path
-                persistance.update_xml_save_path(path)
+                storage.data.xml_save_path = path
+                storage:save()
 
                 local fname = path.. "/" .. select[1]
                 report_error(xml_export.write_xml_to_file(filtered_tasks, fname))
@@ -309,7 +314,13 @@ local date_search = function(self)
         59,
         59
     )
-    _update(self, date(start_date), final_end_date)
+    local final_start_date = date(start_date)
+    local diff = date.diff(final_end_date, final_start_date)
+    days_scope = math.ceil(diff:spandays())
+    storage.data.days_scope = days_scope
+    storage:save()
+
+    _update(self, final_start_date, final_end_date)
 end
 
 local text_search = function(self)
@@ -326,6 +337,39 @@ local text_search = function(self)
     end
 
     _update(self, last_start_date, last_end_date, text)
+end
+
+local refresh_date_inputs = function(self, s, e)
+    local s_input = self:getById("range_start_date")
+    local e_input = self:getById("range_end_date")
+    local s_text = s:fmt("%Y/%m/%d")
+    local e_text = e:fmt("%Y/%m/%d")
+    s_input:setValue("Text", s_text)
+    e_input:setValue("Text", e_text)
+end
+
+local previous_date = function(self)
+    if not self.Pressed then
+        return
+    end
+
+    last_start_date = last_start_date:adddays(-days_scope)
+    last_end_date = last_end_date:adddays(-days_scope)
+
+    refresh_date_inputs(self, last_start_date, last_end_date)
+    _update(self, last_start_date, last_end_date)
+end
+
+local next_date = function(self)
+    if not self.Pressed then
+        return
+    end
+
+    last_start_date = last_start_date:adddays(days_scope)
+    last_end_date = last_end_date:adddays(days_scope)
+
+    refresh_date_inputs(self, last_start_date, last_end_date)
+    _update(self, last_start_date, last_end_date)
 end
 
 -- Exportable Methods
@@ -359,10 +403,15 @@ return {
                                     Width = "auto",
                                     Style = "font: 24/b;"
                                 },
+                                ui.Button:new{
+                                    Width = 8,
+                                    Text = "<",
+                                    onPress = previous_date
+                                },
                                 ui.Input:new{
                                     Id = "range_start_date",
                                     Width = 76,
-                                    Text = date():fmt("%Y/%m/%d")
+                                    Text = last_start_date:fmt("%Y/%m/%d")
                                 },
                                 ui.Text:new{
                                     Width = 20,
@@ -372,7 +421,12 @@ return {
                                 ui.Input:new{
                                     Id = "range_end_date",
                                     Width = 76,
-                                    Text = date():fmt("%Y/%m/%d")
+                                    Text = last_end_date:fmt("%Y/%m/%d")
+                                },
+                                ui.Button:new{
+                                    Width = 8,
+                                    Text = ">",
+                                    onPress = next_date
                                 },
                                 ui.Button:new{
                                     Width = 60,

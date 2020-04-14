@@ -9,7 +9,7 @@ local report_error = require "src.ui.utils".report_error
 local themes = require "src.themes"
 local switch_theme = require "plugins.theme_switcher.switch_theme"
 
-return function(storage_folder, current_theme)
+return function(current_theme)
     local themes_names = {}
     for theme, _ in pairs(themes) do
         table.insert(themes_names, {{theme}})
@@ -46,8 +46,9 @@ return function(storage_folder, current_theme)
                             ui.PopList.onSelect(self)
                             local item = self.ListObject:getItem(self.SelectedLine)
                             if item then
-                                self:getById("theme-switcher-combo"):setValue("Text", item[1][1])
-                                report_error(switch_theme(storage_folder, item[1][1]))
+                                local combo = self:getById("theme-switcher-combo")
+                                combo:setValue("Text", item[1][1])
+                                report_error(switch_theme(item[1][1]))
                             end
                         end,
                     }

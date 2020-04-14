@@ -20,8 +20,6 @@
         2. Cross platform sleep - https://stackoverflow.com/a/10928585/5555837
 
 * Improvements
-    + show overview: week, month defaults besides range selector. (improvement over hamster) add possibility to define other default ranges?
-        - Can be implemented in a simple way by storing the last search range and by providing two arrows on the side of the date range.
     + Support Latin1 input text in input fields.
     + Add plugin which allow the scheduling of desktop notifications saying the current active task every group of minutes.
         - Example -> https://github.com/gaborcsardi/notifier
