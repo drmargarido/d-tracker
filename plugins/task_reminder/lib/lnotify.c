@@ -6,8 +6,9 @@
 static int f_send_notification(lua_State *L) {
   const char * title = luaL_checkstring(L, 1);
   const char * description = luaL_checkstring(L, 2);
-  send_notification(title, description);
-  return 0;
+  int result = send_notification(title, description);
+  lua_pushnumber(L, result);
+  return 1;
 }
 
 static const luaL_Reg lib[] = {

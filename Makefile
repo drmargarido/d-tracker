@@ -18,7 +18,7 @@ endif
 CFLAGS=-O2
 
 
-base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem timetracker
+base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem lnotify timetracker
 
 # reload used to refresh the build folder while in development
 reload: structure
@@ -72,6 +72,10 @@ freetype2:
 	cd external/freetype2 && make
 	cp external/freetype2/objs/.libs/libfreetype.so $(DEPLOY_FOLDER)/
 
+lnotify:
+	cd plugins/task_reminder && make
+	cp plugins/task_reminder/lnotify.so $(DEPLOY_FOLDER)/
+
 timetracker: luajit
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
 	cp $(DEPLOY_FOLDER)/platform/linux/local_run.sh $(DEPLOY_FOLDER)/run.sh
@@ -114,6 +118,7 @@ clean:
 	cd external/LuaJIT/ && make clean
 	cd external/luafilesystem/ && make clean
 	cd external/tekUI/ && make clean
+	cd plugins/task_reminder/ && make clean
 
 release_windows: structure date argparse
 	# Luajit

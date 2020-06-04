@@ -37,7 +37,7 @@ int send_notification(const char * title, const char * description){
     return 1;
   }
 
-  const char * app_name = "Testz";
+  const char * app_name = "D-Tracker";
   dbus_uint32_t replace_id = 0;
   const char * icon = "";
   dbus_int32_t expiration_timeout = -1;

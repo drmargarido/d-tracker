@@ -2,14 +2,13 @@
 local events = require "src.plugin_manager.events"
 
 -- UI
-local ui = require "tek.ui"
 local plugin_window = require "plugins.theme_switcher.window"
-
--- Utils
-local utils = require "src.utils"
 
 -- Themes
 local themes = require "src.themes"
+
+-- Utils
+local utils = require "plugins.utils"
 
 -- Data
 local storage = require "src.storage"
@@ -40,21 +39,11 @@ return {
             -- Register the window in the application
             app = data.app
             local window = plugin_window(storage.data.current_theme)
-
-            ui.Application.connect(window)
-            data.app:addMember(window)
+            utils.register_window(app, window)
         end,
 
         [events.PLUGIN_SELECT] = function(self)
-            local _, _, x, y = self.Window.Drawable:getAttrs()
-
-            -- Archor to the main window position
-            local theme_window = app:getById("theme-select-window")
-            theme_window:setValue("Top", y)
-            theme_window:setValue("Left", x)
-
-            -- Display window with the options to select the theme
-            theme_window:setValue("Status", "show")
+          utils.show_window(self, app, "theme-select-window")
         end
     }
 }
