@@ -8,10 +8,9 @@ HANDLE thread = NULL;
 int running = 0;
 
 const char * TRIGGER_EVENT_CODE =
-  "local event_manager = require \"src.plugin_manager.event_manager\" "
-  "local events = require \"src.plugin_manager.events\" "
+  "local event_manager = require \"src.plugin_manager.event_manager\""
+  "local events = require \"src.plugin_manager.events\""
   "event_manager.fire_event(events.MINUTE_ELAPSED, {})";
-
 
 DWORD WINAPI clock_proc(void* data) {
   while(running){
@@ -19,10 +18,8 @@ DWORD WINAPI clock_proc(void* data) {
     seconds++;
     if(seconds >= 60){
       luaL_dostring(L, TRIGGER_EVENT_CODE);
-      printf("Trigger MINUTE_ELAPSED\n");
       seconds = 0;
     }
-    printf("Seconds elapsed %d\n", seconds);
   }
   return 0;
 }
@@ -41,6 +38,5 @@ void clock_close(){
   if(running){
     running = 0;
     CloseHandle(thread);
-    printf("Close Clock!\n");
   }
 }
