@@ -1,4 +1,5 @@
 local sqlite3 = require "lsqlite3"
+local utils = require "src.utils"
 local conf = require "src.conf"
 
 return {
@@ -30,13 +31,10 @@ return {
             local fields = {...}
 
             for i, validation_list in ipairs(validations) do
-                for _, validation in ipairs(validation_list) do
-                    local success, err = validation(fields[i])
-
-                    if not success then
-                        print(err)
-                        return nil, err
-                    end
+                local success, err = utils.validate(validation_list, fields[i])
+                if not success then
+                    print(err)
+                    return nil, err
                 end
             end
 

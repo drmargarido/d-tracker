@@ -1,37 +1,32 @@
 # TODO
 
+* Tasks
+    + Add unit tests for the storage
+    + Update the dependencies versions
+
 * Bugfix
     + Fix sometimes fields not rerendering when moving and minimizing the window.
-    + Crash happened in the first export of the xml?
     + Fix selection with arrows + shift of text in the input fields(Not consistent in allowing of selection)
     + Input key is consumed after a special char put in the autocomplete fields
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
+    + When the popup of the theme changes the alert popup appears in a random place
+    + When the main window is closed the other are kept open
 
 * Build releases
     + Macos Binary Release
         - Create an app file
-    + DEB package?
     + PPA for ubuntu auto update.
 
 * Sugestions
     + Minimize to tray
     + Update the timers of the main window every minute? (Does it matter?)
-        1. Coroutine in lua running time counting and triggering the update every minute or thread in C running a refresh method received from lua
-        2. Cross platform sleep - https://stackoverflow.com/a/10928585/5555837
 
 * Improvements
+    + Check how to do single row queries with lsqlite and replace the dumb multiple rows instructions in cicles that return only one value.
+    + Refactor storage.save implementation to be simpler to understand and read
     + Support Latin1 input text in input fields.
-    + Add plugin which allow the scheduling of desktop notifications saying the current active task every group of minutes.
-        - Example -> https://github.com/gaborcsardi/notifier
-        - Example -> https://www.devdungeon.com/content/windows-desktop-notifications-python
-        - Example Go cross-platform notifications -> https://github.com/gen2brain/beeep
-        - List of linux notification tools -> https://wiki.archlinux.org/index.php/Desktop_notifications#C
-        - Gnome Notification spec -> https://people.gnome.org/~mccann/docs/notification-spec/notification-spec-latest.html
-        - Using DBus in C (Can be used to connect to the gnome notifications) -> https://linoxide.com/how-tos/d-bus-ipc-mechanism-linux/
-        - Windows-10-Toast-Notifications -> https://github.com/jithurjacob/Windows-10-Toast-Notifications
-        - Notification daemons for i3 -> https://faq.i3wm.org/question/121/whats-a-good-notification-daemon-for-i3.1.html
-        - Notification Spec (used by notify-send) -> http://www.galago-project.org/specs/notification/0.9/x81.html
-        - Macos notification rust lib -> https://github.com/h4llow3En/mac-notification-sys
-        - Lib with swift and actionscript works on mac and windows -> https://github.com/tuarua/DesktopToastANE
+    + Make the task\_reminder plugin also work in windows
+      - Make d-tracker be able to be installed in windows
+      - Implement desktop notifications (toasts) in windows
     + Allow the copy to clipboard or exporting of the totals in the show overview window
-        - C cross-platform simple lib that allows interation with clipboard - https://github.com/jtanx/libclipboard
+        - C cross-platform simple lib that allows interaction with clipboard - https://github.com/jtanx/libclipboard

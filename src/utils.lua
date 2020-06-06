@@ -88,5 +88,17 @@ return {
         end
 
         return nil
+    end,
+
+    -- Run validators in a field
+    validate = function(validations, field)
+      for _, validation in ipairs(validations) do
+        local success, err = validation(field)
+        if not success then
+          print(err)
+          return nil, err
+        end
+      end
+      return true, nil
     end
 }

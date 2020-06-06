@@ -77,6 +77,14 @@ return {
         end
     end,
 
+    is_integer = function(data)
+      if data and data == math.floor(data) then
+        return true, nil
+      else
+        return false, "The received number is not an integer"
+      end
+    end,
+
     --[[
         Expects ISO datetime in format yyyy/mm/ddTHH:MM:SS or yyyy/mm/dd HH:MM:SS
     ]]

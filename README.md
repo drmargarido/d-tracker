@@ -38,7 +38,7 @@ Release 1.3:
 * [x] Simpler date range navigation in the overview window
 
 Release 1.4:
-* [ ] Periodically remember the currently active task
+* [x] Periodically remember the currently active task
 
 Release 1.5:
 * [ ] Allow the copy of the tasks in the totals window to the clipboard
@@ -53,7 +53,7 @@ Release 1.6:
 ![D-Tracker UI with Klinik Theme](/screenshots/d-tracker_v1,1-klinik.jpg)
 
 ## Install
-To run the application use the most recent release, which right now is the [v1.3](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [v1.4](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
@@ -63,7 +63,7 @@ To run the application use the most recent release, which right now is the [v1.3
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.3).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.4).
 
 The application is self-contained in the folder so if you just want to run it there execute the `run.sh` file.
 
@@ -74,7 +74,7 @@ To uninstall run the `UNINSTALL.sh` command. It will remove the whole applicatio
 
 #### Build from source
 
-The dependencies in the dependencies list are bundled within the repository and will also be compiled. In order to build the project from source you will need the following packages: `automake`, `libtool`, `libx11-dev`, `libxft2-dev`, `libxext-dev` and `libxxf86vm-dev`.
+The dependencies in the dependencies list are bundled within the repository and will also be compiled. In order to build the project from source you will need the following packages: `automake`, `libtool`, `libx11-dev`, `libxft2-dev`, `libxext-dev`, `libxxf86vm-dev` and `libdbus-1-dev`.
 
 To run the application self contained in a single folder run the following command and check the build/ generated folder.
 ```sh
@@ -96,7 +96,7 @@ sudo make uninstall
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.3).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.4).
 
 The application is self-contained in the folder so you just need to run the `d-tracker.exe` file.
 
@@ -137,7 +137,7 @@ If you are interested in improving d-tracker by improving stability, adding new 
 
 To run the tests you will need [busted](http://olivinelabs.com/busted/).
 
-**Note**: The tests will create and remove the database inside the build folder, be carefull to not run the tests with important data there.
+**Note**: The tests will create and remove the database inside the build folder, be careful to not run the tests with important data there.
 
 With that just run:
 ```sh

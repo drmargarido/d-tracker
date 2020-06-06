@@ -47,6 +47,7 @@ function storage.save(self)
         for i,v in ipairs( t ) do
             thandled[i] = true
             local stype = type( v )
+
             -- only handle value
             if stype == "table" then
                 if not lookup[v] then
@@ -82,6 +83,7 @@ function storage.save(self)
 
                 if str ~= "" then
                     stype = type( v )
+
                     -- handle value
                     if stype == "table" then
                         if not lookup[v] then
@@ -91,7 +93,7 @@ function storage.save(self)
                         file:write( str.."{"..lookup[v].."},"..charE )
                     elseif stype == "string" then
                         file:write( str..exportstring( v )..","..charE )
-                    elseif stype == "number" then
+                    elseif stype == "number" or stype == "boolean" then
                         file:write( str..tostring( v )..","..charE )
                     end
                 end
