@@ -38,7 +38,7 @@ Release 1.3:
 * [x] Simpler date range navigation in the overview window
 
 Release 1.4:
-* [ ] Periodically remember the currently active task
+* [x] Periodically remember the currently active task
 
 Release 1.5:
 * [ ] Allow the copy of the tasks in the totals window to the clipboard

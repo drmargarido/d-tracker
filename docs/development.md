@@ -65,18 +65,19 @@ conf = {
 Each plugin can register listeners for each of the following event types:
 
 * INIT - Configuration loaded, migrations setup, before UI starts
-* UI_STARTED - Application UI is now up
+* UI\_STARTED - Application UI is now up
 * CLOSE - Application will close now
-* TASK_CREATED - A new task was created
-* TASK_STOP - The current task was stopped
-* TASK_EDIT - Fields of a task changed
-* TASK_DELETE - A task was deleted
-* PROJECT_CREATED - A new project was created
-* XML_EXPORT - Tasks were exported to a xml file
-* PLUGIN_SELECT - The current plugin was selected in the plugins list in the top menubar
+* TASK\_CREATED - A new task was created
+* TASK\_STOP - The current task was stopped
+* TASK\_EDIT - Fields of a task changed
+* TASK\_DELETE - A task was deleted
+* PROJECT\_CREATED - A new project was created
+* XML\_EXPORT - Tasks were exported to a xml file
+* PLUGIN\_SELECT - The current plugin was selected in the plugins list in the top menubar
+* MINUTE\_ELAPSED - Is triggered every minute
 
 ### Example
-You can check the [theme_switcher](../plugins/theme_switcher/main.lua) plugin as a starting point.
+You can check the [task_reminder](../plugins/task_reminder/main.lua) plugin as a starting point.
 
 
 ## Themes
