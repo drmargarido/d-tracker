@@ -1,3 +1,4 @@
+
 #!/bin/sh
 
 INSTALLDIR=/usr
@@ -31,6 +32,7 @@ ln -sf ${INSTALLDIR}/lib/d-tracker/libluajit.so ${INSTALLDIR}/lib/d-tracker/libl
 cp lsqlite3.so ${INSTALLDIR}/lib/d-tracker/
 cp lfs.so ${INSTALLDIR}/lib/d-tracker/
 cp libfreetype.so ${INSTALLDIR}/lib/d-tracker/
+cp lnotify.so ${INSTALLDIR}/lib/d-tracker/
 mkdir -p ${INSTALLDIR}/lib/d-tracker/tek
 mkdir -p ${INSTALLDIR}/lib/d-tracker/tek/lib
 cp -R ${INSTALLDIR}/share/lua/5.1/d-tracker/tek ${INSTALLDIR}/lib/d-tracker/
