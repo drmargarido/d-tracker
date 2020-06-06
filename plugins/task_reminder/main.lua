@@ -23,9 +23,9 @@ local TITLE = "D-Tracker Reminder"
 local DESCRIPTION = "No task in progress"
 
 -- Data
+local storage = require "src.storage"
 local app
 local elapsed = 0
-local notify_after = 2
 
 return {
   conf = {
@@ -34,9 +34,17 @@ return {
   },
 
   event_listeners = {
+    [events.INIT] = function()
+      if not storage.data.notify_after then
+        storage.data.notify_after = 10
+        storage.data.reminder_is_active = true
+        storage:save()
+      end
+    end,
+
     [events.UI_STARTED] = function(data)
       app = data.app
-      local window = plugin_window()
+      local window = plugin_window(storage)
       utils.register_window(app, window)
     end,
 
@@ -45,14 +53,16 @@ return {
     end,
 
     [events.MINUTE_ELAPSED] = function()
-      local task = get_task_in_progress()
-      if task then
-        elapsed = 0
-      else
-        elapsed = elapsed + 1
-        if elapsed >= notify_after then
-          notify.send_notification(TITLE, DESCRIPTION)
+      if storage.data.reminder_is_active then
+        local task = get_task_in_progress()
+        if task then
           elapsed = 0
+        else
+          elapsed = elapsed + 1
+          if elapsed >= storage.data.notify_after then
+            notify.send_notification(TITLE, DESCRIPTION)
+            elapsed = 0
+          end
         end
       end
     end
