@@ -1,23 +1,33 @@
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
-#include "lclipboard.h"
+#include "libclipboard.h"
 
-// Manage clipboard
-clipboard_c *cb;
-
-void lclipboard_init(){
-  cb = clipboard_new(NULL);
-  if (cb == NULL) {
-    printf("Clipboard initialization failed!\n");
-  }
-}
-
-void lclipboard_close(){
-  clipboard_free(cb);
-}
+static clipboard_c *cb;
 
 // Lua bindings to Interact with the clipboard
+static int f_init(lua_State *L){
+  cb = clipboard_new(NULL);
+  int result = 1;
+  if (cb == NULL) {
+    printf("Clipboard initialization failed!\n");
+    result = 0;
+  }
+  lua_pushnumber(L, result);
+  return 1;
+}
+
+static int f_close(lua_State *L){
+  clipboard_free(cb);
+  return 0;
+}
+
+static int f_get_text(lua_State *L) {
+  const char * text = clipboard_text(cb);
+  lua_pushstring(L, text);
+  return 1;
+}
+
 static int f_set_text(lua_State *L) {
   int result = 0;
   if(cb != NULL){
@@ -29,6 +39,9 @@ static int f_set_text(lua_State *L) {
 }
 
 static const luaL_Reg lib[] = {
+  { "init",     f_init },
+  { "close",    f_close },
+  { "get_text", f_get_text },
   { "set_text", f_set_text },
   { NULL,       NULL }
 };
