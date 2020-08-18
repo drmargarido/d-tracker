@@ -16,6 +16,7 @@
     + Exporting the xml in the show overview window fails to use the already known export path
     + The projects field in the task edit accepts empty input creating an empty project
     + Fix re-rendering damaged areas under wayland, it fails too much
+    + Copying stuff on one d-tracker window and then trying to paste it in another window crashes d-tracker
 
 * Build releases
     + PPA for ubuntu auto update.

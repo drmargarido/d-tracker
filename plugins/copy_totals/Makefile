@@ -8,7 +8,7 @@ all:
 	gcc -O3 -shared -fPIC -o $(BUILD_FOLDER)/lclipboard.so lib/lclipboard.c \
 	-lclipboard -L$(BUILD_FOLDER) -I$(LIBCLIPBOARD_FOLDER)/include -lX11 -lxcb -pthread \
 	-lluajit -I$(LUA_FOLDER)/src/
-		
+
 clean:
 	rm -f lclipboard.so
 	rm -f libclipboard.so

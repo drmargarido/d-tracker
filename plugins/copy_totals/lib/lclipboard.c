@@ -1,9 +1,12 @@
+#include <stdlib.h>
+#include <xcb/xproto.h>
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
 #include "libclipboard.h"
 
 static clipboard_c *cb;
+char * text = NULL;
 
 // Lua bindings to Interact with the clipboard
 static int f_init(lua_State *L){
@@ -18,12 +21,19 @@ static int f_init(lua_State *L){
 }
 
 static int f_close(lua_State *L){
+  if(text){
+    free(text);
+  }
   clipboard_free(cb);
   return 0;
 }
 
 static int f_get_text(lua_State *L) {
-  const char * text = clipboard_text(cb);
+  if(text){
+    free(text);
+  }
+
+  text = clipboard_text(cb);
   lua_pushstring(L, text);
   return 1;
 }

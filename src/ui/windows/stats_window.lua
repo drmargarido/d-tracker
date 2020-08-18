@@ -481,13 +481,19 @@ return {
                             Height = "free",
                             Orientation = "vertical",
                             Children = {
-                                ui.Text:new{
-                                    Text = "Projects",
-                                    Class = "caption",
-                                    Style = [[
-                                        font: 24/b;
-                                        text-align: left;
-                                    ]]
+                                ui.Group:new{
+                                    Id = "projects-totals-top-bar",
+                                    Orientation = "horizontal",
+                                    Children = {
+                                        ui.Text:new{
+                                          Text = "Projects",
+                                          Class = "caption",
+                                          Style = [[
+                                              font: 24/b;
+                                              text-align: left;
+                                          ]]
+                                        }
+                                    },
                                 },
                                 ui.ScrollGroup:new{
                                     Width = "free",
