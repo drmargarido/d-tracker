@@ -7,6 +7,7 @@
 
 #if !defined(CLI)
   #include "lib/clock.h"
+  #include "lib/lclipboard.h
 #endif
 
 int main(int argc, char ** argv){
@@ -14,6 +15,7 @@ int main(int argc, char ** argv){
   luaL_openlibs(L);
   #if !defined(CLI)
     clock_init(L);
+    clipboard_init(L);
   #endif
 
   #if defined(LINUX_INSTALL) && !defined(CLI)
@@ -50,6 +52,7 @@ int main(int argc, char ** argv){
 
   #if !defined(CLI)
     clock_close();
+    clipboard_close();
   #endif
   lua_close(L);
   return 0;
