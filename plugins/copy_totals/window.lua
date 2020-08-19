@@ -15,8 +15,8 @@ local TASK_TAGS = {
 }
 local SCOPE_TAGS = {
   [scopes.TASK_SCOPE] = {"@TASKS"},
-  [scopes.PROJECT_SCOPE] = {"@TASKS", "@PROJECT"},
-  [scopes.DAY_SCOPE] = {"@TASKS", "@DAY", "@MONTH", "@YEAR"}
+  [scopes.PROJECT_SCOPE] = {"@TASKS", "@PROJECT", "@TIME_PROJECT"},
+  [scopes.DAY_SCOPE] = {"@TASKS", "@DAY", "@MONTH", "@YEAR", "@TIME_DAY"}
 }
 
 -- Data
