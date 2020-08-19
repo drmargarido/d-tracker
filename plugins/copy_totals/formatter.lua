@@ -6,10 +6,6 @@ local list_tasks_by_text = require "src.controller.list_tasks_by_text"
 local utils = require "src.utils"
 
 return function(start_date, end_date, description)
-  print(start_date)
-  print(end_date)
-  print(description)
-
   -- Get Tasks
   local tasks
   if description and #description > 0 then
@@ -21,7 +17,8 @@ return function(start_date, end_date, description)
   -- Create tasks formatted text
   local text = ""
   for _, task in ipairs(tasks) do
-    text = text..utils.format_task(task)
+    text = text..utils.format_task(task).."\n"
+
   end
   return text
 end

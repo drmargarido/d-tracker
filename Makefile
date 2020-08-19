@@ -18,7 +18,7 @@ endif
 CFLAGS=-O2 -pthread
 
 
-base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem lnotify timetracker
+base: structure linux_platform luajit date argparse freetype2 tekui lsqlite luafilesystem lnotify lclipboard timetracker
 
 # reload used to refresh the build folder while in development
 reload: structure
@@ -75,6 +75,9 @@ freetype2:
 lnotify:
 	cd plugins/task_reminder && make
 	cp plugins/task_reminder/lnotify.so $(DEPLOY_FOLDER)/
+
+lclipboard:
+	cd plugins/copy_totals && make
 
 timetracker: luajit
 	$(CC) $(CFLAGS) -o $(DEPLOY_FOLDER)/$(EXECUTABLE) main.c lib/clock_linux.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -lluajit
