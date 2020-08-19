@@ -2,10 +2,10 @@
 local ui = require "tek.ui"
 local List = require "tek.class.list"
 
+-- Scopes
+local scopes = require "plugins.copy_totals.scopes"
+
 -- Constants
-local TASK_SCOPE = "Task"
-local PROJECT_SCOPE = "Project"
-local DAY_SCOPE = "Day"
 local TASK_TAGS = {
   "@TASK_DESCRIPTION",
   "@TASK_PROJECT",
@@ -14,13 +14,13 @@ local TASK_TAGS = {
   "@TASK_END_DATE"
 }
 local SCOPE_TAGS = {
-  [TASK_SCOPE] = {"@TASKS"},
-  [PROJECT_SCOPE] = {"@TASKS", "@PROJECT"},
-  [DAY_SCOPE] = {"@TASKS", "@DAY", "@MONTH", "@YEAR"}
+  [scopes.TASK_SCOPE] = {"@TASKS"},
+  [scopes.PROJECT_SCOPE] = {"@TASKS", "@PROJECT"},
+  [scopes.DAY_SCOPE] = {"@TASKS", "@DAY", "@MONTH", "@YEAR"}
 }
 
 -- Data
-local scope = PROJECT_SCOPE -- Default scope
+local scope = scopes.PROJECT_SCOPE -- Default scope
 
 -- Private helper methods
 local get_tags_text = function(tags)
@@ -44,11 +44,21 @@ local refresh_according_to_scope = function(self)
 end
 
 local apply_changes = function(self, storage)
+  local task_format = self:getById("copy-task-formatting"):getText()
+  local template_format = self:getById("copy-template-formatting"):getText()
 
+  storage.data.task_format = task_format
+  storage.data.template_format = template_format
+  storage.data.copy_scope = scope
+  storage:save()
+
+  self:getById("copy-totals-window"):setValue("Status", "hide")
 end
 
 -- Public window creation method
 return function(storage)
+  scope = storage.data.copy_scope
+
   local window = ui.Window:new{
     Title = "Copy Totals",
     Id = "copy-totals-window",
@@ -103,7 +113,7 @@ return function(storage)
         Width = "fill",
         MultiLine = true,
         Height = 40,
-        Text = "",
+        Text = storage.data.task_format,
       },
       ui.Text:new{
         Id = "task-format-tags",
@@ -127,7 +137,7 @@ return function(storage)
         MultiLine = true,
         Width = "fill",
         Height = "free",
-        Text = "",
+        Text = storage.data.template_format,
       },
       ui.Text:new{
         Id = "template-format-tags",
@@ -148,6 +158,5 @@ return function(storage)
     }
   }
 
-  --refresh_according_to_scope(window, scope)
   return window
 end

@@ -17,6 +17,9 @@ local utils = require "plugins.utils"
 local clipboard = require "lclipboard"
 local tasks_to_clipboard = require "plugins.copy_totals.tasks_to_clipboard"
 
+-- Scopes
+local scopes = require "plugins.copy_totals.scopes"
+
 -- Data
 local storage = require "src.storage"
 local app
@@ -31,7 +34,15 @@ return {
     [events.INIT] = function()
       clipboard.init()
 
-      -- Load formatting configuration
+      -- Make sure copy_totals configuration exist in storage
+      if not storage.data.copy_scope then
+        storage.data.copy_scope = scopes.PROJECT_SCOPE
+        storage.data.task_format = [[  + @TASK_DESCRIPTION]]
+        storage.data.template_format = [[+ @PROJECT
+@TASKS
+]]
+        storage:save()
+      end
     end,
 
     [events.UI_STARTED] = function(data)
@@ -46,7 +57,11 @@ return {
         HAlign = "right",
         Width = 20,
         Text = "⊙",
-        onPress = tasks_to_clipboard
+        onPress = function(self)
+          if self.Pressed then
+            tasks_to_clipboard(self, storage)
+          end
+        end
       })
     end,
 
