@@ -1,5 +1,16 @@
 local date = require "date.date"
 
+local _format_task = function(task)
+  return string.format(
+    "%d|%s|%s|%s|%s",
+    task.id,
+    task.project,
+    task.start_time,
+    task.end_time or "---",
+    task.description
+  )
+end
+
 return {
     -- Trims text and adds '...' in the end of the text if trimmed
     trim_text = function(text, max_chars)
@@ -68,16 +79,12 @@ return {
         return package.config:sub(1,1) == "\\"
     end,
 
+    -- Standard task text representation
+    format_task = _format_task,
+
     -- Standard task printing
     print_task = function(task)
-        print(string.format(
-            "%d|%s|%s|%s|%s",
-            task.id,
-            task.project,
-            task.start_time,
-            task.end_time or "---",
-            task.description
-        ))
+      print(_format_task(task))
     end,
 
     -- Transform string to date while handling error cases

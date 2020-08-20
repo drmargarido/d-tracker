@@ -12,10 +12,10 @@
     + When the popup of the theme changes the alert popup appears in a random place
     + When the main window is closed the other are kept open
     + When d-tracker is minimized if a popup window is open it will be kept in focus
-    + The about window should display the links in a text field so the user can copy them
-    + Exporting the xml in the show overview window fails to use the already known export path
+    + The about window should allow the copy of links
     + The projects field in the task edit accepts empty input creating an empty project
     + Fix re-rendering damaged areas under wayland, it fails too much
+    + Copying stuff on one d-tracker window and then trying to paste it in another window crashes d-tracker
 
 * Build releases
     + PPA for ubuntu auto update.
@@ -37,5 +37,4 @@
       - Note, notifications on windows only work for installed apps.
       - Make d-tracker be able to be installed in windows
       - Implement desktop notifications (toasts) in windows
-    + Allow the copy to clipboard or exporting of the totals in the show overview window
-        - C cross-platform simple lib that allows interaction with clipboard - https://github.com/jtanx/libclipboard
+

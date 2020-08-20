@@ -41,7 +41,7 @@ Release 1.4:
 * [x] Periodically remember the currently active task
 
 Release 1.5:
-* [ ] Allow the copy of the tasks in the totals window to the clipboard
+* [x] Allow the copy of the tasks in the totals window to the clipboard
 
 Release 1.6:
 * [ ] Keybindings to speed up the workflow of advanced users
@@ -155,6 +155,7 @@ The dependencies are in the external folder.
 * [LuaFileSystem](https://keplerproject.github.io/luafilesystem/manual.html) - Used to list the folders when exporting the tasks to XML.
 * [freetype2](https://www.freetype.org/) - (Only for X11) Used in the render of text and fonts in the tekui lib.
 * [argparse](https://github.com/luarocks/argparse) - (For the cli) Used to parse the command line options.
+* [libclipboard](https://github.com/jtanx/libclipboard) - Used in the copy\_totals plugin to interact with the clipboard.
 
 ## Other
 

@@ -165,7 +165,7 @@ return {
                 table.insert(
                     plugin_entries,
                     ui.MenuItem:new{
-                        Width = 70,
+                        Width = "fill",
                         Style = "text-align: center;",
                         Text = plugin.conf.description or "Unnamed",
                         onClick = plugin.event_listeners[events.PLUGIN_SELECT] or function()end

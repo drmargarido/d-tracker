@@ -31,7 +31,9 @@ return {
                             Style = "font: ui-menu: 18;/b;",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            Width = 120,
+                            HAlign = "center",
                             Text = version,
                             Class = "caption"
                         }
@@ -46,9 +48,11 @@ return {
                             Style = "font: ui-menu: 18;/b;",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 240,
+                            Class = "caption",
                             Text = "drmargarido - https://drmargarido.pt",
-                            Class = "caption"
                         }
                     }
                 },
@@ -61,9 +65,11 @@ return {
                             Style = "font: ui-menu: 18;/b;",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 270,
+                            Class = "caption",
                             Text = "https://github.com/drmargarido/d-tracker",
-                            Class = "caption"
                         }
                     }
                 },
@@ -76,19 +82,27 @@ return {
                             Style = "font: ui-menu: 18;/b;",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 320,
                             Text = "LSqlite - http://lua.sqlite.org/index.cgi/index - MIT",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 280,
                             Text = "Date - https://github.com/Tieske/date - MIT",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 280,
                             Text = "Tekui - http://tekui.neoscientists.org/ - MIT",
                             Class = "caption"
                         },
-                        ui.Text:new{
+                        ui.Input:new{
+                            HAlign = "center",
+                            Width = 160,
                             Text = "Luajit - https://luajit.org/ - MIT",
                             Class = "caption"
                         }

@@ -43,7 +43,6 @@ local last_end_date = date(
     59,
     59
 )
-print(storage.data.days_scope)
 local days_scope = storage.data.days_scope or 1
 -- Set the start date acording with the defined scope
 last_start_date = last_start_date:adddays(-(days_scope - 1))
@@ -264,7 +263,7 @@ _update = function(self, start_date, end_date, text)
                 Title = "Select the export path",
                 SelectText = "save",
                 Location = location_path,
-                Path = storage.xml_save_path
+                Path = storage.data.xml_save_path
             }
 
             if status == "selected" then
@@ -481,13 +480,19 @@ return {
                             Height = "free",
                             Orientation = "vertical",
                             Children = {
-                                ui.Text:new{
-                                    Text = "Projects",
-                                    Class = "caption",
-                                    Style = [[
-                                        font: 24/b;
-                                        text-align: left;
-                                    ]]
+                                ui.Group:new{
+                                    Id = "projects-totals-top-bar",
+                                    Orientation = "horizontal",
+                                    Children = {
+                                        ui.Text:new{
+                                          Text = "Projects",
+                                          Class = "caption",
+                                          Style = [[
+                                              font: 24/b;
+                                              text-align: left;
+                                          ]]
+                                        }
+                                    },
                                 },
                                 ui.ScrollGroup:new{
                                     Width = "free",
