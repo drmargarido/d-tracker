@@ -37,6 +37,7 @@ return {
       -- Make sure copy_totals configuration exist in storage
       if not storage.data.copy_scope then
         storage.data.copy_scope = scopes.PROJECT_SCOPE
+        storage.data.group_tasks = true
         storage.data.task_format = [[  + @TASK_DESCRIPTION]]
         storage.data.template_format = [[+ @PROJECT
 @TASKS
@@ -56,7 +57,7 @@ return {
       topbar:addMember(ui.Button:new{
         HAlign = "right",
         Width = 20,
-        Text = "⊙",
+        Text = "Copy",
         onPress = function(self)
           if self.Pressed then
             tasks_to_clipboard(self, storage)

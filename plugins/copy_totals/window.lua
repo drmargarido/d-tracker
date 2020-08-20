@@ -13,6 +13,11 @@ local TASK_TAGS = {
   "@TASK_START_DATE",
   "@TASK_END_DATE"
 }
+local GROUPED_TASKS_TAGS = {
+  "@TASK_DESCRIPTION",
+  "@TASK_PROJECT",
+  "@TASK_DURATION",
+}
 local SCOPE_TAGS = {
   [scopes.TASK_SCOPE] = {"@TASKS"},
   [scopes.PROJECT_SCOPE] = {"@TASKS", "@PROJECT", "@TIME_PROJECT"},
@@ -21,6 +26,7 @@ local SCOPE_TAGS = {
 
 -- Data
 local scope = scopes.PROJECT_SCOPE -- Default scope
+local group_tasks = false
 
 -- Private helper methods
 local get_tags_text = function(tags)
@@ -39,6 +45,9 @@ local refresh_according_to_scope = function(self)
   self:getById("scope-template-title"):setValue("Text", scope.." Template:")
 
   -- Present available tags
+  local task_tags = group_tasks and GROUPED_TASKS_TAGS or TASK_TAGS
+  self:getById("task-format-tags"):setValue("Text", get_tags_text(task_tags))
+
   local tags_text = get_tags_text(SCOPE_TAGS[scope])
   self:getById("template-format-tags"):setValue("Text", tags_text)
 end
@@ -47,6 +56,7 @@ local apply_changes = function(self, storage)
   local task_format = self:getById("copy-task-formatting"):getText()
   local template_format = self:getById("copy-template-formatting"):getText()
 
+  storage.data.group_tasks = group_tasks
   storage.data.task_format = task_format
   storage.data.template_format = template_format
   storage.data.copy_scope = scope
@@ -58,6 +68,7 @@ end
 -- Public window creation method
 return function(storage)
   scope = storage.data.copy_scope
+  group_tasks = storage.data.group_tasks
 
   local window = ui.Window:new{
     Title = "Copy Totals",
@@ -102,6 +113,24 @@ return function(storage)
 					},
         }
       },
+      ui.Group:new{
+        Style = "margin-bottom: 15;",
+        Children = {
+          ui.Text:new{
+            Width = "auto",
+            Text = "Group Tasks: ",
+            Class = "caption label",
+            Style = "font: 14/b;",
+          },
+          ui.CheckMark:new{
+            Selected = group_tasks,
+            onSelect = function(self)
+              group_tasks = self.Selected
+              refresh_according_to_scope(self)
+            end
+          },
+        }
+      },
       ui.Text:new{
         Width = "auto",
         Text = "Task Format:",
@@ -123,7 +152,7 @@ return function(storage)
           margin-bottom: 15;
           font: sans-serif,helvetica,Vera:10;
         ]],
-        Text = get_tags_text(TASK_TAGS)
+        Text = get_tags_text(group_tasks and GROUPED_TASKS_TAGS or TASK_TAGS)
       },
       ui.Text:new{
         Id = "scope-template-title",

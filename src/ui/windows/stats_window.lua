@@ -43,7 +43,6 @@ local last_end_date = date(
     59,
     59
 )
-print(storage.data.days_scope)
 local days_scope = storage.data.days_scope or 1
 -- Set the start date acording with the defined scope
 last_start_date = last_start_date:adddays(-(days_scope - 1))
