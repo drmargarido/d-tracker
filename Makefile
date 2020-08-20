@@ -141,6 +141,9 @@ release_windows: structure date argparse
 	cd external/luafilesystem && make -f Makefile.crosswin
 	cp external/luafilesystem/src/lfs.dll $(DEPLOY_FOLDER)/
 
+  # copy_plugin
+	cd plugins/copy_totals/ && make release_windows
+
 	# D-tracker with icon
 	x86_64-w64-mingw32-windres platform/windows/resources.rc -O coff -o resources.res
 	x86_64-w64-mingw32-gcc -O3 -o $(DEPLOY_FOLDER)/$(EXECUTABLE).exe main.c lib/clock_win.c -I$(LUA_FOLDER)/src -L$(DEPLOY_FOLDER) -llua51 resources.res

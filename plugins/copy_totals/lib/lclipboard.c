@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <xcb/xproto.h>
+
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
