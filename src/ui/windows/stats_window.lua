@@ -263,7 +263,7 @@ _update = function(self, start_date, end_date, text)
                 Title = "Select the export path",
                 SelectText = "save",
                 Location = location_path,
-                Path = storage.xml_save_path
+                Path = storage.data.xml_save_path
             }
 
             if status == "selected" then
