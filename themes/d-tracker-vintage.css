@@ -1,0 +1,113 @@
+/*
+**	tek/ui/style/d-tracker.css
+**
+**	Version: 1.0
+*/
+
+tek.ui.class.display {
+	rgb-background: #F5F0E6;
+	rgb-active: #dac19c;
+	rgb-focus: #F5F0E6;
+	rgb-hover: #dac19c;
+	rgb-disabled: #d1d1d1;
+	rgb-disabled-detail: #987456;
+	rgb-disabled-detail-shine:#;
+	rgb-border-shine: #987456;
+	rgb-border-shadow: #987456;
+	rgb-border-focus: #987456;
+	rgb-list: #F5F0E6;
+	rgb-list-alt: #F5F0E6;
+	rgb-group: #d9d9d9;
+
+    rgb-select: #987456;
+
+	rgb-border-rim: #987456;
+	rgb-border-legend: #987456;
+}
+
+.button{
+	border-width: 2;
+}
+
+.project:hover {
+    color: #666;
+}
+
+.project:active {
+    color: #666;
+}
+
+.project:focus {
+    color: #666;
+}
+
+.project{
+	color: #666;
+}
+
+tek.ui.class.input {
+	border-width: 1;
+}
+
+tek.ui.class.canvas.inputfield {
+	border-width: 0;
+}
+
+tek.ui.class.frame {
+	border-width: 1;
+}
+
+tek.ui.class.slider {
+	border-width: 0;
+}
+
+.task_list {
+	background-color: background;
+}
+
+.task_data {
+	border-color: background;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.task_data:hover {
+	background-color: background;
+}
+
+.task_data:active {
+	background-color: background;
+}
+
+.task_row {
+	background-color: background;
+}
+
+.placeholder {
+    color: #666;
+}
+
+.autocomplete_row:active {
+    background-color: background;
+    border-color: #55b;
+}
+
+.autocomplete_row {
+    background-color: background;
+    text-align: left;
+    border-width: 2;
+    margin: 0;
+    padding: 0;
+}
+
+.autocomplete_group {
+    background-color: background;
+}
+
+.totals_text {
+    border-width: 0;
+    border-color: background;
+    margin: 0;
+}
+

@@ -22,5 +22,9 @@ return {
     mint={
         name="d-tracker-mint",
         pencil_icon="pencil_icon_mint.PPM"
+    },
+    vintage={
+        name="d-tracker-vintage",
+        pencil_icon="pencil_icon.PPM"
     }
 }
