@@ -6,7 +6,7 @@ linux: prepare
 	gcc $(LIBCLIPBOARD_FOLDER)/src/clipboard_common.c $(LIBCLIPBOARD_FOLDER)/src/clipboard_x11.c \
 	-I$(LIBCLIPBOARD_FOLDER)/include -shared -fPIC -O3 -o $(BUILD_FOLDER)/libclipboard.so
 	gcc -O3 -shared -fPIC -o $(BUILD_FOLDER)/lclipboard.so lib/lclipboard.c \
-	-lclipboard -L$(BUILD_FOLDER) -I$(LIBCLIPBOARD_FOLDER)/include -lX11 -pthread \
+	-lclipboard -L$(BUILD_FOLDER) -I$(LIBCLIPBOARD_FOLDER)/include -lX11 -lxcb -pthread \
 	-lluajit -I$(LUA_FOLDER)/src/
 
 release_windows: prepare
