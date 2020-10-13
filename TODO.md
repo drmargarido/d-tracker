@@ -3,6 +3,7 @@
 * Tasks
     + Add unit tests for the storage
     + Update the dependencies versions
+    + Allow sorting of tasks by time or by total duration in the copy plugin.
 
 * Bugfix
     + Fix sometimes fields not re-rendering when moving and minimizing the window.
