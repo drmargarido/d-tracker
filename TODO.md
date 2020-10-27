@@ -4,6 +4,8 @@
     + Add unit tests for the storage
     + Update the dependencies versions
     + Allow sorting of tasks by time or by total duration in the copy plugin.
+    + Add message when d-tracker fails to create tasks because the disk is full
+    + Add error report when double clicking a task and some kind of error happens
 
 * Bugfix
     + Fix sometimes fields not re-rendering when moving and minimizing the window.
