@@ -11,7 +11,6 @@ local TaskRow = require "src.ui.components.task_row"
 local InputWithPlaceholder = require "src.ui.components.input_with_placeholder"
 
 -- Utils
-local conf = require "src.conf"
 local date = require "date.date"
 local utils = require "src.utils"
 local report_error = require "src.ui.utils".report_error

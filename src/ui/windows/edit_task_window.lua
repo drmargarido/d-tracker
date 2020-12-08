@@ -191,7 +191,18 @@ return {
         end)
     end,
     init = function()
-        return ui.Window:new {
+        local task_autocomplete = InputWithAutocomplete:new{
+            Callback = autocomplete_task,
+            Id = "edit_description",
+            Width = "fill"
+        }
+        local project_autocomplete = InputWithAutocomplete:new{
+            Callback = autocomplete_project,
+            Id = "edit_project",
+            Width = "fill"
+        }
+
+        local window = ui.Window:new {
             Title = "Edit Task",
             Id = "edit_task_window",
             Style = "margin: 15;",
@@ -272,11 +283,7 @@ return {
                             Text = "Description:",
                             Class = "caption"
                         },
-                        InputWithAutocomplete:new{
-                            Callback = autocomplete_task,
-                            Id = "edit_description",
-                            Width = "fill"
-                        }
+                        task_autocomplete
                     }
                 },
                 ui.Group:new{
@@ -290,11 +297,7 @@ return {
                             Text = "Project:",
                             Class = "caption"
                         },
-                        InputWithAutocomplete:new{
-                            Callback = autocomplete_project,
-                            Id = "edit_project",
-                            Width = "fill"
-                        }
+                        project_autocomplete
                     }
                 },
                 ui.Group:new{
@@ -328,5 +331,16 @@ return {
                 }
             }
         }
+
+        window:addInputHandler(ui.MSG_FOCUS, window, function(self, msg)
+            -- Hide autocomplete popups when the window is not in focus
+            local is_focused = msg[3] == 1
+            if not is_focused then
+                task_autocomplete:endPopup()
+                project_autocomplete:endPopup()
+            end
+        end)
+
+        return window
     end
 }

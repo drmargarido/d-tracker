@@ -12,7 +12,6 @@ local get_task_by_description = require "src.controller.get_task_by_description"
 local xml_export = require "src.exporter.xml"
 
 -- Settings
-local conf = require "src.conf"
 local storage = require "src.storage"
 
 -- Utils
@@ -174,6 +173,39 @@ return {
             end
         end
 
+        local task_autocomplete = InputWithAutocomplete:new{
+            Callback = autocomplete_task,
+            Id = "task-description",
+            Width = "free",
+            MinWidth = 240,
+            Placeholder = "Description",
+            onAutocomplete = function(self, text)
+                self:setValue("Text", text)
+
+                local task = get_task_by_description(text)
+                local project_input = this_window:getById("task-project")
+                project_input:setValue("Text", task.project)
+                project_input.Child.Child:setValue("Class", "")
+            end,
+            onEnter = function(self)
+                local start_button = self:getById("start_tracking_button")
+                start_button:setValue("Pressed", true)
+                start_button:setValue("Pressed", false)
+            end
+        };
+
+        local project_autocomplete = InputWithAutocomplete:new{
+            Callback = autocomplete_project,
+            Id = "task-project",
+            Width = "free",
+            Placeholder = "Project",
+            onEnter = function(self)
+                local start_button = self:getById("start_tracking_button")
+                start_button:setValue("Pressed", true)
+                start_button:setValue("Pressed", false)
+            end
+        }
+
         this_window = ui.Window:new {
             Title = "D-Tracker",
             Orientation = "vertical",
@@ -275,37 +307,8 @@ return {
                             Orientation = "horizontal",
                             Style = "margin-bottom: 10;",
                             Children = {
-                                InputWithAutocomplete:new{
-                                    Callback = autocomplete_task,
-                                    Id = "task-description",
-                                    Width = "free",
-                                    MinWidth = 240,
-                                    Placeholder = "Description",
-                                    onAutocomplete = function(self, text)
-                                        self:setValue("Text", text)
-
-                                        local task = get_task_by_description(text)
-                                        local project_input = this_window:getById("task-project")
-                                        project_input:setValue("Text", task.project)
-                                        project_input.Child.Child:setValue("Class", "")
-                                    end,
-                                    onEnter = function(self)
-                                        local start_button = self:getById("start_tracking_button")
-                                        start_button:setValue("Pressed", true)
-                                        start_button:setValue("Pressed", false)
-                                    end
-                                },
-                                InputWithAutocomplete:new{
-                                    Callback = autocomplete_project,
-                                    Id = "task-project",
-                                    Width = "free",
-                                    Placeholder = "Project",
-                                    onEnter = function(self)
-                                        local start_button = self:getById("start_tracking_button")
-                                        start_button:setValue("Pressed", true)
-                                        start_button:setValue("Pressed", false)
-                                    end
-                                },
+                                task_autocomplete,
+                                project_autocomplete,
                                 ui.Button:new{
                                     Width = 120,
                                     Id = "start_tracking_button",
@@ -412,6 +415,15 @@ return {
                 }
             }
         }
+
+        this_window:addInputHandler(ui.MSG_FOCUS, this_window, function(self, msg)
+            -- Hide autocomplete popups when the window is not in focus
+            local is_focused = msg[3] == 1
+            if not is_focused then
+                task_autocomplete:endPopup()
+                project_autocomplete:endPopup()
+            end
+        end)
 
         this_window:addInputHandler(ui.MSG_KEYDOWN, this_window, function(self, msg)
             -- Delete Pressed
