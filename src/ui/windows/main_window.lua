@@ -436,6 +436,10 @@ return {
             end
         end)
 
+        this_window:addInputHandler(ui.MSG_CLOSE, this_window, function(self, msg)
+            this_window.Application:quit()
+        end)
+
         return this_window
     end
 }
