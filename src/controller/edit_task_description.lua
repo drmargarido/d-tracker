@@ -19,6 +19,7 @@ return check_input(
         },
         {
             validators.is_text,
+            validators.min_length(1),
             validators.max_length(512)
         }
     },

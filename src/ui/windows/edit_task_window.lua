@@ -130,9 +130,7 @@ return {
             if new_start ~= start_time and
                 (new_end ~= end_time and not new_in_progress)
             then
-                report_error(
-                    edit_task_time(task.id, new_start, new_end)
-                )
+                report_error(edit_task_time(task.id, new_start, new_end))
             elseif new_start ~= start_time then
                 if task.end_time == nil then
                     report_error(edit_task_time(task.id, new_start, nil))
@@ -156,16 +154,22 @@ return {
             end
 
             if new_description ~= task.description then
-                report_error(
-                    edit_task_description(
-                        task.id,
-                        new_description
-                    )
+                local _, error = edit_task_description(
+                    task.id,
+                    new_description
                 )
+                if error then
+                    report_error(nil, "Invalid Description: "..error)
+                    return
+                end
             end
 
             if new_project ~= task.project then
-                report_error(edit_task_project(task.id, new_project))
+                local _, error = edit_task_project(task.id, new_project)
+                if error then
+                    report_error(nil, "Invalid Project: "..error)
+                    return
+                end
             end
 
             if in_progress ~= new_in_progress then

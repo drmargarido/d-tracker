@@ -12,7 +12,6 @@
     + When shift is pressed in a input with autocomplete while the text is selected in removes the selection making the user not replace the current text.
     + When the popup of the theme changes the alert popup appears in a random place
     + The about window should allow the copy of links
-    + The projects field in the task edit accepts empty input creating an empty project
     + Fix re-rendering damaged areas under wayland, it fails too much
     + Copying stuff on one d-tracker window and then trying to paste it in another d-tracker window crashes d-tracker
 
