@@ -4,8 +4,6 @@
     + Add unit tests for the storage
     + Update the dependencies versions
     + Allow sorting of tasks by time or by total duration in the copy plugin.
-    + Add message when d-tracker fails to create tasks because the disk is full
-    + Add error report when double clicking a task and some kind of error happens
 
 * Bugfix
     + Fix sometimes fields not re-rendering when moving and minimizing the window.
@@ -16,7 +14,7 @@
     + The about window should allow the copy of links
     + The projects field in the task edit accepts empty input creating an empty project
     + Fix re-rendering damaged areas under wayland, it fails too much
-    + Copying stuff on one d-tracker window and then trying to paste it in another window crashes d-tracker
+    + Copying stuff on one d-tracker window and then trying to paste it in another d-tracker window crashes d-tracker
 
 * Build releases
     + PPA for ubuntu auto update.
@@ -34,6 +32,8 @@
     + Check how to do single row queries with lsqlite and replace the dumb multiple rows instructions in cycles that return only one value.
     + Refactor storage.save implementation to be simpler to understand and read
     + Support Latin1 input text in input fields.
+    + Clipboard fails in some cases.
+      - Try the tekui internal clipboard
     + Make the task\_reminder plugin also work in windows
       - Note, notifications on windows only work for installed apps.
       - Make d-tracker be able to be installed in windows

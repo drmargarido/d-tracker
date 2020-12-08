@@ -12,6 +12,9 @@ local add_task = require "src.controller.add_task"
 -- Windows
 local edit_task_window = require "src.ui.windows.edit_task_window"
 
+-- Error reporting
+local report_error = require "src.ui.utils".report_error
+
 -- Globals
 local pencil_image = nil
 local selected_id = nil
@@ -176,7 +179,7 @@ return {
                     end),
                     onDblClick = function(self)
                         if self.DblClick then
-                            add_task(task.description, task.project)
+                            report_error(add_task(task.description, task.project))
 
                             local app = self.Application
                             app:addCoroutine(function()

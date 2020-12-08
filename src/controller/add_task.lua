@@ -52,8 +52,10 @@ return check_input(
             description
         )
         task_stmt:step()
-        if not db_validators.operation_ok(db) then
-            return false, "Failed to create the new task"
+
+        local success, error = db_validators.operation_ok(db)
+        if not success then
+            return false, error or "Failed to create the new task"
         end
 
         event_manager.fire_event(events.TASK_CREATED, {
