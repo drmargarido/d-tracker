@@ -13,7 +13,7 @@ My focus here is to:
 * Implement the main features I use regularly.
 * Reduce the number of dependencies and build steps so it is easier to make sure the application will still be easy to install in the future.
 * Have a small resources usage so I can have it open all day without thinking about it.
-* Be cross-platform so it works in more machines(I have never used any of the hamster integrations with the system).
+* Be cross-platform so it works in more machines.
 
 ## Milestones
 
@@ -53,7 +53,7 @@ Release 1.6:
 ![D-Tracker UI with Klinik Theme](/screenshots/d-tracker_v1,1-klinik.jpg)
 
 ## Install
-To run the application use the most recent release, which right now is the [v1.5](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release, which right now is the [v1.51](https://github.com/drmargarido/d-tracker/releases).
 
 ### Linux
 
@@ -63,7 +63,7 @@ To run the application use the most recent release, which right now is the [v1.5
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.5).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.51).
 
 The application is self-contained in the folder so if you just want to run it there execute the `run.sh` file.
 
@@ -96,7 +96,7 @@ sudo make uninstall
 
 #### Binary Release
 
-You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.4).
+You can download the latest binary [here](https://github.com/drmargarido/d-tracker/releases/tag/v1.51).
 
 The application is self-contained in the folder so you just need to run the `d-tracker.exe` file.
 
