@@ -12,14 +12,20 @@ local scopes = require "plugins.copy_totals.scopes"
 local utils = require "src.utils"
 
 -- Private formatting methods
-local group_task_formatting = function(tasks, task_template, project, day)
+local group_task_formatting = function(tasks, task_template, sort_by_duration, project, day)
   local group_map = {} -- Group tasks by project and name
+  local tasks_start_dates = {} -- Hold the earliest start date of each task
   local get_all = not project and not day
   for _, task in ipairs(tasks) do
     local start_time = date(task.start_time)
     local in_project = project and task.project == project
     local in_day = date and start_time:fmt("%d %B %Y") == day
     if get_all or in_project or in_day then
+      local start = tasks_start_dates[task.description]
+      if not start or start > task.start_time then
+        tasks_start_dates[task.description] = task.start_time
+      end
+
       if not group_map[task.project] then
         group_map[task.project] = {}
       end
@@ -35,7 +41,6 @@ local group_task_formatting = function(tasks, task_template, project, day)
     end
   end
 
-
   local final_tasks = {}
   for proj, tasks_map in pairs(group_map) do
     for task, duration in pairs(tasks_map) do
@@ -43,8 +48,15 @@ local group_task_formatting = function(tasks, task_template, project, day)
     end
   end
 
-  -- Sort table by task durations
-  table.sort(final_tasks, function(a, b) return a.duration > b.duration end)
+  if sort_by_duration then
+    -- Sort table by task durations
+    table.sort(final_tasks, function(a, b) return a.duration > b.duration end)
+  else
+    -- Sort table by earlier start date
+    table.sort(final_tasks, function(a, b)
+      return tasks_start_dates[a.name] < tasks_start_dates[b.name]
+    end)
+  end
 
   local text = ""
   for _, task in ipairs(final_tasks) do
@@ -61,8 +73,18 @@ local group_task_formatting = function(tasks, task_template, project, day)
   return text
 end
 
-local task_formatting = function(tasks, task_template, project, day)
+local task_formatting = function(tasks, task_template, sort_by_duration, project, day)
   local text = ""
+
+   -- Sort table by task durations
+  if sort_by_duration then
+    table.sort(tasks, function(a, b)
+      local a_duration = date.diff(date(a.end_time), date(a.start_time))
+      local b_duration = date.diff(date(b.end_time), date(b.start_time))
+      return a_duration > b_duration
+    end)
+  end
+
   local get_all = not project and not day
   for _, task in ipairs(tasks) do
     local start_time = date(task.start_time)
@@ -91,13 +113,17 @@ local task_formatting = function(tasks, task_template, project, day)
   return text
 end
 
-local task_scope_formatting = function(tasks, task_format, template_format, group_tasks)
-  local text = template_format
+local task_scope_formatting = function(tasks, config)
+  local text = config.template_format
   local tasks_text
-  if group_tasks then
-    tasks_text = group_task_formatting(tasks, task_format)
+  if config.group_tasks then
+    tasks_text = group_task_formatting(
+      tasks, config.task_format, config.sort_by_duration
+    )
   else
-    tasks_text = task_formatting(tasks, task_format)
+    tasks_text = task_formatting(
+      tasks, config.task_format, config.sort_by_duration
+    )
   end
   text = text:gsub("@TASKS", tasks_text)
   return text
@@ -118,7 +144,7 @@ local project_total_time = function(tasks, project)
   return total_time
 end
 
-local project_scope_formatting = function(tasks, task_format, template_format, group_tasks)
+local project_scope_formatting = function(tasks, config)
   local projects = {}
   for _, task in ipairs(tasks) do
     if not projects[task.project] then
@@ -129,12 +155,16 @@ local project_scope_formatting = function(tasks, task_format, template_format, g
   local text = ""
   for project, _ in pairs(projects) do
     local tasks_text
-    if group_tasks then
-      tasks_text = group_task_formatting(tasks, task_format, project)
+    if config.group_tasks then
+      tasks_text = group_task_formatting(
+        tasks, config.task_format, config.sort_by_duration, project
+      )
     else
-      tasks_text = task_formatting(tasks, task_format, project)
+      tasks_text = task_formatting(
+        tasks, config.task_format, config.sort_by_duration, project
+      )
     end
-    local project_text = template_format
+    local project_text = config.template_format
     project_text = project_text:gsub("@PROJECT", project)
     project_text = project_text:gsub("@TASKS", tasks_text)
     local project_time = project_total_time(tasks, project)
@@ -165,7 +195,7 @@ local day_total_time = function(tasks, day)
   return total_time
 end
 
-local day_scope_formatting = function(tasks, task_format, template_format, group_tasks)
+local day_scope_formatting = function(tasks, config)
   local text = ""
   local days = {}
   for _, task in ipairs(tasks) do
@@ -177,12 +207,16 @@ local day_scope_formatting = function(tasks, task_format, template_format, group
   local day_text_map = {}
   for day, d in pairs(days) do
     local tasks_text
-    if group_tasks then
-      tasks_text = group_task_formatting(tasks, task_format, nil, day)
+    if config.group_tasks then
+      tasks_text = group_task_formatting(
+        tasks, config.task_format, config.sort_by_duration, nil, day
+      )
     else
-      tasks_text = task_formatting(tasks, task_format, nil, day)
+      tasks_text = task_formatting(
+        tasks, config.task_format, config.sort_by_duration, nil, day
+      )
     end
-    local day_text = template_format
+    local day_text = config.template_format
     day_text = day_text:gsub("@DAY", d:getday())
     day_text = day_text:gsub("@MONTH", d:getmonth())
     day_text = day_text:gsub("@YEAR", d:getyear())
@@ -225,5 +259,5 @@ return function(start_date, end_date, description, storage)
   -- Create tasks formatted text
   local data = storage.data
   local fmt = formatting_strategy[data.copy_scope]
-  return fmt(tasks, data.task_format, data.template_format, data.group_tasks)
+  return fmt(tasks, data)
 end

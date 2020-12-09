@@ -27,6 +27,7 @@ local SCOPE_TAGS = {
 -- Data
 local scope = scopes.PROJECT_SCOPE -- Default scope
 local group_tasks = false
+local sort_by_duration = false
 
 -- Private helper methods
 local get_tags_text = function(tags)
@@ -60,6 +61,7 @@ local apply_changes = function(self, storage)
   storage.data.task_format = task_format
   storage.data.template_format = template_format
   storage.data.copy_scope = scope
+  storage.data.sort_by_duration = sort_by_duration
   storage:save()
 
   self:getById("copy-totals-window"):setValue("Status", "hide")
@@ -67,8 +69,9 @@ end
 
 -- Public window creation method
 return function(storage)
-  scope = storage.data.copy_scope
-  group_tasks = storage.data.group_tasks
+  scope = storage.data.copy_scope or scope
+  group_tasks = storage.data.group_tasks or group_tasks
+  sort_by_duration = storage.data.sort_by_duration or sort_by_duration
 
   local window = ui.Window:new{
     Title = "Copy Totals",
@@ -127,6 +130,23 @@ return function(storage)
             onSelect = function(self)
               group_tasks = self.Selected
               refresh_according_to_scope(self)
+            end
+          },
+        }
+      },
+      ui.Group:new{
+        Style = "margin-bottom: 15;",
+        Children = {
+          ui.Text:new{
+            Width = "auto",
+            Text = "Sort By Duration: ",
+            Class = "caption label",
+            Style = "font: 14/b;",
+          },
+          ui.CheckMark:new{
+            Selected = sort_by_duration,
+            onSelect = function(self)
+              sort_by_duration = self.Selected
             end
           },
         }
