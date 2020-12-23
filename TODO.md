@@ -13,6 +13,7 @@
     + The about window should allow the copy of links
     + Fix re-rendering damaged areas under wayland, it fails too much
     + Copying stuff on one d-tracker window and then trying to paste it in another d-tracker window crashes d-tracker
+    + Random crash: Lua error: d-tracker/src/controller/get_task_in_progress.lua:12: attempt to call a nil value
 
 * Build releases
     + PPA for ubuntu auto update.
