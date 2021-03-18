@@ -3,8 +3,10 @@
 #include <pthread.h>
 #include "clock.h"
 
+#define SECOND 1000000
+#define MINUTE (60 * SECOND)
+
 lua_State *L;
-unsigned int seconds = 0;
 pthread_t thread;
 int running = 0;
 
@@ -15,18 +17,13 @@ const char * TRIGGER_EVENT_CODE =
 
 void * clock_proc(void *ptr){
   while(running){
-    usleep(1000000);
-    seconds++;
-    if(seconds >= 60){
-      luaL_dostring(L, TRIGGER_EVENT_CODE);
-      seconds = 0;
-    }
+    usleep(MINUTE);
+    luaL_dostring(L, TRIGGER_EVENT_CODE);
   }
 }
 
 void clock_init(lua_State * state){
   L = state;
-  seconds = 0;
   running = 1;
   int result = pthread_create(&thread, NULL, clock_proc, (void*) NULL);
   if(result != 0){

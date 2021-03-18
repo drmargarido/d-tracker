@@ -5,14 +5,14 @@ local db_validators = require "src.validators.db_validators"
 local date = require "date.date"
 
 -- Plugins
-local event_manager = require "src.plugin_manager.event_manager"
 local events = require "src.plugin_manager.events"
 
 -- Decorators
 local decorators = require "src.decorators"
 local use_db = decorators.use_db
+local use_events = decorators.use_events
 
-return use_db(function(db)
+return use_events(use_db(function(db, events_queue)
     local stop_query = string.format(
         "UPDATE task SET end_time='%s' WHERE end_time IS NULL",
         date():fmt("${iso}")
@@ -23,6 +23,6 @@ return use_db(function(db)
         return false, "Failed to stop the running task"
     end
 
-    event_manager.fire_event(events.TASK_STOP, {})
+    table.insert(events_queue, {id=events.TASK_STOP, data={}})
     return true, nil
-end)
+end))

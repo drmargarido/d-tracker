@@ -51,6 +51,7 @@ return check_input(
                 description=row.description
             })
         end
+        query_stmt:finalize()
 
         return tasks, nil
     end)

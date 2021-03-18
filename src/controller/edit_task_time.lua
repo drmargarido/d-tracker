@@ -6,9 +6,9 @@ local db_validators = require "src.validators.db_validators"
 local decorators = require "src.decorators"
 local use_db = decorators.use_db
 local check_input = decorators.check_input
+local use_events = decorators.use_events
 
 -- Plugins
-local event_manager = require "src.plugin_manager.event_manager"
 local events = require "src.plugin_manager.events"
 
 -- Utils
@@ -26,7 +26,7 @@ return check_input(
         {validators.is_date},
         {}
     },
-    use_db(function(db, task_id, start_time, end_time)
+    use_events(use_db(function(db, events_queue, task_id, start_time, end_time)
         if end_time ~= nil then
             if not validators.is_date(end_time) then
                 return false, "The end time must be a date or nil"
@@ -72,18 +72,24 @@ return check_input(
                 task_id
             )
         end
-
         edit_stmt:step()
-        if not db_validators.operation_ok(db) then
+
+        local success, _ = db_validators.operation_ok(db)
+        edit_stmt:finalize()
+
+        if not success then
             return false, "Failed to edit the time of the task"
         end
 
-        event_manager.fire_event(events.TASK_EDIT, {
-            id = task_id,
-            start_time = start_time,
-            end_time = end_time
+        table.insert(events_queue, {
+            id=events.TASK_EDIT,
+            data={
+                id = task_id,
+                start_time = start_time,
+                end_time = end_time
+            }
         })
 
         return true, nil
-    end)
+    end))
 )

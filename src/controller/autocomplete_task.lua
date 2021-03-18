@@ -36,6 +36,7 @@ return check_input(
         for row in query_stmt:nrows() do
             table.insert(tasks, row.description)
         end
+        query_stmt:finalize()
 
         return tasks, nil
     end)

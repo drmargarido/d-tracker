@@ -9,9 +9,9 @@ local db_validators = require "src.validators.db_validators"
 local decorators = require "src.decorators"
 local use_db = decorators.use_db
 local check_input = decorators.check_input
+local use_events = decorators.use_events
 
 -- Plugins
-local event_manager = require "src.plugin_manager.event_manager"
 local events = require "src.plugin_manager.events"
 
 -- Controllers
@@ -23,7 +23,7 @@ return check_input(
         {validators.is_text, validators.max_length(512), validators.min_length(1)},
         {validators.is_text, validators.max_length(255), validators.min_length(1)},
     },
-    use_db(function(db, description, project)
+    use_events(use_db(function(db, events_queue, description, project)
         -- Create a new project if it doesn't exists
         local project_exists, _ = db_validators.project_exists(project)
         if not project_exists then
@@ -54,16 +54,20 @@ return check_input(
         task_stmt:step()
 
         local success, error = db_validators.operation_ok(db)
+        task_stmt:finalize()
         if not success then
             return false, error or "Failed to create the new task"
         end
 
-        event_manager.fire_event(events.TASK_CREATED, {
-            description=description,
-            project=project,
-            date=current_date
+        table.insert(events_queue, {
+            id=events.TASK_CREATED,
+            data={
+                description=description,
+                project=project,
+                date=current_date
+            }
         })
 
         return true, nil
-    end)
+    end))
 )

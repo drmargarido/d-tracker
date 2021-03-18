@@ -12,6 +12,7 @@ return {
         for _ in check_stmt:nrows() do
             task_exists = true
         end
+        check_stmt:finalize()
 
         if task_exists then
             return true, nil
@@ -29,6 +30,7 @@ return {
         for _ in check_stmt:nrows() do
             project_exists = true
         end
+        check_stmt:finalize()
 
         if project_exists then
             return true, nil

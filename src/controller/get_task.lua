@@ -30,6 +30,7 @@ return check_input(
                 description=t.description
             }, nil
         end
+        task_stmt:finalize()
 
         return nil, "Wanted task not found"
     end)

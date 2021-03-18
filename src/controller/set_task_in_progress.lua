@@ -25,7 +25,10 @@ return check_input(
         project_stmt:bind_values(task_id)
         project_stmt:step()
 
-        if not db_validators.operation_ok(db) then
+        local success, _ = db_validators.operation_ok(db)
+        project_stmt:finalize()
+
+        if not success then
             return false, "Failed to set the the task in progress"
         end
 

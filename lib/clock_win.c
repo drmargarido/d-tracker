@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include "clock.h"
 
+#define SECOND 1000
+#define MINUTE (60 * SECOND)
+
 lua_State *L;
-unsigned int seconds = 0;
 HANDLE thread = NULL;
 int running = 0;
 
@@ -14,19 +16,14 @@ const char * TRIGGER_EVENT_CODE =
 
 DWORD WINAPI clock_proc(void* data) {
   while(running){
-    Sleep(1000);
-    seconds++;
-    if(seconds >= 60){
-      luaL_dostring(L, TRIGGER_EVENT_CODE);
-      seconds = 0;
-    }
+    Sleep(MINUTE);
+    luaL_dostring(L, TRIGGER_EVENT_CODE);
   }
   return 0;
 }
 
 void clock_init(lua_State * state){
   L = state;
-  seconds = 0;
   running = 1;
   thread = CreateThread(NULL, 0, clock_proc, NULL, 0, NULL);
   if (!thread) {
