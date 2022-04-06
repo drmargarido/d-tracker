@@ -10,6 +10,7 @@ local get_task_by_description = require "src.controller.get_task_by_description"
 
 -- Exporters
 local xml_export = require "src.exporter.xml"
+local csv_export = require "src.exporter.csv"
 
 -- Settings
 local storage = require "src.storage"
@@ -136,6 +137,27 @@ _refresh = function()
 
                 local fname = path .. "/" .. select[1]
                 report_error(xml_export.write_xml_to_file(today_tasks, fname))
+            end
+        end)
+    end)
+
+    -- Configure export csv callback
+    this_window:getById("export_csv_btn"):setValue("onPress", function(_self)
+        local app = this_window.Application
+        app:addCoroutine(function()
+            local status, path, select = _self.Application:requestFile{
+                Title = "Select the export path",
+                SelectText = "save",
+                Location = date():fmt("%F")..".csv",
+                Path = storage.data.csv_save_path
+            }
+
+            if status == "selected" then
+                storage.data.csv_save_path = path
+                storage:save()
+
+                local fname = path .. "/" .. select[1]
+                report_error(csv_export.write_csv_to_file(today_tasks, fname))
             end
         end)
     end)
@@ -393,6 +415,11 @@ return {
                                     Id = "export_xml_btn",
                                     Width = 120,
                                     Text = "XML Export"
+                                },
+                                ui.Button:new{
+                                    Id = "export_csv_btn",
+                                    Width = 120,
+                                    Text = "CSV Export"
                                 },
                                 ui.Button:new{
                                     Width = 120,

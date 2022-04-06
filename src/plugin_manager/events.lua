@@ -9,5 +9,6 @@ return {
   PROJECT_CREATED = 8, -- A new project was created
   XML_EXPORT = 9, -- Tasks were exported to a xml file
   PLUGIN_SELECT = 10, -- The current plugin was selected in the plugins list in the top menubar
-  MINUTE_ELAPSED = 11 -- Triggered every minute
+  MINUTE_ELAPSED = 11, -- Triggered every minute
+  CSV_EXPORT = 12 -- Tasks were exported to CSV
 }
