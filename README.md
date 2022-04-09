@@ -159,5 +159,5 @@ The dependencies are in the external folder.
 
 ## Other
 
-A devlog for the development until the version v1.2 is available in [here](https://drmargarido.pt/d_tracker).
+A devlog for the development until the version v1.2 is available in [here](https://daniel.smargarido.com/d_tracker).
 
