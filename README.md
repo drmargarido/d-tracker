@@ -50,7 +50,7 @@ Release 1.5:
 ![D-Tracker UI with Klinik Theme](/screenshots/d-tracker_v1,1-klinik.jpg)
 
 ## Install
-To run the application use the most recent release, which right now is the [v1.52](https://github.com/drmargarido/d-tracker/releases).
+To run the application use the most recent release in the [releases](https://github.com/drmargarido/d-tracker/releases) page.
 
 ### Linux
 
@@ -123,6 +123,8 @@ edit-task-description Edit the description of a specific task
 edit-task-project     Edit the project of a specific task
 export-today-xml      Export today tasks to a xml file
 export-xml            Export tasks in a time range to a xml file
+export-today-csv      Export today tasks to a csv file
+export-csv            Export tasks in a time range to a csv file
 stop-in-progress      Stop the current task in progress
 ```
 

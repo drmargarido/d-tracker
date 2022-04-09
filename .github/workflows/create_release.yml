@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: description
-      run:  git log --no-merges --pretty=oneline $(git describe --abbrev=0)...$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`) | cut -d ' ' -f2- > release_description.md
+      run:  git log --no-merges --pretty=oneline $(git describe --abbrev=0)...$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`) | cut -d ' ' -f2- | xargs -I{} echo + {} > release_description.md
     - name: Create Release
       uses: actions/create-release@v1
       id: create_release
