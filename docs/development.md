@@ -73,6 +73,7 @@ Each plugin can register listeners for each of the following event types:
 * TASK\_DELETE - A task was deleted
 * PROJECT\_CREATED - A new project was created
 * XML\_EXPORT - Tasks were exported to a xml file
+* CSV\_EXPORT - Tasks were exported to a xml file
 * PLUGIN\_SELECT - The current plugin was selected in the plugins list in the top menubar
 * MINUTE\_ELAPSED - Is triggered every minute
 

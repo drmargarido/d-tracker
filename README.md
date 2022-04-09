@@ -43,9 +43,6 @@ Release 1.4:
 Release 1.5:
 * [x] Allow the copy of the tasks in the totals window to the clipboard
 
-Release 1.6:
-* [ ] Keybindings to speed up the workflow of advanced users
-
 ## Screenshots
 
 ![D-Tracker UI with Default Theme](/screenshots/d-tracker_v1,1-default.jpg)

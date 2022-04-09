@@ -15,7 +15,7 @@ return function(parser)
     export_xml_parser:action(function(args, name)
         local today_tasks = list_today_tasks()
         if args.path then
-            export_xml.write_xml_to_file(today_tasks, args.file)
+            export_xml.write_xml_to_file(today_tasks, args.path)
         else
             print(export_xml.generate_xml(today_tasks))
         end

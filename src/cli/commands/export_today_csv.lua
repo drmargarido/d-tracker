@@ -15,7 +15,7 @@ return function(parser)
     export_csv_parser:action(function(args, name)
         local today_tasks = list_today_tasks()
         if args.path then
-            export_csv.write_xml_to_file(today_tasks, args.file)
+            export_csv.write_csv_to_file(today_tasks, args.path)
         else
             print(export_csv.generate_csv(today_tasks))
         end
