@@ -1,0 +1,65 @@
+name: Build and Test
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: description
+      run:  git log --pretty=oneline $(git describe --abbrev=0)...$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`) | cut -d' \' -f2-
+      id: description
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: false
+        release_name: ${{ github.ref }}
+        tag_name: ${{ github.ref }}
+        body: ${{ steps.description.outputs.description }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: apt-update
+      run: sudo apt-get update -qq
+    - name: Install Linux Build Dependencies
+      run: sudo apt-get install -y automake libtool libx11-dev libxft2-dev libxext-dev libxxf86vm-dev libdbus-1-dev zip
+    - name: Linux Build
+      run: make
+    - name: Modify Linux Build Folder Name
+      run: mv build d-tracker-linux
+    - name: Create Linux zip
+      run: zip -r d-tracker-linux.zip d-tracker-linux
+    - name: Upload Linux Binary 
+      uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./d-tracker-linux.zip
+          asset_name: d-tracker-linux.zip
+          asset_content_type: application/gzip
+    - name: Clear build
+      run: make clean
+    - name: Install cross-compilation dependencies
+      run: sudo apt-get install -y mingw-w64
+    - name: Windows Build
+      run: make release_windows
+    - name: Modify Windows Build Folder Name
+      run: mv build d-tracker-windows
+    - name: Create Windows zip
+      run: zip -r d-tracker-windows.zip d-tracker-windows
+    - name: Upload Windows Binary 
+      uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./d-tracker-windows.zip
+          asset_name: d-tracker-windows.zip
+          asset_content_type: application/gzip
