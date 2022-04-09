@@ -22,6 +22,8 @@ require "src.cli.commands.edit_task_description"(parser)
 require "src.cli.commands.edit_task_project"(parser)
 require "src.cli.commands.export_today_xml"(parser)
 require "src.cli.commands.export_xml"(parser)
+require "src.cli.commands.export_today_csv"(parser)
+require "src.cli.commands.export_csv"(parser)
 require "src.cli.commands.stop_in_progress"(parser)
 
 -- Parse commands
