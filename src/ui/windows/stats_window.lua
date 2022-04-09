@@ -20,6 +20,7 @@ local validators = require "src.validators.base_validators"
 
 -- Exporters
 local xml_export = require "src.exporter.xml"
+local csv_export = require "src.exporter.csv"
 
 -- Storage
 local storage = require "src.storage"
@@ -271,6 +272,38 @@ _update = function(self, start_date, end_date, text)
 
                 local fname = path.. "/" .. select[1]
                 report_error(xml_export.write_xml_to_file(filtered_tasks, fname))
+            end
+        end)
+    end)
+
+    -- Bind tasks to csv export button
+    self:getById("stats_csv_export"):setValue("onPress", function(_self)
+        local app = _self.Application
+        app:addCoroutine(function()
+            local start_text = last_start_date:fmt("%F")
+            local end_text = last_end_date:fmt("%F")
+
+            local location_path
+            if start_text == end_text then
+                -- If both are the same day just put one day instead of a range
+                location_path = last_start_date:fmt("%F")..".csv"
+            else
+                location_path = last_start_date:fmt("%F").."_"..last_end_date:fmt("%F")..".csv"
+            end
+
+            local status, path, select = _self.Application:requestFile{
+                Title = "Select the export path",
+                SelectText = "save",
+                Location = location_path,
+                Path = storage.data.csv_save_path
+            }
+
+            if status == "selected" then
+                storage.data.csv_save_path = path
+                storage:save()
+
+                local fname = path.. "/" .. select[1]
+                report_error(csv_export.write_csv_to_file(filtered_tasks, fname))
             end
         end)
     end)
@@ -537,11 +570,23 @@ return {
                         }
                     }
                 },
-                ui.Button:new{
-                    Id = "stats_xml_export",
-                    HAlign = "right",
-                    Width = 120,
-                    Text = "XML Export"
+                ui.Group:new{
+                    Orientation = "horizontal",
+                    Width = "free",
+                    Children = {
+                        ui.Button:new{
+                            Id = "stats_xml_export",
+                            HAlign = "right",
+                            Width = 120,
+                            Text = "XML Export"
+                        },
+                        ui.Button:new{
+                            Id = "stats_csv_export",
+                            HAlign = "right",
+                            Width = 120,
+                            Text = "CSV Export"
+                        }
+                    }
                 }
             }
         }
