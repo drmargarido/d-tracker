@@ -5,5 +5,5 @@ Terminal=false
 GenericName=A lightweight timetracker that looks like hamster
 Categories=Utility;
 Exec=d-tracker
-Icon=d-tracker.png
+Icon=d-tracker
 StartupWMClass=d-tracker
